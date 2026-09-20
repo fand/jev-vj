@@ -1,0 +1,21 @@
+{
+  "composition": "Example",
+  "deck": "Generators",
+  "layer": 1,
+  "clips": {
+    "metaballs": {"name": "Metaballs", "column": 1, "description": "Organic merging blobs, cells, liquid droplets. Pink."},
+    "lips": {"name": "Lips", "column": 2, "description": "Red lips, figurative pop-art, playful and bodily."},
+    "lines": {"name": "Line Scape", "column": 3, "description": "Cyan geometric lines, architectural depth, structured abstract motion."},
+    "spinner": {"name": "Spinner", "column": 4, "description": "Rotating purple rings, circular geometric rhythm."},
+    "aurora": {"name": "Northern Light", "column": 5, "description": "Soft green aurora, flowing atmospheric light, calm and spacious."}
+  },
+  "effects": {
+    "clean": {"name": "Clean", "description": "Remove all eight Dashboard effects; clean original source.", "links": {}},
+    "kaleido": {"name": "Kaleido", "description": "Radial kaleidoscopic symmetry, mandala.", "links": {"5": 0.85}},
+    "mirror": {"name": "Mirror", "description": "Mirrored quadrants, bilateral symmetry.", "links": {"6": 0.85}},
+    "distort": {"name": "Distort", "description": "Wavy, liquid distortion.", "links": {"3": 0.45}},
+    "trails": {"name": "Trails", "description": "Afterimages and lingering motion trails.", "links": {"8": 0.7}},
+    "rgb": {"name": "RGB Split", "description": "Chromatic separation, electronic color aberration.", "links": {"1": 0.3}},
+    "glitch": {"name": "Glitch", "description": "Twitchy digital distortion with RGB separation.", "links": {"7": 0.3, "1": 0.12}}
+  }
+}

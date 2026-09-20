@@ -1,0 +1,311 @@
+{
+  "clips": 111,
+  "axes_total": 76,
+  "axes_populated": 67,
+  "axes": {
+    "color.palette": {
+      "known": 91,
+      "unknown": 20
+    },
+    "color.dominant": {
+      "known": 5,
+      "unknown": 106
+    },
+    "color.accent": {
+      "known": 5,
+      "unknown": 106
+    },
+    "color.background": {
+      "known": 19,
+      "unknown": 92
+    },
+    "color.surface": {
+      "known": 26,
+      "unknown": 85
+    },
+    "color.emission": {
+      "known": 43,
+      "unknown": 68
+    },
+    "color.illumination": {
+      "known": 10,
+      "unknown": 101
+    },
+    "color.mode": {
+      "known": 18,
+      "unknown": 93
+    },
+    "color.temperature": {
+      "known": 62,
+      "unknown": 49
+    },
+    "color.brightness": {
+      "known": 2,
+      "unknown": 109
+    },
+    "color.saturation": {
+      "known": 0,
+      "unknown": 111
+    },
+    "content.subjects": {
+      "known": 102,
+      "unknown": 9
+    },
+    "content.setting": {
+      "known": 51,
+      "unknown": 60
+    },
+    "content.style": {
+      "known": 29,
+      "unknown": 82
+    },
+    "content.realism": {
+      "known": 15,
+      "unknown": 96
+    },
+    "content.dimension": {
+      "known": 10,
+      "unknown": 101
+    },
+    "content.human_form": {
+      "known": 2,
+      "unknown": 109
+    },
+    "content.organic": {
+      "known": 1,
+      "unknown": 110
+    },
+    "geometry.shapes": {
+      "known": 53,
+      "unknown": 58
+    },
+    "geometry.tunnel_section": {
+      "known": 9,
+      "unknown": 102
+    },
+    "geometry.topology": {
+      "known": 8,
+      "unknown": 103
+    },
+    "geometry.surface_relief": {
+      "known": 6,
+      "unknown": 105
+    },
+    "material.types": {
+      "known": 31,
+      "unknown": 80
+    },
+    "material.finish": {
+      "known": 3,
+      "unknown": 108
+    },
+    "material.transparency": {
+      "known": 3,
+      "unknown": 108
+    },
+    "texture.patterns": {
+      "known": 24,
+      "unknown": 87
+    },
+    "texture.noise_family": {
+      "known": 3,
+      "unknown": 108
+    },
+    "composition.layout": {
+      "known": 30,
+      "unknown": 81
+    },
+    "composition.symmetry": {
+      "known": 4,
+      "unknown": 107
+    },
+    "composition.repetition": {
+      "known": 11,
+      "unknown": 100
+    },
+    "composition.grid": {
+      "known": 1,
+      "unknown": 110
+    },
+    "composition.density": {
+      "known": 8,
+      "unknown": 103
+    },
+    "composition.coverage": {
+      "known": 3,
+      "unknown": 108
+    },
+    "composition.width_fraction": {
+      "known": 0,
+      "unknown": 111
+    },
+    "composition.scale": {
+      "known": 9,
+      "unknown": 102
+    },
+    "composition.crop": {
+      "known": 1,
+      "unknown": 110
+    },
+    "camera.viewpoint": {
+      "known": 13,
+      "unknown": 98
+    },
+    "camera.fixed": {
+      "known": 7,
+      "unknown": 104
+    },
+    "camera.translation": {
+      "known": 38,
+      "unknown": 73
+    },
+    "camera.translation_speed": {
+      "known": 39,
+      "unknown": 72
+    },
+    "camera.path": {
+      "known": 9,
+      "unknown": 102
+    },
+    "camera.rotation_mode": {
+      "known": 11,
+      "unknown": 100
+    },
+    "camera.rotation_direction": {
+      "known": 11,
+      "unknown": 100
+    },
+    "camera.rotation_axes": {
+      "known": 0,
+      "unknown": 111
+    },
+    "camera.rotation_speed": {
+      "known": 2,
+      "unknown": 109
+    },
+    "camera.speed_profile": {
+      "known": 0,
+      "unknown": 111
+    },
+    "motion.types": {
+      "known": 59,
+      "unknown": 52
+    },
+    "motion.targets": {
+      "known": 56,
+      "unknown": 55
+    },
+    "motion.screen_direction": {
+      "known": 17,
+      "unknown": 94
+    },
+    "motion.depth_direction": {
+      "known": 2,
+      "unknown": 109
+    },
+    "motion.subject_speed": {
+      "known": 14,
+      "unknown": 97
+    },
+    "motion.rotation_direction": {
+      "known": 6,
+      "unknown": 105
+    },
+    "motion.rotation_axes": {
+      "known": 4,
+      "unknown": 107
+    },
+    "motion.rotation_speed": {
+      "known": 5,
+      "unknown": 106
+    },
+    "motion.rotation_profile": {
+      "known": 2,
+      "unknown": 109
+    },
+    "motion.speed_profile": {
+      "known": 1,
+      "unknown": 110
+    },
+    "motion.deformation": {
+      "known": 3,
+      "unknown": 108
+    },
+    "motion.synchrony": {
+      "known": 3,
+      "unknown": 108
+    },
+    "motion.randomness": {
+      "known": 0,
+      "unknown": 111
+    },
+    "light.types": {
+      "known": 20,
+      "unknown": 91
+    },
+    "light.behaviors": {
+      "known": 56,
+      "unknown": 55
+    },
+    "light.speed": {
+      "known": 16,
+      "unknown": 95
+    },
+    "light.timing": {
+      "known": 20,
+      "unknown": 91
+    },
+    "light.screen_direction": {
+      "known": 5,
+      "unknown": 106
+    },
+    "light.depth_direction": {
+      "known": 2,
+      "unknown": 109
+    },
+    "light.intensity": {
+      "known": 2,
+      "unknown": 109
+    },
+    "light.effects": {
+      "known": 12,
+      "unknown": 99
+    },
+    "rhythm.beat_pattern": {
+      "known": 8,
+      "unknown": 103
+    },
+    "rhythm.repeating_event": {
+      "known": 5,
+      "unknown": 106
+    },
+    "rhythm.easing": {
+      "known": 1,
+      "unknown": 110
+    },
+    "rhythm.phase_relation": {
+      "known": 6,
+      "unknown": 105
+    },
+    "rhythm.loop_description": {
+      "known": 1,
+      "unknown": 110
+    },
+    "technical.alpha": {
+      "known": 0,
+      "unknown": 111
+    },
+    "technical.bpm": {
+      "known": 0,
+      "unknown": 111
+    },
+    "technical.seamless_loop": {
+      "known": 0,
+      "unknown": 111
+    },
+    "technical.audio_reactive": {
+      "known": 0,
+      "unknown": 111
+    }
+  }
+}

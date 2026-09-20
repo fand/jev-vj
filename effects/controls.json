@@ -1,0 +1,610 @@
+[
+  {
+    "id": "flip",
+    "name": "Flip",
+    "description": "Reverse the full image horizontally and/or vertically.",
+    "order": 10,
+    "controls": [
+      {
+        "key": "horizontal",
+        "label": "Horizontal",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 1
+      },
+      {
+        "key": "vertical",
+        "label": "Vertical",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "mirror",
+    "name": "Mirror",
+    "description": "Reflect one half of the image across a movable horizontal or vertical axis.",
+    "order": 10,
+    "controls": [
+      {
+        "key": "mode",
+        "label": "Mode",
+        "min": 0,
+        "max": 2,
+        "step": 1,
+        "value": 0
+      },
+      {
+        "key": "centerX",
+        "label": "Center X",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.5
+      },
+      {
+        "key": "centerY",
+        "label": "Center Y",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.5
+      }
+    ]
+  },
+  {
+    "id": "halftone",
+    "name": "Halftone",
+    "description": "Print-style RGB or CMYK dot screen.",
+    "order": 20,
+    "controls": [
+      {
+        "key": "gridSize",
+        "label": "Grid size",
+        "min": 4,
+        "max": 32,
+        "step": 1,
+        "value": 12
+      },
+      {
+        "key": "dotSize",
+        "label": "Dot size",
+        "min": 0.35,
+        "max": 1.2,
+        "step": 0.05,
+        "value": 0.8
+      },
+      {
+        "key": "angle",
+        "label": "Angle",
+        "min": -45,
+        "max": 45,
+        "step": 1,
+        "value": 0
+      },
+      {
+        "key": "smoothing",
+        "label": "Dot softness",
+        "min": 0,
+        "max": 0.4,
+        "step": 0.01,
+        "value": 0.12
+      },
+      {
+        "key": "blackAmount",
+        "label": "Black ink",
+        "min": 0,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.75
+      },
+      {
+        "key": "cmyk",
+        "label": "CMYK mode",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 1
+      },
+      {
+        "key": "inkPreset",
+        "label": "Ink preset",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "hatched",
+    "name": "Hatched",
+    "description": "Luminance-based crosshatching on light paper, with an inverted paper mode.",
+    "order": 20,
+    "controls": [
+      {
+        "key": "lineWidth",
+        "label": "Line width",
+        "min": 0.25,
+        "max": 12,
+        "step": 0.25,
+        "value": 1.25
+      },
+      {
+        "key": "spacing",
+        "label": "Line spacing",
+        "min": 4,
+        "max": 80,
+        "step": 1,
+        "value": 14
+      },
+      {
+        "key": "angle",
+        "label": "Angle",
+        "min": -180,
+        "max": 180,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "levels",
+        "label": "Levels",
+        "min": 1,
+        "max": 4,
+        "step": 1,
+        "value": 3
+      },
+      {
+        "key": "invert",
+        "label": "Invert paper",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "lorez",
+    "name": "LoRez",
+    "description": "Square pixel blocks with per-channel colour quantization.",
+    "order": 20,
+    "controls": [
+      {
+        "key": "pixelSize",
+        "label": "Pixel size",
+        "min": 1,
+        "max": 128,
+        "step": 1,
+        "value": 8
+      },
+      {
+        "key": "colorLevels",
+        "label": "Color levels",
+        "min": 2,
+        "max": 32,
+        "step": 1,
+        "value": 8
+      }
+    ]
+  },
+  {
+    "id": "edge",
+    "name": "Edge",
+    "description": "Sobel-detected outlines in a selected palette.",
+    "order": 25,
+    "controls": [
+      {
+        "key": "threshold",
+        "label": "Threshold",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.2
+      },
+      {
+        "key": "thickness",
+        "label": "Thickness",
+        "min": 0.5,
+        "max": 10,
+        "step": 0.5,
+        "value": 1.5
+      },
+      {
+        "key": "intensity",
+        "label": "Intensity",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "value": 3
+      },
+      {
+        "key": "palette",
+        "label": "Palette: 0 white, 1 blue, 2 red, 3 neon",
+        "min": 0,
+        "max": 3,
+        "step": 1,
+        "value": 0
+      },
+      {
+        "key": "sourceMix",
+        "label": "Source over edges",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "rgb",
+    "name": "RGB Shift",
+    "description": "Animated horizontal separation of red, green, and blue channels.",
+    "order": 30,
+    "controls": [
+      {
+        "key": "amount",
+        "label": "Amount",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "value": 6
+      },
+      {
+        "key": "speed",
+        "label": "Speed",
+        "min": 0,
+        "max": 3,
+        "step": 0.05,
+        "value": 0.6
+      }
+    ]
+  },
+  {
+    "id": "shift-glitch",
+    "name": "Shift Glitch",
+    "order": 30,
+    "controls": [
+      {
+        "key": "frequency",
+        "label": "Frequency (Hz)",
+        "min": 0,
+        "max": 30,
+        "step": 0.1,
+        "value": 12
+      },
+      {
+        "key": "vertical",
+        "label": "Vertical coverage",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.12
+      },
+      {
+        "key": "horizontal",
+        "label": "Horizontal coverage",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.25
+      },
+      {
+        "key": "size",
+        "label": "Base band width (px)",
+        "min": 2,
+        "max": 480,
+        "step": 1,
+        "value": 48
+      },
+      {
+        "key": "seed",
+        "label": "Seed",
+        "min": 0,
+        "max": 9999,
+        "step": 1,
+        "value": 1
+      },
+      {
+        "key": "mix",
+        "label": "Mix",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 1
+      }
+    ],
+    "description": "Partial vertical and horizontal bands of irregular width. Independent per-axis coverage. Random 2D UV offsets and scales stay fixed per band; only active bands update at 0–30 Hz. Repeat wrapping; 0 Hz freezes the mask."
+  },
+  {
+    "id": "twitch",
+    "name": "Twitch",
+    "order": 30,
+    "controls": [
+      {
+        "key": "global",
+        "label": "Global Twitch",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 1
+      },
+      {
+        "key": "posX",
+        "label": "Pos amount X",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.25
+      },
+      {
+        "key": "posY",
+        "label": "Pos amount Y",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.04
+      },
+      {
+        "key": "posFreq",
+        "label": "Pos frequency",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.4
+      },
+      {
+        "key": "scaleAmount",
+        "label": "Scale amount",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.15
+      },
+      {
+        "key": "scaleFreq",
+        "label": "Scale frequency",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.25
+      },
+      {
+        "key": "rgbAmount",
+        "label": "RGB shift amount",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.2
+      },
+      {
+        "key": "rgbFreq",
+        "label": "RGB frequency",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.3
+      },
+      {
+        "key": "lightAmount",
+        "label": "Light amount",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.35
+      },
+      {
+        "key": "lightFreq",
+        "label": "Light frequency",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.2
+      },
+      {
+        "key": "blurAmount",
+        "label": "Motion blur",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.8
+      },
+      {
+        "key": "threshold",
+        "label": "Noise threshold",
+        "min": 0.1,
+        "max": 0.95,
+        "step": 0.01,
+        "value": 0.65
+      },
+      {
+        "key": "wrap",
+        "label": "Wrap (0 Repeat / 1 Hold)",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 0
+      },
+      {
+        "key": "seed",
+        "label": "Seed",
+        "min": 0,
+        "max": 9999,
+        "step": 1,
+        "value": 1
+      },
+      {
+        "key": "mix",
+        "label": "Mix",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 1
+      }
+    ],
+    "description": "Independent noise-gated position, scale, RGB separation and light bursts, each with amount and frequency. Constant motion blur follows position/scale speed. Non-periodic; no rotation; Repeat or Hold edges."
+  },
+  {
+    "id": "hue",
+    "name": "Hue",
+    "description": "Rotates hue with an optional continuous color cycle.",
+    "order": 40,
+    "controls": [
+      {
+        "key": "shift",
+        "label": "Hue shift",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0
+      },
+      {
+        "key": "speed",
+        "label": "Cycle speed",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "colorama",
+    "name": "Colorama",
+    "description": "Maps luminance through a cycling color palette while preserving transparency.",
+    "order": 50,
+    "controls": [
+      {
+        "key": "palette",
+        "label": "Palette: 0 rainbow, 1 fire, 2 ice, 3 monochrome, 4 neon",
+        "min": 0,
+        "max": 4,
+        "step": 1,
+        "value": 0
+      },
+      {
+        "key": "frequency",
+        "label": "Color bands",
+        "min": 0.25,
+        "max": 4,
+        "step": 0.05,
+        "value": 1
+      },
+      {
+        "key": "offset",
+        "label": "Phase",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0
+      },
+      {
+        "key": "repeat",
+        "label": "Repeat: 0 clamp, 1 repeat, 2 mirror",
+        "min": 0,
+        "max": 2,
+        "step": 1,
+        "value": 2
+      },
+      {
+        "key": "speed",
+        "label": "Cycle speed",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.08
+      }
+    ]
+  },
+  {
+    "id": "invert",
+    "name": "Invert",
+    "description": "Invert selected RGB channels while preserving alpha.",
+    "order": 50,
+    "controls": [
+      {
+        "key": "red",
+        "label": "Red",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 1
+      },
+      {
+        "key": "green",
+        "label": "Green",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 1
+      },
+      {
+        "key": "blue",
+        "label": "Blue",
+        "min": 0,
+        "max": 1,
+        "step": 1,
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "trails",
+    "name": "Trails",
+    "description": "Persistent, fading frame accumulation for motion trails.",
+    "order": 60,
+    "controls": [
+      {
+        "key": "halfLife",
+        "label": "Half-life",
+        "min": 0.05,
+        "max": 10,
+        "step": 0.05,
+        "value": 0.8
+      },
+      {
+        "key": "mix",
+        "label": "Mix",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.7
+      }
+    ]
+  },
+  {
+    "id": "colorize",
+    "name": "Colorize",
+    "description": "Apply a luminance-preserving hue tint.",
+    "order": 70,
+    "controls": [
+      {
+        "key": "hue",
+        "label": "Hue",
+        "min": 0,
+        "max": 360,
+        "step": 1,
+        "value": 210
+      },
+      {
+        "key": "saturation",
+        "label": "Saturation",
+        "min": 0,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.7
+      },
+      {
+        "key": "brightness",
+        "label": "Brightness",
+        "min": 0.25,
+        "max": 2,
+        "step": 0.01,
+        "value": 1
+      }
+    ]
+  }
+]

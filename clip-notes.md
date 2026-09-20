@@ -1,0 +1,589 @@
+# Ducky3D
+
+- animation 1.mp4: 青、単色、Party noise. 床と天井。カメラは奥へ。Medium speed. 
+- animation 2.mp4: 青、単色、電気ビリビリ、カメラは奥へ、ハイスピード。
+- animation 3.mp4: 赤、単色、電気ビリビリ。カメラは奥へ。カメラは半時計回りに回転。ハイスピード。
+- animation 4.mp4: 緑、単色、ビリビリ、カメラは奥へ、トンネル、凸凹のトンネル、ハイスピード。
+- animation 5.mp4: 平面を斜め上から見下ろす。カメラを奥へ。灰色と赤と青。Medium speed. 
+- Animation 6.mp4: 青とオレンジ、サイファイ、メタリック、カメラ奥へ、ミリアムスピード、カメラは半時計回りに回転。
+- animation 7.mp4: 青、アクセントはオレンジ。トーラストンネル。カメラは時計回りに回転。カメラは奥へ。ハイスピード。
+- animation 8.mp4: 2D黄色、シマシマが右上から左下へゆっくり。
+- animation 9.mp4: 青、ピクセルタイルがパカパカランダムに点滅。Medium speed
+- animation 10.mp4: 青、ピクセルタイルがパカパカランダムに点滅。ハイスピード
+- animation 11.mp4: 青と緑、ワブリー黒いトンネルの中でカメラが奥に。Medium speed. 円形のネオンが点滅。
+- animation 12.mp4: 丸いトンネルの中で円形のネオンが奥から手前までランダムに点滅。青と紫。カメラはゆっくり奥へ。点滅は非常に速い。
+- animation 13.mp4: 2D、青とピンクとオレンジ。横長のタイルがゆっくり点灯してゆっくり消える。ランダムなオフセット。
+- animation 14.mp4: 平面を斜め上から見下ろすサイバーカラフル。二重の平面の上に直線のネオンが光っている。
+- animation 15.mp4: 青、ミディアムスピード、丸いトンネルが下へ下へ湾曲しており、カメラはどんどん奥へ下へ進んで沈んでいく。
+- animation 16.mp4: 2D、青とオレンジ、直線のネオンが時計回りに回転する。ネオンのパターンはチュビシェフ模様で切り替わっている。
+- animation 17.mp4: カメラは固定。中央に三角のワイヤーフレームでできた人間の顔がゆっくり動いている。ワイヤーフレームの間はシアンとマゼンタに光っている。
+- animation 18.mp4: カメラは固定、2D。画面を横に3分割、縦に7分割したタイルがゆっくり光り消える。光はオレンジ。
+- animation 19.mp4: カメラは固定。中央から伸びる線がうにょうにょ動いている。線はオレンジと黄色。線の太さは固定。
+- animation 20.mp4: 青、カメラは固定。画面の中央に直方体のワイヤーフレームが幾重にも異なったサイズとスケールで重なっており、それが拡大縮小する。オブジェクトは全てまとめてX軸Y軸でゆっくり回転している。回転は等速。オブジェクトは画面を埋めるほどのサイズ。
+- animation 21.mp4: 2D回転モノクロ。円形に並んだタイルが明滅している。
+- animation 22.mp4: 平面上に円形に並んだタイルがオレンジ色に明滅しているが、それをカメラは斜め上から撮影している。
+- animation 24.mp4:四角いトンネルのワイヤーフレームのトンネルの中をカメラが奥の方向へゆっくり動いている。ワイヤーフレームは中くらいの速度で青くランダムなタイミングで。点滅している。
+- animation 28.mp4: オレンジと黒。溶岩の海の上にオレンジの丸いネオンのトンネルがあり、それをカメラは手前から奥へハイスピードで進んでいく。
+- animation 30.mp4: 正三角形に並んだ緑と青の蛍光ランプがランダムに明滅するカメラ固定2D。
+- animation 31.mp4: 白黒の島模様の深淵のトンネルの中をカメラがゆっくり奥へ進む。
+- animation 32.mp4: 青いネオンが縦に並んだ空間の中で、銀色の鏡面反射する人型がゆっくり回転している。
+- animation 33.mp4: 四角い真っ黒なトンネルの中に、壁、床、天井にネオンがランダムに並んでおり、ランダムなタイミングでシアンとマゼンタに点滅する。それに加えて、たまにイエローもある。カメラはMedium speedで奥へ進む。
+- animation 35.mp4: 青白く光る星がたくさんある中を、カメラが奥の方へハイスピードで移動。星はスピードのせいで伸びて見える。
+- animation 37.mp4: ランダムな四角い模様で反射率が変わっているメタリックな床の上に、ピンクの丸いネオンが等間隔に並んだトンネルがあり、その中をカメラが奥の方へ進んでいく。mediumスピード。
+- animation 38.mp4: 横に長い四角いトンネルの中をカメラが奥へゆっくり進む。トンネルの床と天井には3本ずつ青いネオンがずっと並んでおり、トンネルの壁面と天井にはトンネルを横切る方向にピンクのネオンが等間隔に並んでいる。
+- animation 39.mp4: 波打った床と天井からなる空間で、左右に謎のピラミッド状のサイファイ風オブジェクトが等間隔に並んでいる。カメラはその中を奥の方へハイスピードで移動する。ピラミッドはオレンジで、かつ空間の中に三角形の青色のネオンが等間隔にあり、光っている。
+- animation 40.mp4: 
+- animation 41.mp4: 宇宙船の廊下をカメラが奥の方へ、中くらいのスピードで進んでいる、カメラは時計回りに回転している。床には細い青いネオンが光っており、壁面にはオレンジのネオンが等間隔に取り付けられている。天井には白い蛍光灯が並んでおり、点滅している。
+- animation 44.mp4: パーリンノイズでできた地形。黒色で少しマットな質感の泥のような山の上をカメラがゆっくり奥へ移動する。地面はピンクと紫のライトがあたっている
+- animation 45.mp4: 
+- animation 46.mp4: 
+- animation 47.mp4: 
+- animation 48.mp4: 
+- animation 49.mp4: 
+- animation 50.mp4: 
+- animation 51.mp4: 
+- animation 52.mp4: 
+- animation 53.mp4: 
+- animation 54.mp4: 
+- animation 55.mp4: 
+- animation 56.mp4: 
+- animation 57.mp4: 
+- animation 58.mp4: 
+- animation 59.mp4: 
+- animation 60.mp4: 
+- animation 61.mp4: 
+- animation 62.mp4: 
+- animation 63.mp4: 
+- animation 64.mp4: 
+- animation 65.mp4: 
+- animation 66.mp4: 
+- animation 67.mp4: 
+- animation 68.mp4: 
+- animation 69.mp4: 
+- animation 70.mp4: 
+- animation 71.mp4: 
+- animation 72.mp4: 
+- animation 73.mp4: 
+- animation 74.mp4: 
+- animation 75.mp4: 
+- animation 76.mp4: 
+- animation 77.mp4: ピンクと紫でできたパーリンノイズの模様の半透明の膜を突き破るように、カメラは手前から奥へ進んでいく.mediumスピード。
+- animation 78.mp4: 前方向へ転がる太陽の下半分だけを写している。輪郭だけが黄色く光って見えて、それ以外の部分は緩やかにオレンジ色に照らされている。太陽の中央は黒い。
+- animation 79.mp4: 2D。画面上に十数本ほどの白い線が波打っている。波打っており、光っている。光り方はそれぞれバラバラにゆっくり明滅しており、光が強くなると光の上下に虹色のアーティファクトが見える。
+- animation 80.mp4: 上振りなトンネルの中をカメラが手前から奥へ、中くらいのスピードで進む。カメラは時計回りに回転している。壁面はピンクとシアンの色のライトで光っている。
+- animation 81.mp4: 
+- animation 82.mp4: 
+- animation 83.mp4: 長方形のサイファイ風のオブジェクトが、トンネルの壁面と天井というか塔にランダムに配置され、その中をカメラが手前から奥へ気持ち早めに動いている。サイファイ風のオブジェクトは回転している。回転の方向はバラバラだが、回転のスピードは一緒。オブジェクト上には青い小さなライトが配置されている。
+- animation 84.mp4: 
+- animation 85.mp4: 
+- animation 86.mp4: 
+- animation 87.mp4: 
+- animation 88.mp4: 
+- animation 89.mp4: 
+- animation 90.mp4: 
+- animation 91.mp4: 
+- animation 92.mp4: 急峻な谷の底をゆっくりとカメラが奥へ移動する。谷の壁面は赤く光っており、奥に見える空は黄色く光っている。
+- animation 93.mp4: アブストラクトなラインアートが黄緑に光っている。ラインアートはシンプルなカレードスコープエフェクトがかかっており、上下左右対称になっている。
+- animation 94.mp4: アブストラクトなラインアートがピンクに光っている。ラインアートはシンプルなカレードスコープエフェクトがかかっており、上下左右対称になっている。
+- animation 95.mp4: XY軸等速で回転するスフィアの表面上に青白い光が浮いている。光の輪郭はおそらく球面上のシンプレックスノイズで作られた模様。球体はいくつか同心円状に並んでいるが、球面自体は見えず、光だけが見えている。カメラは固定。
+- animation 96.mp4: 
+- animation 97.mp4: 
+- animation 98.mp4: RGB3色の横方向の直線がランダムに明滅する。直線はチェビシェフ模様で区切られた区間にランダムに配置されている。
+- animation 99.mp4: 
+- animation 100.mp4: 
+
+# Inferno
+
+- Inferno_damnation_01.mov: アブストラクトな赤い炎の模様。炎は円形に画面の外から画面の中央へ向かってゆっくり狭まっていく。
+- Inferno_damnation_02a.mov: 赤と黒の溶岩の表面。溶岩の隙間から燃える赤い光はランダムにゆっくり明滅している。
+- Inferno_damnation_02b.mov: 
+- Inferno_damnation_03a.mov: 
+- Inferno_damnation_03b.mov: 
+- Inferno_damnation_04.mov: 
+- Inferno_demise_01.mov: 青い溶岩の表面。溶岩はゆっくり明滅している。黒い部分は少ない。
+- Inferno_demise_02.mov: 青い溶岩のような光が画面下から上へゆっくり移動している。模様は左右対称になっている。
+- Inferno_demise_03.mov: 
+- Inferno_oblivion_01.mov: 
+- Inferno_oblivion_02.mov: 黒い池の表面に白い小さなライトがいくつも浮かんでおり、それがゆっくりバラバラに明滅している。光は斜めにストリークを出している。
+- Inferno_oblivion_03.mov: 真っ黒な波打つ水面の上で、白い光が画面中央から画面外に向かってゆっくりと円形に広がっていく。
+
+# loopable-smoke
+
+- smoke_h264_1.mov: 
+- smoke_h264_2.mov: 白黒の画面で煙が下から上へ広がり、また消えていく。
+- smoke_h264_3.mov: 少しだけ赤い空間の中で、青白い煙が竜巻を起こしている。竜巻は画面の80%くらいを占める太さ。竜巻は煙を斜め上に吸い上げている。
+- smoke_h264_4.mov: 
+- smoke_h264_5.mov: 
+- smoke_h264_6.mov: ピンクの煙が画面を埋め尽くし、下から上へ吹き上げている。
+- smoke_h264_7.mov: 
+- smoke_h264_8.mov: 
+- smoke_h264_9.mov: 
+- smoke_h264_10.mov: 
+- smoke_h264_11.mov: 
+- smoke_h264_12.mov: 
+- smoke_h264_13.mov: 
+- smoke_h264_14.mov: 
+- smoke_h264_15.mov: 
+- smoke_h264_16.mov: 
+
+# mantissa 
+全体的に情報量多め。
+
+- mantissa.xyz_loop_001.mp4: 薄いシアンの空間の中で六角柱状のトンネルの壁面にオレンジと銅の色の板が並んでいる。画面の奥から小さな線状の光が少しずつ流れてくる。カメラは奥へ10くらいのスピードで移動する。また、カメラは半時計回りに回転している。Sci-fi 
+- mantissa.xyz_loop_002.mp4: 六角形のサーファイ風トンネルの中をカメラはゆっくり奥へ移動する。トンネルの中にはオレンジの円形のネオンが6つ並んでおり、トンネルとは独立して回転している。また、緑色の光が手前から奥へ飛んでいく。
+- mantissa.xyz_loop_003.mp4: レトロなゲームのワイヤーフレームの3D空間の街の中に道路があり、その上を見下ろす形でカメラは奥の方へゆっくり進んでいく。
+- mantissa.xyz_loop_004.mp4: リアルな黒い岩のトンネルの中をカメラが宙くらいのスピードで奥へ進んでいく。トンネルには正方形の白いライトのフレームがトンネルの外周部に等間隔に並べられている。
+- mantissa.xyz_loop_005.mp4: 
+- mantissa.xyz_loop_006.mp4: 
+- mantissa.xyz_loop_007.mp4: 
+- mantissa.xyz_loop_008.mp4: 
+- mantissa.xyz_loop_009.mp4: 
+- mantissa.xyz_loop_010.mp4: 
+- mantissa.xyz_loop_011.mp4: 
+- mantissa.xyz_loop_012.mp4: 
+- mantissa.xyz_loop_013.mp4: 黒いリアルな岩のトンネルの中に、カメラが奥へ中くらいのスピードで進んでいく。トンネルの壁面には円形の白いライトが、トンネルの壁面をぐるっと囲むようにZ方向に等間隔になるように取り付けられている。ネオンは白く光っており、ネオンの一部にオレンジとシアンの光もついている。
+- mantissa.xyz_loop_014.mp4: サイファイ風のワイヤーフレームの街の高速道路の上をカメラがゆっくり移動する。カメラは左斜め上から見下ろす形で映しており、街は右下に流れていく。
+- mantissa.xyz_loop_015.mp4: 
+- mantissa.xyz_loop_016.mp4: 銅の色の有機的な形の巨大な細長いオブジェクトが画面中央でウニョウニョうごめいている。オブジェクトは長い柱になっており、カメラの中央でゆっくり時計回りに回転している。
+- mantissa.xyz_loop_018.mp4: 
+- mantissa.xyz_loop_019.mp4: 
+- mantissa.xyz_loop_021.mp4: 
+- mantissa.xyz_loop_022.mp4: 
+- mantissa.xyz_loop_024.mp4: 
+- mantissa.xyz_loop_026.mp4: 
+- mantissa.xyz_loop_027.mp4: 
+- mantissa.xyz_loop_028.mp4: 
+- mantissa.xyz_loop_029.mp4: 
+- mantissa.xyz_loop_030.mp4: 
+- mantissa.xyz_loop_031.mp4: 
+- mantissa.xyz_loop_032.mp4: 
+- mantissa.xyz_loop_033.mp4: 
+- mantissa.xyz_loop_036.mp4: 
+- mantissa.xyz_loop_037.mp4: 
+- mantissa.xyz_loop_038.mp4: 
+- mantissa.xyz_loop_039.mp4: 
+- mantissa.xyz_loop_040.mp4: 
+- mantissa.xyz_loop_043.mp4: 
+- mantissa.xyz_loop_044.mp4: 
+- mantissa.xyz_loop_045.mp4: 
+- mantissa.xyz_loop_046.mp4: 
+- mantissa.xyz_loop_047.mp4: 
+- mantissa.xyz_loop_048.mp4: 
+- mantissa.xyz_loop_049.mp4: 黒いメタリックな触手が画面の中央から伸びており、触手の塊がX軸Y軸でゆっくり回転している。触手の一部はオレンジ色のネオン状の模様がアニメーションしている。また、触手の周りに薄いピンクのオーラもある。
+- mantissa.xyz_loop_050.mp4: 
+- mantissa.xyz_loop_051.mp4: 
+- mantissa.xyz_loop_052.mp4: 黒いケーブルが奥へと、手前から奥へと大量に伸びている中を、カメラが高速に奥の方向へ移動する。カメラはゆっくり半時計回りに動いている。また、ケーブルを束ねるように、トンネルをぐるっと取り囲むように、円形の白いネオンが等間隔に取り付けられている
+- mantissa.xyz_loop_053.mp4: 
+- mantissa.xyz_loop_054.mp4: 
+- mantissa.xyz_loop_055.mp4: 
+- mantissa.xyz_loop_056.mp4: 
+- mantissa.xyz_loop_057.mp4: 
+- mantissa.xyz_loop_058.mp4: 
+- mantissa.xyz_loop_059.mp4: 
+- mantissa.xyz_loop_060.mp4: 
+- mantissa.xyz_loop_063.mp4: 
+- mantissa.xyz_loop_064.mp4: 
+- mantissa.xyz_loop_065.mp4: 
+- mantissa.xyz_loop_066.mp4: 
+- mantissa.xyz_loop_067.mp4: 
+- mantissa.xyz_loop_068.mp4: 
+- mantissa.xyz_loop_069.mp4: 
+- mantissa.xyz_loop_070.mp4: 
+- mantissa.xyz_loop_071.mp4: 
+- mantissa.xyz_loop_072.mp4: 
+- mantissa.xyz_loop_073.mp4: 
+- mantissa.xyz_loop_074.mp4: 
+- mantissa.xyz_loop_075.mp4: 
+- mantissa.xyz_loop_076.mp4: 
+- mantissa.xyz_loop_077.mp4: 
+- mantissa.xyz_loop_078.mp4: 
+- mantissa.xyz_loop_079.mp4: 
+- mantissa.xyz_loop_081.mp4: 
+- mantissa.xyz_loop_082.mp4: 
+- mantissa.xyz_loop_083.mp4: 
+- mantissa.xyz_loop_084.mp4: 
+- mantissa.xyz_loop_085.mp4: 
+- mantissa.xyz_loop_086.mp4: 
+- mantissa.xyz_loop_087.mp4: 
+- mantissa.xyz_loop_088.mp4: 黒いメタリックな液体が画面下から上の方向へ吹き上げており、液体の表面には緑、ピンク、青の光が反射している。
+- mantissa.xyz_loop_089.mp4: 
+- mantissa.xyz_loop_090.mp4: 
+- mantissa.xyz_loop_091.mp4: 白い直方体のパーティクルが多数、大量にうごめいている。パーティクルにはオレンジと水色の光がそれぞれ別方向からぼんやりと弱く当たっている。
+- mantissa.xyz_loop_092.mp4: 
+- mantissa.xyz_loop_093.mp4: 画面中央の丸いシアン色のネオンから金属の三角形のパーティクルが大量に放出されており、放射状に動いている。パーティクルはピンクの光を受けて光っている。
+- mantissa.xyz_loop_094.mp4: 
+- mantissa.xyz_loop_095.mp4: 
+- mantissa.xyz_loop_096.mp4: 
+- mantissa.xyz_loop_097.mp4: 
+- mantissa.xyz_loop_098.mp4: 
+- mantissa.xyz_loop_099.mp4: 
+- mantissa.xyz_loop_100.mp4: 白い月面の上をカメラが斜めから見下ろす形で、手前から奥へゆっくり動いている。
+- mantissa.xyz_loop_101.mp4: 
+- mantissa.xyz_loop_102.mp4: 
+- mantissa.xyz_loop_103.mp4: 
+- mantissa.xyz_loop_104.mp4: 
+- mantissa.xyz_loop_106.mp4: 
+- mantissa.xyz_loop_108.mp4: 
+- mantissa.xyz_loop_109.mp4: 
+- mantissa.xyz_loop_110.mp4: 
+
+# Opti
+
+- Opti1.mov: 遠景の広いトンネルの中をカメラは奥へ高速に移動する。トンネルの壁面にはライトがあり、奥から手前から奥の方へ高速にライトの光のアニメーションがある。カメラはまた半時計回りにも回転している。
+- Opti2.mov: 横長の超空砲体のトンネルの中をカメラがでゆっくり奥へ移動する。壁面は音楽のビートに合わせて白い光がアニメーションしている。
+- Opti3.mov: 金属と白い光でできた直方体からなる工場で、直方体からできたドアが開いて、その中をカメラがゆっくり奥へ移動する。
+- Opti5.mov: 三角形の謎の物体が時計回りに回転しており、その上をカメラは斜め上から見下ろしている。三角形の金属でできた物体には四角いドットマトリクスがあり、ドットは白色にビートに合わせた光のアニメーションが行われている。
+- Opti6.mov: 金属の無機質な四角いトンネルの中をカメラが中くらいのスピードで奥へ移動する。トンネルには鉄格子が何重にもはめられており、鉄格子の上には白い光のドットアニメーションが下から上へ移動している。
+- Opti7A.mov: 暗い金属の部屋の中で、金属でできた四角い謎のオブジェが光っている。ランダムに光っている。カメラはそれをぐるっと回転するように、時計回りに回転しながら撮影している。
+- Opti7B.mov: 
+- Opti8.mov: 右に広がる鉄の網が天井と床になっており、その中をカメラはゆっくりと奥へ移動する。鉄の網は、の上を白い光のアニメーションが高速にビートに合わせて明滅している。
+- Opti9_alpha.mov: 透明のチューブでできたウニの周りをカメラがゆっくり回転している。チューブの中にはビートに合わせてウニの中央から外周部へ光が移動している。
+- Opti10_alpha.mov: 
+- Opti10B_alpha.mov: 
+- Opti11.mov: 
+- Opti12.mov: 金属の無機質な建物の中で、扉を開けたらまた扉があり、扉を開けたらまた扉がある無限ループ。扉の上には白い光が扉の中央から扉の外周に向かって四角い形で広がっていく。
+- Opti12B.mov: 
+- Opti13.mov: 
+- Opti14.mov: 金属の無機質な部屋の中に、巨大な円形の鏡面の球体があり、球体にビートに合わせて光る白い光が反射している。
+- Opti15.mov: 
+- Opti16_alpha.mov: 
+- Opti16B.mov: 
+- Opti18_alpha.mov: 
+- Opti19.mov: 
+- Opti20.mov: 
+- Opti21_alpha.mov: 
+- OptiA-blackcubes.mov: 回転する小さな白いライトが画面上に2D状にグリッド状に配置されており、ランダムなタイミングで光っている。
+- OptiB-circlestripes.mov: 
+- OptiC-FakeLines.mov: 
+- OptiD-Perspectivecubes.mov: 金属のキューブでできた斜面があり、それをアイソメトリック視点で撮影している。キューブのカメラから見えている3側面は、それぞれ別々にビートに合わせて点滅している。光は白。
+- OptiE-Triangles_alpha.mov: 鉄の三角形でできた謎の知恵の輪のようなオブジェクトが、Y軸に対して時計回りに回転している。三角形の表面には、謎の白い光の模様がうごめいている。
+- OptiF-HypnoBalls_alpha.mov: 
+- OptiF-HypnoBallsB_alpha.mov: 
+- OptiG-HyptoCubes_alpha.mov: 
+- OptiH-YinYang_alpha.mov: 
+- OptiI-CubeCyls_alpha.mov: 
+- OptiJ-TrippyBalls.mov: 
+- OptiK-CubeStripesDarker_alpha.mov: 
+- OptiL-Knives_alpha.mov: 
+- OptiM-Spots.mov: 
+- OptiO-Hollow.mov: 
+- OptiP-Bricks.mov: 
+- OptiQ-TorusLines_alpha.mov: 
+- OptiR-Mirrors.mov: 
+- OptiS-HalfCircles.mov: 
+- OptiT-GridRoomB.mov: 
+- OptiU-pacman_alpha.mov: 
+- OptiW-LinesA.mov: 
+- OptiW-LinesB.mov: 
+- OptiX-TrippyCubes.mov: 
+- OptiY-Helixes_alpha.mov: 
+- OptiY-HelixesB_alpha.mov: 
+- OptiZ-IluCubes.mov: 
+
+# SELDO
+
+- BlackCuboid_easing.mp4: 黒いキューブでできた街を左斜め上から見下ろしている。街は画面奥、つまり左上に向かって移動している。移動には強めのイージングがかかっており、動画開始時は早く、動画中央ではほとんど動かない。
+- BlackCuboid_linear.mp4: 
+- disp_plane.mp4: 
+- DotWire.mp4: 
+- Fractal_01.mp4: 
+- Fractal_02.mp4: 
+- Fractal_03.mp4: 
+- Fractal_04.mp4: 
+- Fractal_05.mp4: 
+- LoopTunnel_01.mp4: 
+- LoopTunnel_02.mp4: 
+- Tile_Dark.mp4: 規則的に並んだ黒いタイルが、高さはそれぞれバラバラに並んでいる。そのタイルが半時計回りに回転するのを、カメラは斜め上から映している。タイルの境目には白いグリッド状のネオンが並び、その後手にはシアン色の小さいキューブが配置されてて、光っている。
+- Tile_Light.mp4: 
+- ToonAbst_01.mp4: 
+- ToonAbst_02.mp4: 
+- ToonAbst_03.mp4: 
+- ToonAbst_04.mp4: 
+- ToonCube_01.mp4: 
+- ToonCube_02.mp4: 
+- ToonCube_03.mp4: 
+- ToonCube_04.mp4: 
+- ToonCube_05.mp4: 
+- Overlay_cutin.mp4: 
+- Overlay_FS_BlockOut.mp4: 
+- Overlay_FS_Cutin_01.mp4: 
+- Overlay_FS_Cutin_02.mp4: 
+- Overlay_FS_LightUp_01.mp4: 
+- Overlay_glitch.mp4: 
+- Overlay_SideCutin_01.mp4: 
+- Overlay_SideCutin_02.mp4: 
+- Overlay_SideLightUp_01.mp4: 
+- Overlay_SideLightUp_02.mp4: 
+- SLDVJ03_01.mp4: 
+- SLDVJ03_02.mp4: 
+- SLDVJ03_03.mp4: 
+- SLDVJ03_04.mp4: 
+- SLDVJ03_05.mp4: 
+- SLDVJ03_06.mp4: 
+- SLDVJ03_07.mp4: 
+- SLDVJ03_08.mp4: 
+- SLDVJ03_09.mp4: 
+- SLDVJ03_10.mp4: 
+- SLDVJ03_11.mp4: 
+- SLDVJ03_12.mp4: 
+- SLDVJ04_01.mp4: 
+- SLDVJ04_02.mp4: 
+- SLDVJ04_03.mp4: 
+- SLDVJ04_04.mp4: 
+- SLDVJ04_05.mp4: 
+- SLDVJ04_06.mp4: 
+- SLDVJ04_07.mp4: 
+- SLDVJ04_08.mp4:
+
+# tatsuyam
+
+- aqua_00.mp4:濃紺の水の中に泡が浮いている。実写、ペンギンが途中で泳いで去っていく。
+- aqua_09.mp4:
+- aqua_10.mp4:小さなタコクラゲが画面右から左へ泳いでいくのをカメラが思いかけている。濃紺の水の中,実写。
+- aqua_11.mp4:黒い水の中を白、黄色、青のクラゲがゆっくり上へ上昇している。カメラはそれを追いかけている。実写。
+- aqua_13.mp4:
+- aqua_13_.mp4:
+- aqua_14.mp4:
+- aqua_14_.mp4:黒い水の中、クラゲの群れがゆっくり漂っている。
+- aqua_16.mp4:黒い水の中、クラゲの群れがゆっくり漂っている。
+- aqua_18.mp4:黒い水の中、クリオネ2匹がゆっくり泳いでいる。実写。
+- aqua_20.mp4:
+- aqua_21.mp4:
+- aqua_22.mp4:濃紺な水の中をペンギンが時たま泳いでいる。実写。
+- aqua_23.mp4:水族館の大水槽の中、紺色の水の中、光が射している箇所に、小さなカラフルな魚たちが泳いでいる。実写。
+- aqua_30.mp4:
+- aqua_33.mp4:
+- aqua_37.mp4:
+- aqua_37_.mp4:
+- aqua_38.mp4:
+- bokeh_particles.mov:
+- buildingsLight.mov:
+- circle_split_01.mp4:
+- circle_split_02.mp4:
+- circle_split_03.mp4:
+- circle_split_04.mp4:
+- ContourLine_01.mp4:
+- ContourLine_02.mp4:
+- ContourLine_03.mp4:
+- ContourLine_04.mp4:
+- ContourLine_05.mp4:
+- cross.mp4:真っ黒な背景に白い直線がやってきて、クロスを構成し、回転したり、明滅したりして消えていく。カメラはどんどん空間の奥にゆっくり進む。
+- cross_loop.mov:
+- CrossParticle.mp4:真っ黒な背景に白い直線がやってきて、クロスを構成し、回転したり、明滅したりして消えていく。画面中央から点対称。カメラはどんどん空間の奥にゆっくり進みつつ、反時計回りに回転
+- cube_particle.mp4:
+- cyber_a.mov:
+- cyber_b.mov:
+- cycle_a_01.mov:
+- cycle_a_02.mp4:
+- cycle_a_03.mov:
+- cycle_a_04.mp4:
+- cycle_a_05.mp4:
+- cycle_b_01.mov:
+- cycle_c_01.mp4:
+- cycle_d_01.mp4: モノクロ。hex tileがめくれるアニメーションが、、画面中央から円状に広がっていく。周縁部にレンズ歪みと色収差
+- cycle_e_01.mov:
+- DiamondTile.mp4: モノクロ。45度斜めのグリッド上にあるひし形タイル内で、正方形が拡大して明滅するアニメーション。タイルごとに明るさやタイミングがバラバラ。 アニメーションは中くらいのスピード
+- digi_sphere_01.mp4:
+- digi_sphere_02.mov:
+- emitte_string.mp4:
+- extend_a.mov:
+- extend_b.mov:
+- extend_c.mov:
+- Falls_01.mp4:
+- Falls_02.mp4:
+- flare_edge.mov:
+- flare_edge_1.mp4:
+- flare_edge_2.mp4:
+- flare_edge_3.mov:
+- Flickering_01.mp4:モノクロ。シンプルなラインの基本図形（円、四角）がビートに合わせて出現、拡大、縮小、回転を組み合わせて出現し、すぐに消滅。
+- Flickering_02.mp4:
+- FlowParticle_01.mov:
+- FlowParticle_02.mov:
+- fracture_01.mp4:
+- fracture_02.mp4:
+- fracture_03.mp4:モノクロ。ひし形の内/外に白い破片が集まってfill, 散らばって消滅を交互に繰り返す。
+- fracture_04.mp4:
+- Frame_type01.mp4:
+- Frame_type02.mp4:
+- Frame_type03.mp4:
+- Gears_01.mp4:
+- geo_slide_01.mov:
+- geo_slide_02.mov:
+- glitch_a.mov:
+- gold_wave_01.mp4:
+- gold_wave_02.mp4:
+- gradient_anim.mov:
+- gradient_anim_1.mov:
+- gradient_anim_2.mov:
+- gradient_anim_3.mov:
+- gradient_slice_01.mov:
+- gradient_slice_02.mov:
+- gradient_slice_03.mov:
+- greeble_roll_01.mov:
+- Grid_line.mp4:
+- GridParticles.mp4:
+- GrowLine_01.mp4:
+- GrowLine_02.mp4:
+- hex_trail_a.mp4:
+- hex_trail_b.mov:
+- hex_trail_c.mp4:
+- hole_loop_A.mp4:
+- Iris.mp4:
+- kaleido_disp.mp4:
+- metaball_anim_01.mp4:
+- metaball_anim_02.mp4:
+- metaball_anim_03.mp4:
+- metaball_anim_04.mp4:
+- metal_graphic_01.mp4:
+- metal_graphic_02.mp4:
+- Metal_graphic_04.mp4:モノクロ。金属のリングが沢山絡まってできたオブジェクトがゆっくり回転している。
+- Metal_graphic_05.mov:
+- Metal_graphic_06.mov:
+- mir_01.mov:
+- mir_02.mov:
+- mir_02_1.mp4:
+- mir_03.mov:
+- mir_dist_01.mov:
+- moon.mp4:
+- night_a_540p.mp4:
+- night_b_540p.mp4:夜の街、実写。完全に焦点が外れた夜の街で、信号の光や車の光が丸い化けとなって移動する。画面の大部分は動いていない。
+- night_d_540p.mp4:
+- noise_mirror_1.mp4:
+- noise_mirror_2.mp4:
+- noise_pattern_1.mp4:
+- noise_pattern_3.mp4:横長の細長い矩形グリッドで、perlin noiseで青と白がゆっくり明滅する。 
+- noise_pattern_4.mp4:
+- offset_rings_01.mov:
+- offset_rings_02.mov:
+- offset_rings_03.mov:
+- oil_macro_a_540p.mp4:黒い水面に無数の油の膜が円形となって漂っている。油の膜は白い光を反射している。実写
+- oil_macro_b_540p.mp4:水面に泡が漂って、泡は青い光を反射して、ほのかにグローしている。泡はゆっくり右から左へ移動している。実写
+- oil_macro_c_540p.mp4:赤い背景の前面に水面の油の泡がゆらゆら漂って、右から左へ移動している。ゆっくり。実写
+- oil_macro_d_540p.mp4:
+- oil_macro_e1_540p.mp4:
+- oil_macro_e2_540p.mp4:
+- oil_macro_f1_540p.mp4:虹色（赤強め）の背景の全面に、油の泡がゆっくり漂っている。泡が背景を虹色に反射している。実写
+- oil_macro_f2_540p.mp4:虹色（赤強め）の背景の全面に、油の泡がゆっくり漂っている。泡が背景を虹色に反射している。実写
+- OsakaUmedaNight_01_540p.mp4:
+- particle_001.mov:
+- particle_002.mp4:
+- particle_003.mp4:
+- Particle_crystal_01.mov:
+- particle_twist.mp4:
+- plexus_01.mov:
+- plexus_02.mov:
+- plexus_.mp4:
+- plexus_instance_01.mov:
+- plexus_instance_02.mov:
+- plexus_instance_03.mp4:
+- plexus_through_a.mp4:
+- plexus_through_b.mov:
+- plexus_through_c.mp4:
+- polyFX.mp4:カメラに向う方向にキューブがゆっくり転がってくる。キューブ本体は完全に透明で視えないが、表面にはstroke付きタイルがあり、タイルがパターンアニメーションをしている（中くらいのスピード）
+- PolyWave.mp4:
+- prim_rot_a.mov:
+- primitive_01.mp4:
+- primitive_02.mp4:
+- Rain_a_540p.mp4:
+- Rain_b_540p.mp4:
+- rect_tiling_01.mp4:
+- rect_tiling_02.mp4:
+- RepeShape.mp4: 円状に小さな2Dマイクロアニメーションが並んで配置され、ビートに合わせて出現・消滅している。薄い黄色+シアン。
+- Ring_ae_01.mp4:
+- Ring_anim.mp4:
+- Ring_anim_02.mp4:
+- rings.mov:
+- sakura_a.mov:
+- sakura_b.mov:
+- sakura_c.mov:
+- screw_crystals.mov:
+- screw_cube.mov:
+- screw_triangle.mov:
+- shape_repeater_01.mov:
+- shape_repeater_02.mov:
+- shape_repeater_skew_01.mp4:　画面中央から円、四角、円形に配置されたひし形が拡大しつつ出現し、消滅していく。 円形に並んだ図形は、換気扇のような模様をなしている。
+- shape_repeater_skew_01_L.mov:
+- shape_repeater_skew_02.mp4:
+- shape_repeater_skew_02_L.mov:
+- shape_stretch.mov:
+- SliderBox_01.mp4:
+- SliderBox_02.mp4:
+- SliderBox_03.mp4:
+- SliderBox_04.mp4:
+- SliderBox_05.mov:
+- SliderBox_06.mov:
+- SliderBox_07.mov:
+- SliderBox_08.mov:
+- snow_a.mp4:　雪が振っている空を見上げるアングル。カメラ固定。すこしだけ青い。
+- snow_b.mp4:
+- spark_a.mov:
+- spark_b.mov:
+- specctre_01.mov:
+- specctre_02.mov:
+- spin_orange_01.mp4:
+- spin_orange_02.mp4:
+- spin_orange_03.mp4:
+- spin_orange_04.mp4:
+- spin_orange_05.mp4:
+- spin_orange_06.mp4:
+- spin_orange_07.mov:
+- spin_orange_08.mov:
+- spin_orange_09.mov:
+- spiral_c4d.mp4:
+- sprite_particle_a.mov:
+- sprite_particle_b.mov:
+- sprite_particle_c.mov:
+- sprite_particle_d.mp4:
+- sprite_particle_e.mov:
+- square_particle.mov:
+- star_01.mov:
+- star_02.mp4:
+- star_circle_loop_1.mp4:
+- stardust_Data.mov:
+- stardust_DataReplica_a.mov:
+- stardust_DataReplica_b.mov:
+- stardust_spiral.mov:
+- stardust_starfield.mov:
+- starrynight.mp4:
+- starrynight_loop.mov:
+- startrail_a_540p.mp4:
+- StepTwist_01.mp4: 白黒の直方体で構成された二重らせんがあり、その周囲を薄緑に光るネオンが斜めにまきついている。らせんは上から下に流れる構図。
+- StepTwist_02.mp4: 白黒の直方体で構成された二重らせんがあり、その周囲を薄緑に光るネオンが斜めにまきついている。二重らせんが75度ほど斜めになっており、右上から左下に流れる構図。
+- stripe_roll.mov:
+- stroke_lines_a.mp4:　
+- stroke_lines_b_01.mp4:
+- stroke_lines_b_02.mp4:
+- stroke_lines_b_03.mp4:
+- stroke_lines_b_04.mp4:
+- stroke_lines_b_05.mp4:
+- stroke_lines_b_06.mp4:
+- tao_01.mov:
+- tao_02.mov:
+- timelapse_night_01.mp4: 青空のタイムラプス　実写 雲多め　雲は全部白い 流れは速い
+- timelapse_night_02.mp4:
+- timelapse_night_03.mp4:
+- timelapse_night_04.mp4:
+- timelapse_night_05.mp4:
+- timelapse_sky_01.mp4:
+- town_view.mp4:
+- train_160327.mp4: 電車の車窓から見える日本の都市の風景 暗め 風景は右から左へ流れる
+- tri_rotate.mov:
+- triangle_particle.mp4:
+- triangle_particle_01.mov:
+- triangle_particle_02.mov:
+- triangle_particle_03.mp4:
+- triangle_particle_04.mov:
+- triangle_particle_05.mp4:
+- triangle_particle_loop.mov:
+- triangle_tile_01.mp4:
+- triangle_tile_02.mp4:
+- tripoly_loop_01.mov:
+- tripoly_loop_02.mov:
+- TriShapeAnim.mp4:
+- twist_particle_01.mp4:
+- UI_slide_01.mp4:
+- UI_slide_02.mov:
+- UI_slide_kaleid_01.mov:
+- UI_slide_kaleid_02.mp4:
+- up_pyramid.mp4:
+- warp_a.mov:

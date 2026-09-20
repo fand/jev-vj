@@ -1,0 +1,476 @@
+{
+  "color.palette": {
+    "label_ja": "色パレット",
+    "description_ja": "言及された色。面積の順位は付けない",
+    "type": "tags"
+  },
+  "color.dominant": {
+    "label_ja": "主色",
+    "description_ja": "主色・背景色として明示された色",
+    "type": "tags"
+  },
+  "color.accent": {
+    "label_ja": "アクセント色",
+    "description_ja": "アクセント・一部分として明示された色",
+    "type": "tags"
+  },
+  "color.background": {
+    "label_ja": "背景・環境色",
+    "description_ja": "物体の色や光源色と区別",
+    "type": "tags"
+  },
+  "color.surface": {
+    "label_ja": "表面色",
+    "description_ja": "物体・地面など表面自体の色",
+    "type": "tags"
+  },
+  "color.emission": {
+    "label_ja": "発光色",
+    "description_ja": "ネオン・発光模様・光源の色",
+    "type": "tags"
+  },
+  "color.illumination": {
+    "label_ja": "照明色",
+    "description_ja": "物体に当たる光や反射光の色",
+    "type": "tags"
+  },
+  "color.mode": {
+    "label_ja": "色の構成",
+    "description_ja": "明示された単色・白黒・RGB・多色",
+    "type": "string",
+    "values": [
+      "single_hue",
+      "grayscale",
+      "rgb",
+      "multicolor"
+    ]
+  },
+  "color.temperature": {
+    "label_ja": "色温度の傾向",
+    "description_ja": "色名からの定性的な整理。実測値ではない",
+    "type": "string",
+    "values": [
+      "warm",
+      "cool",
+      "mixed",
+      "neutral"
+    ]
+  },
+  "color.brightness": {
+    "label_ja": "全体の明暗",
+    "description_ja": "画面全体の明暗が記述されている場合",
+    "type": "string",
+    "values": [
+      "dark",
+      "light",
+      "mixed"
+    ]
+  },
+  "color.saturation": {
+    "label_ja": "彩度",
+    "description_ja": "画面全体の彩度が記述されている場合",
+    "type": "string",
+    "values": [
+      "low",
+      "medium",
+      "high"
+    ]
+  },
+  "content.subjects": {
+    "label_ja": "モチーフ",
+    "description_ja": "描かれている対象の英語タグ",
+    "type": "tags"
+  },
+  "content.setting": {
+    "label_ja": "舞台・空間",
+    "description_ja": "トンネル・街・部屋など",
+    "type": "tags"
+  },
+  "content.style": {
+    "label_ja": "表現・ジャンル",
+    "description_ja": "sci_fi・abstract・retro_gameなど",
+    "type": "tags"
+  },
+  "content.realism": {
+    "label_ja": "写実性",
+    "description_ja": "realistic等が明示された場合",
+    "type": "string",
+    "values": [
+      "realistic",
+      "stylized"
+    ]
+  },
+  "content.dimension": {
+    "label_ja": "画面の次元",
+    "description_ja": "2D/3Dが明示された場合。立体表現の推定はしない",
+    "type": "string",
+    "values": [
+      "2d",
+      "3d"
+    ]
+  },
+  "content.human_form": {
+    "label_ja": "人体モチーフ",
+    "description_ja": "顔や人型があるとの記述",
+    "type": "boolean"
+  },
+  "content.organic": {
+    "label_ja": "有機的な形",
+    "description_ja": "有機的という明示的な形容",
+    "type": "boolean"
+  },
+  "geometry.shapes": {
+    "label_ja": "幾何形状",
+    "description_ja": "円・三角形・直方体など",
+    "type": "tags"
+  },
+  "geometry.tunnel_section": {
+    "label_ja": "トンネル断面",
+    "description_ja": "円形・四角形・六角形など",
+    "type": "tags"
+  },
+  "geometry.topology": {
+    "label_ja": "構造",
+    "description_ja": "重層・同心・開口・トーラス等",
+    "type": "tags"
+  },
+  "geometry.surface_relief": {
+    "label_ja": "表面の起伏",
+    "description_ja": "凸凹・波打ち・段差等",
+    "type": "tags"
+  },
+  "material.types": {
+    "label_ja": "材質",
+    "description_ja": "金属・岩・煙・液体等",
+    "type": "tags"
+  },
+  "material.finish": {
+    "label_ja": "表面仕上げ",
+    "description_ja": "鏡面・マット等",
+    "type": "tags"
+  },
+  "material.transparency": {
+    "label_ja": "物体の透過性",
+    "description_ja": "素材の見え方。動画のalphaチャンネルとは別",
+    "type": "string",
+    "values": [
+      "transparent",
+      "translucent",
+      "opaque"
+    ]
+  },
+  "texture.patterns": {
+    "label_ja": "模様",
+    "description_ja": "ストライプ・グリッド・ドット等",
+    "type": "tags"
+  },
+  "texture.noise_family": {
+    "label_ja": "ノイズ種別",
+    "description_ja": "明示された名称。おそらく等の推測はreview_notesへ",
+    "type": "tags"
+  },
+  "composition.layout": {
+    "label_ja": "配置",
+    "description_ja": "中央・床と天井・円形配置等",
+    "type": "tags"
+  },
+  "composition.symmetry": {
+    "label_ja": "対称性",
+    "description_ja": "左右・上下など明示された対称",
+    "type": "tags"
+  },
+  "composition.repetition": {
+    "label_ja": "反復配置",
+    "description_ja": "等間隔・ランダム配置等",
+    "type": "tags"
+  },
+  "composition.grid": {
+    "label_ja": "グリッド寸法",
+    "description_ja": "行列数が明示されたもの。順序は文章で保持",
+    "type": "string"
+  },
+  "composition.density": {
+    "label_ja": "密度・個数感",
+    "description_ja": "多数・少数などの記述",
+    "type": "string",
+    "values": [
+      "sparse",
+      "many",
+      "dense"
+    ]
+  },
+  "composition.coverage": {
+    "label_ja": "画面の占有",
+    "description_ja": "全画面・大部分・部分等",
+    "type": "string",
+    "values": [
+      "full_frame",
+      "large",
+      "partial"
+    ]
+  },
+  "composition.width_fraction": {
+    "label_ja": "画面幅に対する比率",
+    "description_ja": "幅と明示されない80%等はここに数値化しない",
+    "type": "number"
+  },
+  "composition.scale": {
+    "label_ja": "被写体の大きさ",
+    "description_ja": "巨大・小さいなど",
+    "type": "tags"
+  },
+  "composition.crop": {
+    "label_ja": "見切れ・切り取り",
+    "description_ja": "下半分など画面内の切り取り方",
+    "type": "tags"
+  },
+  "camera.viewpoint": {
+    "label_ja": "視点",
+    "description_ja": "斜め見下ろし・左上・アイソメトリック等",
+    "type": "tags"
+  },
+  "camera.fixed": {
+    "label_ja": "カメラ固定",
+    "description_ja": "固定が明示された場合。未記載はnull",
+    "type": "boolean"
+  },
+  "camera.translation": {
+    "label_ja": "カメラ移動方向",
+    "description_ja": "奥方向=forward_into_scene。画面上の物体の移動と別",
+    "type": "tags"
+  },
+  "camera.translation_speed": {
+    "label_ja": "カメラ移動速度",
+    "description_ja": "slow/medium/fastの主観的な順序尺度",
+    "type": "string",
+    "values": [
+      "slow",
+      "medium",
+      "medium_fast",
+      "fast"
+    ]
+  },
+  "camera.path": {
+    "label_ja": "カメラ経路",
+    "description_ja": "曲線・下降・被写体周回等",
+    "type": "tags"
+  },
+  "camera.rotation_mode": {
+    "label_ja": "カメラ回転様式",
+    "description_ja": "rollと被写体周回orbitを区別。明示なしはunspecified",
+    "type": "string",
+    "values": [
+      "roll",
+      "orbit",
+      "unspecified"
+    ]
+  },
+  "camera.rotation_direction": {
+    "label_ja": "カメラ回転方向",
+    "description_ja": "ユーザーの時計回り表現を保持。座標系の実測なし",
+    "type": "string",
+    "values": [
+      "clockwise",
+      "counterclockwise",
+      "mixed",
+      "unspecified"
+    ]
+  },
+  "camera.rotation_axes": {
+    "label_ja": "カメラ回転軸",
+    "description_ja": "明示された軸のみ",
+    "type": "tags"
+  },
+  "camera.rotation_speed": {
+    "label_ja": "カメラ回転速度",
+    "description_ja": "並進速度と独立",
+    "type": "string",
+    "values": [
+      "slow",
+      "medium",
+      "fast"
+    ]
+  },
+  "camera.speed_profile": {
+    "label_ja": "カメラの緩急",
+    "description_ja": "カメラについて明示された速度変化",
+    "type": "tags"
+  },
+  "motion.types": {
+    "label_ja": "動きの種類",
+    "description_ja": "回転・拡大縮小・変形・噴出など",
+    "type": "tags"
+  },
+  "motion.targets": {
+    "label_ja": "動く対象",
+    "description_ja": "カメラ以外の何が動くか",
+    "type": "tags"
+  },
+  "motion.screen_direction": {
+    "label_ja": "画面上の移動方向",
+    "description_ja": "上下左右・斜め・中央から外等",
+    "type": "tags"
+  },
+  "motion.depth_direction": {
+    "label_ja": "物体の奥行き移動",
+    "description_ja": "奥→手前/手前→奥。カメラと分離",
+    "type": "tags"
+  },
+  "motion.subject_speed": {
+    "label_ja": "物体の速度",
+    "description_ja": "カメラや点滅の速度と独立",
+    "type": "string",
+    "values": [
+      "slow",
+      "medium",
+      "medium_fast",
+      "fast"
+    ]
+  },
+  "motion.rotation_direction": {
+    "label_ja": "物体の回転方向",
+    "description_ja": "回転する主体が物体と分かるもの",
+    "type": "string",
+    "values": [
+      "clockwise",
+      "counterclockwise",
+      "mixed",
+      "unspecified"
+    ]
+  },
+  "motion.rotation_axes": {
+    "label_ja": "物体の回転軸",
+    "description_ja": "X/Y/Z等",
+    "type": "tags"
+  },
+  "motion.rotation_speed": {
+    "label_ja": "物体の回転速度",
+    "description_ja": "単なる等速はconstantとしてprofileへ",
+    "type": "string",
+    "values": [
+      "slow",
+      "medium",
+      "fast"
+    ]
+  },
+  "motion.rotation_profile": {
+    "label_ja": "物体回転の緩急",
+    "description_ja": "等速や加減速など",
+    "type": "tags"
+  },
+  "motion.speed_profile": {
+    "label_ja": "物体移動の緩急",
+    "description_ja": "速→ほぼ停止等",
+    "type": "tags"
+  },
+  "motion.deformation": {
+    "label_ja": "形状変形",
+    "description_ja": "波打ち・うねりなど",
+    "type": "tags"
+  },
+  "motion.synchrony": {
+    "label_ja": "動きの同期関係",
+    "description_ja": "全体一緒・別方向同速度・独立等",
+    "type": "tags"
+  },
+  "motion.randomness": {
+    "label_ja": "動きの不規則性",
+    "description_ja": "光のランダム点滅とは独立",
+    "type": "tags"
+  },
+  "light.types": {
+    "label_ja": "光の種類",
+    "description_ja": "ネオン・蛍光灯・点光源・オーラ等",
+    "type": "tags"
+  },
+  "light.behaviors": {
+    "label_ja": "光の変化",
+    "description_ja": "点滅・フェード・伝播・反射等",
+    "type": "tags"
+  },
+  "light.speed": {
+    "label_ja": "光の変化速度",
+    "description_ja": "カメラ速度と分離",
+    "type": "string",
+    "values": [
+      "slow",
+      "medium",
+      "fast"
+    ]
+  },
+  "light.timing": {
+    "label_ja": "発光の時間パターン",
+    "description_ja": "ランダム・ビートに沿う・独立等",
+    "type": "tags"
+  },
+  "light.screen_direction": {
+    "label_ja": "光の画面内移動",
+    "description_ja": "下→上・放射等",
+    "type": "tags"
+  },
+  "light.depth_direction": {
+    "label_ja": "光の奥行き移動",
+    "description_ja": "奥→手前など",
+    "type": "tags"
+  },
+  "light.intensity": {
+    "label_ja": "発光強度",
+    "description_ja": "弱い・強い等。全体の明暗と別",
+    "type": "string",
+    "values": [
+      "low",
+      "medium",
+      "high"
+    ]
+  },
+  "light.effects": {
+    "label_ja": "光学表現",
+    "description_ja": "ストリーク・色収差・反射・発光等",
+    "type": "tags"
+  },
+  "rhythm.beat_pattern": {
+    "label_ja": "ビート状の光アニメーション",
+    "description_ja": "ユーザーがビートに合わせた動きと説明。ライブ音声同期を保証しない",
+    "type": "boolean"
+  },
+  "rhythm.repeating_event": {
+    "label_ja": "反復する出来事",
+    "description_ja": "扉が次々開く等",
+    "type": "tags"
+  },
+  "rhythm.easing": {
+    "label_ja": "イージング",
+    "description_ja": "強弱や速度経過など",
+    "type": "tags"
+  },
+  "rhythm.phase_relation": {
+    "label_ja": "位相・タイミング関係",
+    "description_ja": "部位ごとのタイミング差等",
+    "type": "tags"
+  },
+  "rhythm.loop_description": {
+    "label_ja": "ループの記述",
+    "description_ja": "ユーザーが無限ループ等と言ったもの。シームレス実測なし",
+    "type": "string"
+  },
+  "technical.alpha": {
+    "label_ja": "動画のalpha有無",
+    "description_ja": "ファイル名の_alphaや物体の透明さから推測しない",
+    "type": "boolean"
+  },
+  "technical.bpm": {
+    "label_ja": "素材BPM",
+    "description_ja": "説明で数値が明示された場合のみ",
+    "type": "number"
+  },
+  "technical.seamless_loop": {
+    "label_ja": "シームレス性",
+    "description_ja": "継ぎ目がないとの明示が必要",
+    "type": "boolean"
+  },
+  "technical.audio_reactive": {
+    "label_ja": "外部音声への反応",
+    "description_ja": "ビート状という見た目から推測しない",
+    "type": "boolean"
+  }
+}

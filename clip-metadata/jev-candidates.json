@@ -1,0 +1,4279 @@
+{
+  "policy": {
+    "unknown": "null or missing means unknown, never false or absent.",
+    "basis": "User descriptions only; normalized labels are interpretations, not measured features.",
+    "camera_rotation": "Direction preserves user wording; viewpoint/axis is not independently verified.",
+    "tempo": "Separate camera, subject and light speeds. No BPM or live audio synchronization inferred.",
+    "selection": "Unknown attributes do not count as matching a requested feature. Allow no_match or keep.",
+    "operations": "No Resolume layer/slot mapping, no runtime catalog changes."
+  },
+  "pack_notes": {
+    "mantissa": [
+      "全体的に情報量多め。"
+    ]
+  },
+  "clips": [
+    {
+      "id": "ducky3d/animation 1.mp4",
+      "description": "Single-hue blue floor-and-ceiling scene described as \"Party noise\". Camera travels forward at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "color.mode": "single_hue",
+        "content.setting": [
+          "floor_ceiling_space"
+        ],
+        "composition.layout": [
+          "floor_and_ceiling"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "color.temperature": "cool"
+      },
+      "caveats": [
+        "Party noiseの意味は未確定。パーリンノイズ等には置換しない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 2.mp4",
+      "description": "Single-hue blue electric crackling visual; camera moves forward fast.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "color.mode": "single_hue",
+        "content.subjects": [
+          "electricity"
+        ],
+        "content.style": [
+          "electric"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "motion.types": [
+          "electrical_crackling"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 3.mp4",
+      "description": "Single-hue red electric crackling visual. Fast forward camera movement with counterclockwise camera rotation.",
+      "attributes": {
+        "color.palette": [
+          "red"
+        ],
+        "color.mode": "single_hue",
+        "content.subjects": [
+          "electricity"
+        ],
+        "content.style": [
+          "electric"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "camera.rotation_direction": "counterclockwise",
+        "camera.rotation_mode": "unspecified",
+        "motion.types": [
+          "electrical_crackling"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [
+        "半時計回りを反時計回りとして正規化。回転軸は未記載。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 4.mp4",
+      "description": "Single-hue green, uneven tunnel with an electric crackling appearance. Camera travels forward fast.",
+      "attributes": {
+        "color.palette": [
+          "green"
+        ],
+        "color.mode": "single_hue",
+        "content.subjects": [
+          "electricity"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.surface_relief": [
+          "uneven"
+        ],
+        "content.style": [
+          "electric"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "motion.types": [
+          "electrical_crackling"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 5.mp4",
+      "description": "Gray, red and blue plane viewed obliquely from above. Camera advances at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "gray",
+          "red",
+          "blue"
+        ],
+        "content.subjects": [
+          "plane"
+        ],
+        "geometry.shapes": [
+          "plane"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/Animation 6.mp4",
+      "description": "Blue and orange metallic sci-fi scene. Camera advances at medium speed and rotates counterclockwise.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "orange"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "camera.rotation_direction": "counterclockwise",
+        "camera.rotation_mode": "unspecified",
+        "color.temperature": "mixed"
+      },
+      "caveats": [
+        "ミリアムスピードを文脈からmediumと解釈。半時計回り→反時計回り。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 7.mp4",
+      "description": "Blue torus tunnel with orange accents. Camera advances fast and rotates clockwise.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "orange"
+        ],
+        "color.dominant": [
+          "blue"
+        ],
+        "color.accent": [
+          "orange"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "torus"
+        ],
+        "geometry.shapes": [
+          "torus"
+        ],
+        "geometry.topology": [
+          "torus_tunnel"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "camera.rotation_direction": "clockwise",
+        "camera.rotation_mode": "unspecified",
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 8.mp4",
+      "description": "Yellow 2D stripes drift slowly from upper right to lower left.",
+      "attributes": {
+        "color.palette": [
+          "yellow"
+        ],
+        "content.dimension": "2d",
+        "texture.patterns": [
+          "stripes"
+        ],
+        "motion.types": [
+          "translation"
+        ],
+        "motion.targets": [
+          "stripes"
+        ],
+        "motion.screen_direction": [
+          "upper_right_to_lower_left"
+        ],
+        "motion.subject_speed": "slow",
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 9.mp4",
+      "description": "Blue pixel tiles flash randomly at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "content.subjects": [
+          "pixel_tiles"
+        ],
+        "texture.patterns": [
+          "pixel_grid"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "medium",
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 10.mp4",
+      "description": "Blue pixel tiles flash randomly at high speed.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "content.subjects": [
+          "pixel_tiles"
+        ],
+        "texture.patterns": [
+          "pixel_grid"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "fast",
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 11.mp4",
+      "description": "Blue and green scene inside a wobbly black tunnel with flashing circular neon. Camera moves forward at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "green",
+          "black"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "neon_rings"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "geometry.surface_relief": [
+          "wobbly"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 12.mp4",
+      "description": "Blue and purple circular tunnel with circular neon flashing very rapidly and randomly along its depth. Camera advances slowly; the flashing is very fast despite the slow camera.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "purple"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "circular"
+        ],
+        "content.subjects": [
+          "neon_rings"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "random"
+        ],
+        "composition.layout": [
+          "along_depth"
+        ],
+        "light.speed": "fast"
+      },
+      "caveats": [
+        "奥から手前までの点滅は位置範囲として保持。発光が連続移動する方向とは断定しない。",
+        "ユーザーの追加説明で点滅が非常に速いと確認。light.speed=fast。カメラのslowとは独立。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 13.mp4",
+      "description": "Blue, pink and orange 2D horizontal tiles fade in and out slowly with random timing offsets.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "pink",
+          "orange"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "tiles"
+        ],
+        "geometry.shapes": [
+          "horizontal_rectangle"
+        ],
+        "light.behaviors": [
+          "fade_in",
+          "fade_out"
+        ],
+        "light.speed": "slow",
+        "light.timing": [
+          "random_offsets"
+        ],
+        "rhythm.phase_relation": [
+          "random_offsets"
+        ],
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 14.mp4",
+      "description": "Colorful cyber-style double planes with glowing straight neon lines, viewed obliquely from above.",
+      "attributes": {
+        "color.mode": "multicolor",
+        "content.style": [
+          "cyber"
+        ],
+        "content.subjects": [
+          "planes",
+          "neon_lines"
+        ],
+        "geometry.shapes": [
+          "plane",
+          "line"
+        ],
+        "geometry.topology": [
+          "two_layers"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 15.mp4",
+      "description": "Blue circular tunnel bends downward. Camera continuously advances forward and downward at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "circular"
+        ],
+        "camera.translation": [
+          "forward_into_scene",
+          "downward"
+        ],
+        "camera.translation_speed": "medium",
+        "camera.path": [
+          "descending_curve"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 16.mp4",
+      "description": "Blue and orange 2D straight neon lines rotate clockwise and switch between patterns described as Chebyshev patterns.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "orange"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "neon_lines"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "texture.patterns": [
+          "chebyshev_pattern"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "motion.types": [
+          "rotation",
+          "pattern_switching"
+        ],
+        "motion.targets": [
+          "neon_lines"
+        ],
+        "motion.rotation_direction": "clockwise",
+        "color.temperature": "mixed"
+      },
+      "caveats": [
+        "チュビシェフをチェビシェフと正規化。生成アルゴリズムは未検証。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 17.mp4",
+      "description": "Fixed camera on a slowly moving central human face made of triangular wireframe, with cyan and magenta light between the wires.",
+      "attributes": {
+        "color.palette": [
+          "cyan",
+          "magenta"
+        ],
+        "color.emission": [
+          "cyan",
+          "magenta"
+        ],
+        "content.subjects": [
+          "human_face"
+        ],
+        "content.human_form": true,
+        "texture.patterns": [
+          "wireframe"
+        ],
+        "geometry.shapes": [
+          "triangle"
+        ],
+        "composition.layout": [
+          "centered"
+        ],
+        "camera.fixed": true,
+        "motion.types": [
+          "unspecified_motion"
+        ],
+        "motion.targets": [
+          "human_face"
+        ],
+        "motion.subject_speed": "slow",
+        "light.behaviors": [
+          "glowing"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 18.mp4",
+      "description": "Fixed camera, 2D tile layout with three horizontal divisions and seven vertical divisions. Orange lights fade in and out slowly.",
+      "attributes": {
+        "color.palette": [
+          "orange"
+        ],
+        "color.emission": [
+          "orange"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "tiles"
+        ],
+        "texture.patterns": [
+          "grid"
+        ],
+        "composition.grid": "横に3分割・縦に7分割（原文）",
+        "camera.fixed": true,
+        "light.behaviors": [
+          "fade_in",
+          "fade_out"
+        ],
+        "light.speed": "slow",
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 19.mp4",
+      "description": "Fixed camera on orange and yellow lines wriggling outward from the center; line thickness stays constant.",
+      "attributes": {
+        "color.palette": [
+          "orange",
+          "yellow"
+        ],
+        "content.subjects": [
+          "lines"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "composition.layout": [
+          "radial_from_center"
+        ],
+        "camera.fixed": true,
+        "motion.types": [
+          "deformation"
+        ],
+        "motion.targets": [
+          "lines"
+        ],
+        "motion.deformation": [
+          "wriggling"
+        ],
+        "texture.patterns": [
+          "constant_line_width"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 20.mp4",
+      "description": "Fixed camera on blue nested cuboid wireframes filling the image. They expand and shrink, rotating together slowly at constant rate about X and Y.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "content.subjects": [
+          "cuboid_wireframes"
+        ],
+        "geometry.shapes": [
+          "cuboid"
+        ],
+        "texture.patterns": [
+          "wireframe"
+        ],
+        "geometry.topology": [
+          "nested",
+          "multiple_scales"
+        ],
+        "composition.layout": [
+          "centered"
+        ],
+        "composition.coverage": "full_frame",
+        "camera.fixed": true,
+        "motion.types": [
+          "rotation",
+          "scale_up",
+          "scale_down"
+        ],
+        "motion.targets": [
+          "cuboid_wireframes"
+        ],
+        "motion.rotation_axes": [
+          "x",
+          "y"
+        ],
+        "motion.rotation_speed": "slow",
+        "motion.rotation_profile": [
+          "constant"
+        ],
+        "motion.synchrony": [
+          "rigid_group"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 21.mp4",
+      "description": "Monochrome 2D rotating visual with circularly arranged flashing tiles. Rotation direction and rotating subject are unspecified.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.dimension": "2d",
+        "content.subjects": [
+          "tiles"
+        ],
+        "composition.layout": [
+          "circular_array"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "「2D回転」はカメラと物体のどちらの回転か不明。方向も未記載。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 22.mp4",
+      "description": "Orange flashing tiles arranged in a circle on a plane, viewed obliquely from above.",
+      "attributes": {
+        "color.palette": [
+          "orange"
+        ],
+        "color.emission": [
+          "orange"
+        ],
+        "content.subjects": [
+          "tiles"
+        ],
+        "composition.layout": [
+          "circular_array"
+        ],
+        "geometry.shapes": [
+          "plane"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 24.mp4",
+      "description": "Square wireframe tunnel. Camera advances slowly while blue wireframe lights flash randomly at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "color.emission": [
+          "blue"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "square"
+        ],
+        "texture.patterns": [
+          "wireframe"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "medium",
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 28.mp4",
+      "description": "Orange and black lava sea beneath a circular orange neon tunnel. Camera moves forward fast.",
+      "attributes": {
+        "color.palette": [
+          "orange",
+          "black"
+        ],
+        "color.emission": [
+          "orange"
+        ],
+        "content.setting": [
+          "tunnel",
+          "lava_sea"
+        ],
+        "content.subjects": [
+          "neon_rings"
+        ],
+        "geometry.tunnel_section": [
+          "circular"
+        ],
+        "material.types": [
+          "lava"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 30.mp4",
+      "description": "Fixed-camera 2D green and blue fluorescent lamps arranged as an equilateral triangle, flashing randomly.",
+      "attributes": {
+        "color.palette": [
+          "green",
+          "blue"
+        ],
+        "color.emission": [
+          "green",
+          "blue"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "fluorescent_lamps"
+        ],
+        "composition.layout": [
+          "equilateral_triangle"
+        ],
+        "camera.fixed": true,
+        "light.types": [
+          "fluorescent"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 31.mp4",
+      "description": "Black-and-white abyssal tunnel with a described \"island pattern\". Camera advances slowly.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.setting": [
+          "tunnel",
+          "abyss"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "「島模様」は「縞模様」の可能性があるが未確定のため、ストライプのタグを付けない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 32.mp4",
+      "description": "Silver mirror-reflective humanoid rotates slowly among vertically arranged blue neon lights.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "silver"
+        ],
+        "color.surface": [
+          "silver"
+        ],
+        "color.emission": [
+          "blue"
+        ],
+        "content.subjects": [
+          "humanoid",
+          "neon"
+        ],
+        "content.human_form": true,
+        "material.finish": [
+          "mirror"
+        ],
+        "composition.layout": [
+          "vertical_array"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "humanoid"
+        ],
+        "motion.rotation_speed": "slow",
+        "light.effects": [
+          "reflection"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 33.mp4",
+      "description": "Pitch-black square tunnel with neon placed randomly on walls, floor and ceiling. Cyan and magenta flashes with occasional yellow. Camera advances at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "cyan",
+          "magenta",
+          "yellow"
+        ],
+        "color.background": [
+          "black"
+        ],
+        "color.emission": [
+          "cyan",
+          "magenta",
+          "yellow"
+        ],
+        "color.accent": [
+          "yellow"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "square"
+        ],
+        "composition.layout": [
+          "walls_floor_ceiling"
+        ],
+        "composition.repetition": [
+          "random_placement"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "random"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 35.mp4",
+      "description": "Many blue-white glowing stars appear stretched by rapid forward camera travel.",
+      "attributes": {
+        "color.palette": [
+          "blue_white"
+        ],
+        "color.emission": [
+          "blue_white"
+        ],
+        "content.subjects": [
+          "stars"
+        ],
+        "composition.density": "many",
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "light.behaviors": [
+          "glowing"
+        ],
+        "light.effects": [
+          "motion_streaks"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 37.mp4",
+      "description": "Evenly spaced pink neon rings form a tunnel over a metallic floor with randomly patterned square reflectivity. Camera advances at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "pink"
+        ],
+        "color.emission": [
+          "pink"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "neon_rings",
+          "floor"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "texture.patterns": [
+          "random_square_reflectivity"
+        ],
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "light.effects": [
+          "reflection"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 38.mp4",
+      "description": "Wide rectangular tunnel with three continuous blue neon lines each on floor and ceiling and regularly spaced pink transverse neon. Slow forward camera travel.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "pink"
+        ],
+        "color.emission": [
+          "blue",
+          "pink"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "wide_rectangle"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "composition.layout": [
+          "floor_and_ceiling",
+          "walls"
+        ],
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 39.mp4",
+      "description": "Wavy floor-and-ceiling passage with evenly spaced orange sci-fi pyramids on both sides and blue triangular neon. Camera moves forward fast.",
+      "attributes": {
+        "color.palette": [
+          "orange",
+          "blue"
+        ],
+        "color.surface": [
+          "orange"
+        ],
+        "color.emission": [
+          "blue"
+        ],
+        "content.setting": [
+          "floor_ceiling_space"
+        ],
+        "content.subjects": [
+          "pyramids",
+          "neon"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "geometry.shapes": [
+          "pyramid",
+          "triangle"
+        ],
+        "geometry.surface_relief": [
+          "wavy"
+        ],
+        "composition.layout": [
+          "both_sides",
+          "floor_and_ceiling"
+        ],
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 41.mp4",
+      "description": "Spaceship corridor with thin blue floor neon, regularly spaced orange wall neon and flashing white ceiling fluorescents. Camera advances at medium speed and rotates clockwise.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "orange",
+          "white"
+        ],
+        "color.emission": [
+          "blue",
+          "orange",
+          "white"
+        ],
+        "content.setting": [
+          "spaceship_corridor"
+        ],
+        "content.subjects": [
+          "neon",
+          "fluorescent_lamps"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "composition.layout": [
+          "walls_floor_ceiling"
+        ],
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "light.types": [
+          "neon",
+          "fluorescent"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "camera.rotation_direction": "clockwise",
+        "camera.rotation_mode": "unspecified",
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 44.mp4",
+      "description": "Black, slightly matte mud-like mountains described as Perlin-noise terrain, illuminated pink and purple. Camera travels slowly forward above the ground.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "pink",
+          "purple"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.illumination": [
+          "pink",
+          "purple"
+        ],
+        "content.setting": [
+          "terrain"
+        ],
+        "content.subjects": [
+          "mountains"
+        ],
+        "material.types": [
+          "mud_like"
+        ],
+        "material.finish": [
+          "slightly_matte"
+        ],
+        "texture.noise_family": [
+          "perlin"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "camera.path": [
+          "above_ground"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 77.mp4",
+      "description": "Pink and purple translucent membrane with a Perlin-noise pattern. Camera advances through it at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "pink",
+          "purple"
+        ],
+        "content.subjects": [
+          "membrane"
+        ],
+        "material.transparency": "translucent",
+        "texture.noise_family": [
+          "perlin"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "camera.path": [
+          "through_membranes"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 78.mp4",
+      "description": "Only the lower half of a forward-rolling sun is shown: yellow glowing outline, soft orange illumination and a black center.",
+      "attributes": {
+        "color.palette": [
+          "yellow",
+          "orange",
+          "black"
+        ],
+        "color.emission": [
+          "yellow"
+        ],
+        "color.illumination": [
+          "orange"
+        ],
+        "content.subjects": [
+          "sun"
+        ],
+        "composition.crop": [
+          "lower_half"
+        ],
+        "motion.types": [
+          "rolling"
+        ],
+        "motion.targets": [
+          "sun"
+        ],
+        "light.behaviors": [
+          "outline_glow"
+        ],
+        "composition.layout": [
+          "black_center"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [
+        "「前方向」の座標系が不明なため画面内方向・奥行き方向は未設定。緩やかな照明は移動速度に変換しない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 79.mp4",
+      "description": "2D white wavy glowing lines, roughly a dozen, pulse slowly and independently. Rainbow artifacts appear above and below brighter parts.",
+      "attributes": {
+        "color.palette": [
+          "white",
+          "rainbow"
+        ],
+        "color.dominant": [
+          "white"
+        ],
+        "color.accent": [
+          "rainbow"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "lines"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "motion.types": [
+          "deformation"
+        ],
+        "motion.targets": [
+          "lines"
+        ],
+        "motion.deformation": [
+          "wavy"
+        ],
+        "light.behaviors": [
+          "pulsing"
+        ],
+        "light.speed": "slow",
+        "light.timing": [
+          "independent"
+        ],
+        "rhythm.phase_relation": [
+          "independent"
+        ],
+        "light.effects": [
+          "rainbow_artifacts"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 80.mp4",
+      "description": "Tunnel lit pink and cyan. Camera advances at medium speed and rotates clockwise; the transcript leaves the tunnel surface description unclear.",
+      "attributes": {
+        "color.palette": [
+          "pink",
+          "cyan"
+        ],
+        "color.illumination": [
+          "pink",
+          "cyan"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "camera.rotation_direction": "clockwise",
+        "camera.rotation_mode": "unspecified"
+      },
+      "caveats": [
+        "「上振りなトンネル」は意味未確定。wobbly等には置換しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 83.mp4",
+      "description": "Rectangular sci-fi objects are scattered on a tunnel structure and rotate in different directions at matching speeds. Small blue lights decorate them. Camera advances somewhat fast.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "color.emission": [
+          "blue"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "sci_fi_objects"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "geometry.shapes": [
+          "rectangle"
+        ],
+        "composition.repetition": [
+          "random_placement"
+        ],
+        "composition.scale": [
+          "small_lights"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium_fast",
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "sci_fi_objects"
+        ],
+        "motion.rotation_direction": "mixed",
+        "motion.synchrony": [
+          "same_speed_different_directions"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [
+        "「気持ち早め」はmedium_fastの定性的ラベル。壁面・天井・塔の位置関係は未確定。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 92.mp4",
+      "description": "Deep steep canyon with glowing red walls and yellow sky in the distance. Camera moves slowly forward along the bottom.",
+      "attributes": {
+        "color.palette": [
+          "red",
+          "yellow"
+        ],
+        "color.emission": [
+          "red",
+          "yellow"
+        ],
+        "color.background": [
+          "yellow"
+        ],
+        "content.setting": [
+          "canyon"
+        ],
+        "content.subjects": [
+          "canyon_walls",
+          "sky"
+        ],
+        "geometry.surface_relief": [
+          "steep"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "camera.path": [
+          "canyon_bottom"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 93.mp4",
+      "description": "Yellow-green glowing abstract line art with a simple kaleidoscope effect and both horizontal and vertical mirror symmetry.",
+      "attributes": {
+        "color.palette": [
+          "yellow_green"
+        ],
+        "color.emission": [
+          "yellow_green"
+        ],
+        "content.subjects": [
+          "line_art"
+        ],
+        "content.style": [
+          "abstract"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "texture.patterns": [
+          "kaleidoscope"
+        ],
+        "composition.symmetry": [
+          "left_right",
+          "top_bottom"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 94.mp4",
+      "description": "Pink glowing abstract line art with a simple kaleidoscope effect and both horizontal and vertical mirror symmetry.",
+      "attributes": {
+        "color.palette": [
+          "pink"
+        ],
+        "color.emission": [
+          "pink"
+        ],
+        "content.subjects": [
+          "line_art"
+        ],
+        "content.style": [
+          "abstract"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "texture.patterns": [
+          "kaleidoscope"
+        ],
+        "composition.symmetry": [
+          "left_right",
+          "top_bottom"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "ducky3d/animation 95.mp4",
+      "description": "Fixed camera on nested concentric spherical light patterns. Blue-white lights rotate at constant rate around X and Y; the sphere surfaces themselves are invisible. Simplex noise is only a user hypothesis.",
+      "attributes": {
+        "color.palette": [
+          "blue_white"
+        ],
+        "color.emission": [
+          "blue_white"
+        ],
+        "content.subjects": [
+          "spherical_light_patterns"
+        ],
+        "geometry.shapes": [
+          "sphere"
+        ],
+        "geometry.topology": [
+          "concentric_shells"
+        ],
+        "composition.layout": [
+          "centered"
+        ],
+        "camera.fixed": true,
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "spherical_light_patterns"
+        ],
+        "motion.rotation_axes": [
+          "x",
+          "y"
+        ],
+        "motion.rotation_profile": [
+          "constant"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [
+        "シンプレックスノイズは原文でも「おそらく」。確定属性には入れない。球面が見えないことは透明素材やalphaの根拠にしない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "ducky3d/animation 98.mp4",
+      "description": "Red, green and blue horizontal straight lines flash randomly within randomly placed Chebyshev-pattern regions.",
+      "attributes": {
+        "color.palette": [
+          "red",
+          "green",
+          "blue"
+        ],
+        "color.mode": "rgb",
+        "content.subjects": [
+          "lines"
+        ],
+        "geometry.shapes": [
+          "line"
+        ],
+        "texture.patterns": [
+          "chebyshev_pattern"
+        ],
+        "composition.layout": [
+          "horizontal_lines"
+        ],
+        "composition.repetition": [
+          "random_placement"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Inferno/Inferno_damnation_01.mov",
+      "description": "Abstract red flame pattern slowly contracts in a circle from the image edges toward the center.",
+      "attributes": {
+        "color.palette": [
+          "red"
+        ],
+        "content.subjects": [
+          "flames"
+        ],
+        "content.style": [
+          "abstract"
+        ],
+        "motion.types": [
+          "contraction"
+        ],
+        "motion.targets": [
+          "flame_pattern"
+        ],
+        "motion.screen_direction": [
+          "edges_to_center"
+        ],
+        "motion.subject_speed": "slow",
+        "geometry.shapes": [
+          "circle"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Inferno/Inferno_damnation_02a.mov",
+      "description": "Red and black lava surface with red light in the cracks flashing slowly and randomly.",
+      "attributes": {
+        "color.palette": [
+          "red",
+          "black"
+        ],
+        "color.emission": [
+          "red"
+        ],
+        "content.subjects": [
+          "lava"
+        ],
+        "material.types": [
+          "lava"
+        ],
+        "texture.patterns": [
+          "cracks"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "slow",
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Inferno/Inferno_demise_01.mov",
+      "description": "Blue lava surface slowly pulses; only a small proportion is black.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "black"
+        ],
+        "color.dominant": [
+          "blue"
+        ],
+        "color.accent": [
+          "black"
+        ],
+        "content.subjects": [
+          "lava"
+        ],
+        "material.types": [
+          "lava"
+        ],
+        "light.behaviors": [
+          "pulsing"
+        ],
+        "light.speed": "slow",
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Inferno/Inferno_demise_02.mov",
+      "description": "Blue lava-like light rises slowly from bottom to top in a left-right symmetric pattern.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "color.emission": [
+          "blue"
+        ],
+        "content.subjects": [
+          "lava_like_light"
+        ],
+        "composition.symmetry": [
+          "left_right"
+        ],
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.screen_direction": [
+          "bottom_to_top"
+        ],
+        "light.speed": "slow",
+        "color.temperature": "cool"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Inferno/Inferno_oblivion_02.mov",
+      "description": "Small white lights float on a black pond surface and flash slowly at independent times, producing diagonal light streaks.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "pond"
+        ],
+        "content.subjects": [
+          "small_lights"
+        ],
+        "material.types": [
+          "water"
+        ],
+        "composition.scale": [
+          "small"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "slow",
+        "light.timing": [
+          "independent"
+        ],
+        "rhythm.phase_relation": [
+          "independent"
+        ],
+        "light.effects": [
+          "diagonal_streaks"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Inferno/Inferno_oblivion_03.mov",
+      "description": "White light slowly expands radially from center to edges over a pitch-black, wavy water surface.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.subjects": [
+          "water_surface"
+        ],
+        "material.types": [
+          "water"
+        ],
+        "geometry.surface_relief": [
+          "wavy"
+        ],
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.screen_direction": [
+          "center_to_edges"
+        ],
+        "light.speed": "slow",
+        "geometry.shapes": [
+          "circle"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "loopable-smoke/smoke_h264_2.mov",
+      "description": "Black-and-white smoke spreads upward from bottom to top and dissipates.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.subjects": [
+          "smoke"
+        ],
+        "material.types": [
+          "smoke"
+        ],
+        "motion.types": [
+          "expansion",
+          "dissipation"
+        ],
+        "motion.targets": [
+          "smoke"
+        ],
+        "motion.screen_direction": [
+          "bottom_to_top"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "loopable-smoke/smoke_h264_3.mov",
+      "description": "Blue-white smoke forms a thick tornado in a slightly red environment, pulling smoke diagonally upward. The user describes its thickness as about 80% of the image.",
+      "attributes": {
+        "color.palette": [
+          "blue_white",
+          "red"
+        ],
+        "color.surface": [
+          "blue_white"
+        ],
+        "color.background": [
+          "red"
+        ],
+        "content.subjects": [
+          "smoke",
+          "tornado"
+        ],
+        "material.types": [
+          "smoke"
+        ],
+        "composition.coverage": "large",
+        "motion.types": [
+          "swirling",
+          "suction"
+        ],
+        "motion.targets": [
+          "smoke"
+        ],
+        "motion.screen_direction": [
+          "diagonally_upward"
+        ],
+        "color.temperature": "mixed"
+      },
+      "caveats": [
+        "80%は原文の太さの目安。画面幅・面積の厳密な比率は不明。竜巻の回転方向は未記載。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "loopable-smoke/smoke_h264_6.mov",
+      "description": "Pink smoke fills the frame and blows upward from bottom to top.",
+      "attributes": {
+        "color.palette": [
+          "pink"
+        ],
+        "content.subjects": [
+          "smoke"
+        ],
+        "material.types": [
+          "smoke"
+        ],
+        "composition.coverage": "full_frame",
+        "motion.types": [
+          "eruption"
+        ],
+        "motion.targets": [
+          "smoke"
+        ],
+        "motion.screen_direction": [
+          "bottom_to_top"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_001.mp4",
+      "description": "Sci-fi hexagonal tunnel in a pale cyan environment with orange and copper-colored plates. Small linear lights flow from depth toward the viewer. Camera advances at medium speed and rotates counterclockwise.",
+      "attributes": {
+        "color.palette": [
+          "pale_cyan",
+          "orange",
+          "copper"
+        ],
+        "color.background": [
+          "pale_cyan"
+        ],
+        "color.surface": [
+          "orange",
+          "copper"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "hexagonal"
+        ],
+        "content.subjects": [
+          "plates",
+          "linear_lights"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "camera.rotation_direction": "counterclockwise",
+        "camera.rotation_mode": "unspecified",
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.depth_direction": [
+          "back_to_front"
+        ],
+        "color.temperature": "mixed"
+      },
+      "caveats": [
+        "「10くらいのスピード」はユーザー訂正により「中くらいのスピード」=medium。原文は保存。半時計回り→反時計回り。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_002.mp4",
+      "description": "Sci-fi hexagonal tunnel with six orange circular neon elements rotating independently of the tunnel. Green light travels away from the viewer. Camera moves forward slowly.",
+      "attributes": {
+        "color.palette": [
+          "orange",
+          "green"
+        ],
+        "color.emission": [
+          "orange",
+          "green"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.tunnel_section": [
+          "hexagonal"
+        ],
+        "content.subjects": [
+          "neon_rings"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "neon_rings"
+        ],
+        "motion.synchrony": [
+          "independent_of_tunnel"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.depth_direction": [
+          "front_to_back"
+        ],
+        "color.temperature": "mixed"
+      },
+      "caveats": [
+        "サーファイ風を文脈からsci_fiと解釈。ネオンの回転方向と速度は未記載。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_003.mp4",
+      "description": "Retro-game 3D wireframe city and road, viewed from above while the camera advances slowly.",
+      "attributes": {
+        "content.subjects": [
+          "city",
+          "road"
+        ],
+        "content.setting": [
+          "city"
+        ],
+        "content.style": [
+          "retro_game"
+        ],
+        "content.dimension": "3d",
+        "texture.patterns": [
+          "wireframe"
+        ],
+        "camera.viewpoint": [
+          "overhead"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_004.mp4",
+      "description": "Realistic black rock tunnel with regularly spaced square white light frames around its perimeter. Camera advances at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "light_frames"
+        ],
+        "geometry.shapes": [
+          "square"
+        ],
+        "material.types": [
+          "rock"
+        ],
+        "content.realism": "realistic",
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "composition.layout": [
+          "tunnel_perimeter"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "宙くらいのスピードを文脈から中くらい=mediumと解釈。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_013.mp4",
+      "description": "Realistic black rock tunnel encircled by white neon rings at regular depth intervals, with orange and cyan details. Camera advances at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white",
+          "orange",
+          "cyan"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "white",
+          "orange",
+          "cyan"
+        ],
+        "color.accent": [
+          "orange",
+          "cyan"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "neon_rings"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "material.types": [
+          "rock"
+        ],
+        "content.realism": "realistic",
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "composition.layout": [
+          "tunnel_perimeter",
+          "along_depth"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_014.mp4",
+      "description": "Sci-fi wireframe city highway viewed obliquely from upper left. Camera moves slowly; the city drifts toward the lower right on screen. Camera travel direction is unspecified.",
+      "attributes": {
+        "content.subjects": [
+          "city",
+          "highway"
+        ],
+        "content.setting": [
+          "city"
+        ],
+        "content.style": [
+          "sci_fi"
+        ],
+        "texture.patterns": [
+          "wireframe"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead",
+          "from_upper_left"
+        ],
+        "camera.translation_speed": "slow",
+        "motion.types": [
+          "screen_drift"
+        ],
+        "motion.targets": [
+          "city_image"
+        ],
+        "motion.screen_direction": [
+          "toward_lower_right"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_016.mp4",
+      "description": "Huge elongated copper-colored organic column wriggles at image center and rotates slowly clockwise.",
+      "attributes": {
+        "color.palette": [
+          "copper"
+        ],
+        "color.surface": [
+          "copper"
+        ],
+        "content.subjects": [
+          "organic_column"
+        ],
+        "content.organic": true,
+        "geometry.shapes": [
+          "elongated_column"
+        ],
+        "composition.layout": [
+          "centered"
+        ],
+        "composition.scale": [
+          "huge"
+        ],
+        "motion.types": [
+          "deformation",
+          "rotation"
+        ],
+        "motion.targets": [
+          "organic_column"
+        ],
+        "motion.deformation": [
+          "wriggling"
+        ],
+        "motion.rotation_direction": "clockwise",
+        "motion.rotation_speed": "slow",
+        "color.temperature": "warm"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_049.mp4",
+      "description": "Black metallic tentacles extend from the center. The cluster rotates slowly around X and Y, with animated orange neon-like patterns and a pale pink aura.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "orange",
+          "pale_pink"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "orange",
+          "pale_pink"
+        ],
+        "content.subjects": [
+          "tentacles"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "composition.layout": [
+          "radial_from_center"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "tentacle_cluster"
+        ],
+        "motion.rotation_axes": [
+          "x",
+          "y"
+        ],
+        "motion.rotation_speed": "slow",
+        "light.types": [
+          "neon_like",
+          "aura"
+        ],
+        "light.behaviors": [
+          "animated_pattern"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_052.mp4",
+      "description": "Dense black cables stretch into depth, encircled by regularly spaced white neon rings. Camera moves forward fast while rotating slowly counterclockwise.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.subjects": [
+          "cables",
+          "neon_rings"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "composition.density": "dense",
+        "composition.layout": [
+          "along_depth"
+        ],
+        "composition.repetition": [
+          "regular_spacing"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "camera.rotation_direction": "counterclockwise",
+        "camera.rotation_mode": "unspecified",
+        "camera.rotation_speed": "slow",
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "半時計回り→反時計回り。並進fastと回転slowを別々に保持。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_088.mp4",
+      "description": "Black metallic liquid erupts upward, reflecting green, pink and blue light on its surface.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "green",
+          "pink",
+          "blue"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.illumination": [
+          "green",
+          "pink",
+          "blue"
+        ],
+        "content.subjects": [
+          "liquid"
+        ],
+        "material.types": [
+          "metallic_liquid"
+        ],
+        "motion.types": [
+          "eruption"
+        ],
+        "motion.targets": [
+          "liquid"
+        ],
+        "motion.screen_direction": [
+          "bottom_to_top"
+        ],
+        "light.effects": [
+          "reflection"
+        ],
+        "light.behaviors": [
+          "reflection"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_091.mp4",
+      "description": "Many white cuboid particles wriggle, softly and weakly illuminated from different directions by orange and light-blue light.",
+      "attributes": {
+        "color.palette": [
+          "white",
+          "orange",
+          "light_blue"
+        ],
+        "color.surface": [
+          "white"
+        ],
+        "color.illumination": [
+          "orange",
+          "light_blue"
+        ],
+        "content.subjects": [
+          "particles"
+        ],
+        "geometry.shapes": [
+          "cuboid"
+        ],
+        "composition.density": "many",
+        "motion.types": [
+          "wriggling"
+        ],
+        "motion.targets": [
+          "particles"
+        ],
+        "light.intensity": "low",
+        "light.effects": [
+          "soft_illumination"
+        ],
+        "color.temperature": "mixed"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_093.mp4",
+      "description": "A central circular cyan neon source emits many metallic triangle particles radially outward. Particles reflect pink illumination.",
+      "attributes": {
+        "color.palette": [
+          "cyan",
+          "pink"
+        ],
+        "color.emission": [
+          "cyan"
+        ],
+        "color.illumination": [
+          "pink"
+        ],
+        "content.subjects": [
+          "particles",
+          "neon_ring"
+        ],
+        "geometry.shapes": [
+          "triangle",
+          "circle"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "composition.layout": [
+          "centered",
+          "radial_from_center"
+        ],
+        "composition.density": "many",
+        "motion.types": [
+          "emission",
+          "radial_expansion"
+        ],
+        "motion.targets": [
+          "particles"
+        ],
+        "motion.screen_direction": [
+          "center_to_edges"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "light.effects": [
+          "reflection"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "mantissa/mantissa.xyz_loop_100.mp4",
+      "description": "White lunar surface seen obliquely from above as the camera travels forward slowly.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.surface": [
+          "white"
+        ],
+        "content.setting": [
+          "lunar_surface"
+        ],
+        "content.subjects": [
+          "terrain"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti1.mov",
+      "description": "Wide tunnel viewed into the distance. Camera advances fast and rotates counterclockwise. Wall lights animate fast, but their depth direction is ambiguous in the transcript.",
+      "attributes": {
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "wall_lights"
+        ],
+        "camera.viewpoint": [
+          "distant_view"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "fast",
+        "camera.rotation_direction": "counterclockwise",
+        "camera.rotation_mode": "unspecified",
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.speed": "fast"
+      },
+      "caveats": [
+        "半時計回り→反時計回り。「奥から手前から奥」の光の進行方向は未確定。色は未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "Opti/Opti2.mov",
+      "description": "Wide tunnel with beat-pattern white wall lights. Camera moves slowly forward; exact tunnel geometry is unclear in the transcript.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "wall_lights"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "light.behaviors": [
+          "animated_pattern"
+        ],
+        "light.timing": [
+          "beat_pattern"
+        ],
+        "rhythm.beat_pattern": true,
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "「超空砲体」は誤認識と思われるが形状を断定しない。ビート表現はライブ同期を意味しない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti3.mov",
+      "description": "Factory made of metal cuboids and white light. Cuboid doors open as the camera advances slowly through them.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "factory"
+        ],
+        "content.subjects": [
+          "doors",
+          "cuboids"
+        ],
+        "geometry.shapes": [
+          "cuboid"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "camera.path": [
+          "through_doors"
+        ],
+        "motion.types": [
+          "opening"
+        ],
+        "motion.targets": [
+          "doors"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti5.mov",
+      "description": "Metal triangular object rotates clockwise, viewed obliquely from above. Square dot-matrix lights on its surface animate white to a beat pattern.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.subjects": [
+          "triangular_object"
+        ],
+        "geometry.shapes": [
+          "triangle",
+          "square"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "texture.patterns": [
+          "dot_matrix"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "triangular_object"
+        ],
+        "motion.rotation_direction": "clockwise",
+        "light.behaviors": [
+          "animated_pattern"
+        ],
+        "light.timing": [
+          "beat_pattern"
+        ],
+        "rhythm.beat_pattern": true,
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti6.mov",
+      "description": "Inorganic metal square tunnel with multiple grilles. White light dots travel upward on the grilles while the camera advances at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "tunnel"
+        ],
+        "content.subjects": [
+          "grilles",
+          "light_dots"
+        ],
+        "geometry.tunnel_section": [
+          "square"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "geometry.topology": [
+          "multiple_layers"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "medium",
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.screen_direction": [
+          "bottom_to_top"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti7A.mov",
+      "description": "Dark metal room with a randomly glowing square metal object. Camera circles around the object clockwise.",
+      "attributes": {
+        "color.brightness": "dark",
+        "content.setting": [
+          "room"
+        ],
+        "content.subjects": [
+          "square_object"
+        ],
+        "geometry.shapes": [
+          "square"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "camera.path": [
+          "orbit_around_subject"
+        ],
+        "camera.rotation_mode": "orbit",
+        "camera.rotation_direction": "clockwise",
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "random"
+        ]
+      },
+      "caveats": [
+        "周回orbitと解釈。画面のロール回転とは区別。光の色・カメラ速度は未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "Opti/Opti8.mov",
+      "description": "Iron mesh floor and ceiling extend laterally. Camera advances slowly while white light flashes rapidly in a beat pattern.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.subjects": [
+          "mesh"
+        ],
+        "content.setting": [
+          "floor_ceiling_space"
+        ],
+        "material.types": [
+          "iron"
+        ],
+        "texture.patterns": [
+          "mesh"
+        ],
+        "composition.layout": [
+          "floor_and_ceiling"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "fast",
+        "light.timing": [
+          "beat_pattern"
+        ],
+        "rhythm.beat_pattern": true,
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti9_alpha.mov",
+      "description": "Urchin-like form made of transparent tubes. Camera slowly orbits it while light moves through the tubes from the center outward in a beat pattern.",
+      "attributes": {
+        "content.subjects": [
+          "urchin_like_form",
+          "tubes"
+        ],
+        "geometry.shapes": [
+          "tube"
+        ],
+        "material.transparency": "transparent",
+        "camera.path": [
+          "orbit_around_subject"
+        ],
+        "camera.rotation_mode": "orbit",
+        "camera.rotation_direction": "unspecified",
+        "camera.rotation_speed": "slow",
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.screen_direction": [
+          "center_to_edges"
+        ],
+        "light.timing": [
+          "beat_pattern"
+        ],
+        "rhythm.beat_pattern": true
+      },
+      "caveats": [
+        "透明なのはチューブの材質。ファイル名_alphaから動画alphaの有無を断定しない。光の色は未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "Opti/Opti12.mov",
+      "description": "Inorganic metal building with an endless sequence of doors opening onto more doors. White light expands as square patterns from each door center toward its edges.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "building"
+        ],
+        "content.subjects": [
+          "doors"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "geometry.shapes": [
+          "square"
+        ],
+        "motion.types": [
+          "opening"
+        ],
+        "motion.targets": [
+          "doors"
+        ],
+        "light.behaviors": [
+          "traveling_light"
+        ],
+        "light.screen_direction": [
+          "center_to_edges"
+        ],
+        "rhythm.repeating_event": [
+          "successive_door_opening"
+        ],
+        "rhythm.loop_description": "endless_door_sequence",
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "扉の連続からカメラ前進を推定せず未設定。無限ループは内容の記述でシームレス性の検証ではない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/Opti14.mov",
+      "description": "Huge mirror-finished sphere inside an inorganic metal room reflects white light flashing to a beat pattern.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.setting": [
+          "room"
+        ],
+        "content.subjects": [
+          "sphere"
+        ],
+        "geometry.shapes": [
+          "sphere"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "material.finish": [
+          "mirror"
+        ],
+        "composition.scale": [
+          "huge"
+        ],
+        "light.behaviors": [
+          "reflection",
+          "flashing"
+        ],
+        "light.effects": [
+          "reflection"
+        ],
+        "light.timing": [
+          "beat_pattern"
+        ],
+        "rhythm.beat_pattern": true,
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/OptiA-blackcubes.mov",
+      "description": "Small rotating white lights arranged as a 2D grid flash at random times.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "small_lights"
+        ],
+        "composition.layout": [
+          "grid"
+        ],
+        "texture.patterns": [
+          "grid"
+        ],
+        "composition.scale": [
+          "small"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "small_lights"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "random"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/OptiD-Perspectivecubes.mov",
+      "description": "Isometric view of a slope made of metal cubes. Three visible faces flash white independently in a beat pattern.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.subjects": [
+          "cubes",
+          "slope"
+        ],
+        "geometry.shapes": [
+          "cube"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "camera.viewpoint": [
+          "isometric"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.timing": [
+          "beat_pattern",
+          "independent"
+        ],
+        "rhythm.phase_relation": [
+          "independent_faces"
+        ],
+        "rhythm.beat_pattern": true,
+        "color.temperature": "neutral"
+      },
+      "caveats": [],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "Opti/OptiE-Triangles_alpha.mov",
+      "description": "Iron triangular puzzle-like object rotates clockwise around Y. White luminous surface patterns wriggle.",
+      "attributes": {
+        "color.palette": [
+          "white"
+        ],
+        "color.emission": [
+          "white"
+        ],
+        "content.subjects": [
+          "puzzle_like_object"
+        ],
+        "geometry.shapes": [
+          "triangle"
+        ],
+        "material.types": [
+          "iron"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "puzzle_like_object"
+        ],
+        "motion.rotation_direction": "clockwise",
+        "motion.rotation_axes": [
+          "y"
+        ],
+        "light.behaviors": [
+          "animated_pattern"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "Y軸に対する時計回りはユーザーの表現。視点と軸の正方向は未検証。alphaチャンネルは未確認。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "SELDO/BlackCuboid_easing.mp4",
+      "description": "Black cube city viewed obliquely from upper left. The city image moves toward upper left, described as deeper into the scene. Strong easing: fast at the start, nearly stationary at the middle.",
+      "attributes": {
+        "color.palette": [
+          "black"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "content.setting": [
+          "city"
+        ],
+        "content.subjects": [
+          "cubes"
+        ],
+        "geometry.shapes": [
+          "cube"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead",
+          "from_upper_left"
+        ],
+        "motion.types": [
+          "screen_drift"
+        ],
+        "motion.targets": [
+          "city_image"
+        ],
+        "motion.screen_direction": [
+          "toward_upper_left"
+        ],
+        "motion.depth_direction": [
+          "front_to_back"
+        ],
+        "motion.speed_profile": [
+          "fast_at_start",
+          "nearly_still_at_middle"
+        ],
+        "rhythm.easing": [
+          "strong_easing"
+        ],
+        "color.temperature": "neutral"
+      },
+      "caveats": [
+        "街の画面内移動を記録。カメラの実移動方向は未確定。動画後半の速度経過は未記載。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "SELDO/Tile_Dark.mp4",
+      "description": "Regularly arranged black tiles at varying heights rotate counterclockwise, viewed obliquely from above. White grid neon marks tile borders, with small glowing cyan cubes nearby.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white",
+          "cyan"
+        ],
+        "color.surface": [
+          "black"
+        ],
+        "color.emission": [
+          "white",
+          "cyan"
+        ],
+        "content.subjects": [
+          "tiles",
+          "cubes"
+        ],
+        "geometry.shapes": [
+          "cube"
+        ],
+        "geometry.surface_relief": [
+          "varied_heights"
+        ],
+        "composition.repetition": [
+          "regular_placement"
+        ],
+        "texture.patterns": [
+          "grid"
+        ],
+        "camera.viewpoint": [
+          "oblique_overhead"
+        ],
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "tiles"
+        ],
+        "motion.rotation_direction": "counterclockwise",
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ],
+        "composition.scale": [
+          "small_cubes"
+        ],
+        "color.temperature": "cool"
+      },
+      "caveats": [
+        "半時計回り→反時計回り。「その後手」の位置関係は未確定のため保持しない。"
+      ],
+      "derived_attributes": {
+        "color.temperature": "Rule-based grouping of named palette; not measured light temperature."
+      }
+    },
+    {
+      "id": "tatsuyam/aqua_00.mp4",
+      "description": "Live-action bubbles floating in deep navy water. A penguin swims through and leaves partway through the clip.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "navy"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "bubbles",
+          "penguin"
+        ],
+        "motion.types": [
+          "floating",
+          "swimming"
+        ],
+        "motion.targets": [
+          "bubbles",
+          "penguin"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_10.mp4",
+      "description": "Live-action small spotted jellyfish swims from screen right to left in deep navy water; the camera follows it.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "navy"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "spotted_jellyfish"
+        ],
+        "composition.scale": [
+          "small"
+        ],
+        "camera.path": [
+          "tracking_subject"
+        ],
+        "motion.types": [
+          "swimming"
+        ],
+        "motion.targets": [
+          "jellyfish"
+        ],
+        "motion.screen_direction": [
+          "right_to_left"
+        ]
+      },
+      "caveats": [
+        "「思いかけている」は文脈上「追いかけている」と解釈。被写体の左右移動をカメラの並進方向としては設定しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_11.mp4",
+      "description": "Live-action white, yellow and blue jellyfish rise slowly through black water while the camera follows them.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.palette": [
+          "black",
+          "white",
+          "yellow",
+          "blue"
+        ],
+        "color.background": [
+          "black"
+        ],
+        "color.surface": [
+          "white",
+          "yellow",
+          "blue"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "jellyfish"
+        ],
+        "camera.path": [
+          "tracking_subject"
+        ],
+        "motion.types": [
+          "swimming",
+          "rising"
+        ],
+        "motion.targets": [
+          "jellyfish"
+        ],
+        "motion.screen_direction": [
+          "up"
+        ],
+        "motion.subject_speed": "slow"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_14_.mp4",
+      "description": "A group of jellyfish drifts slowly in black water.",
+      "attributes": {
+        "color.background": [
+          "black"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "jellyfish"
+        ],
+        "motion.types": [
+          "drifting"
+        ],
+        "motion.targets": [
+          "jellyfish"
+        ],
+        "motion.subject_speed": "slow"
+      },
+      "caveats": [
+        "実写とは明記されていないため、他のaqua素材から実写タグを継承しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_16.mp4",
+      "description": "A group of jellyfish drifts slowly in black water.",
+      "attributes": {
+        "color.background": [
+          "black"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "jellyfish"
+        ],
+        "motion.types": [
+          "drifting"
+        ],
+        "motion.targets": [
+          "jellyfish"
+        ],
+        "motion.subject_speed": "slow"
+      },
+      "caveats": [
+        "実写とは明記されていないため、他のaqua素材から実写タグを継承しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_18.mp4",
+      "description": "Live-action two sea angels (Clione) swim slowly in black water.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "black"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "sea_angels",
+          "clione"
+        ],
+        "composition.density": "sparse",
+        "motion.types": [
+          "swimming"
+        ],
+        "motion.targets": [
+          "sea_angels"
+        ],
+        "motion.subject_speed": "slow"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_22.mp4",
+      "description": "Live-action penguins occasionally swim through navy water.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "navy"
+        ],
+        "content.setting": [
+          "underwater"
+        ],
+        "content.subjects": [
+          "penguins"
+        ],
+        "motion.types": [
+          "swimming"
+        ],
+        "motion.targets": [
+          "penguins"
+        ],
+        "rhythm.repeating_event": [
+          "penguins_swim_past_intermittently"
+        ]
+      },
+      "caveats": [
+        "時たまは登場頻度。泳ぐ速度とは区別し、速度は未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/aqua_23.mp4",
+      "description": "Live-action small colorful fish swim in a lit part of a large aquarium tank filled with navy water.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "navy"
+        ],
+        "color.surface": [
+          "multicolor"
+        ],
+        "content.setting": [
+          "aquarium",
+          "large_water_tank"
+        ],
+        "content.subjects": [
+          "small_fish"
+        ],
+        "composition.scale": [
+          "small"
+        ],
+        "motion.types": [
+          "swimming"
+        ],
+        "motion.targets": [
+          "fish"
+        ],
+        "light.behaviors": [
+          "localized_illumination"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/cross.mp4",
+      "description": "On black, white straight lines arrive, assemble into crosses, rotate, flash and disappear. The camera advances slowly.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "color.background": [
+          "black"
+        ],
+        "color.surface": [
+          "white"
+        ],
+        "content.subjects": [
+          "lines",
+          "crosses"
+        ],
+        "geometry.shapes": [
+          "line",
+          "cross"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "motion.types": [
+          "assembling",
+          "rotation",
+          "appearing",
+          "disappearing"
+        ],
+        "motion.targets": [
+          "lines",
+          "crosses"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ]
+      },
+      "caveats": [
+        "カメラ速度だけがslow。図形の回転・点滅速度は未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/CrossParticle.mp4",
+      "description": "White lines on black form crosses, rotate, flash and disappear with point symmetry around the image center. The camera advances slowly and rotates counterclockwise.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "color.background": [
+          "black"
+        ],
+        "color.surface": [
+          "white"
+        ],
+        "content.subjects": [
+          "lines",
+          "crosses"
+        ],
+        "geometry.shapes": [
+          "line",
+          "cross"
+        ],
+        "camera.translation": [
+          "forward_into_scene"
+        ],
+        "camera.translation_speed": "slow",
+        "motion.types": [
+          "assembling",
+          "rotation",
+          "appearing",
+          "disappearing"
+        ],
+        "motion.targets": [
+          "lines",
+          "crosses"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "composition.symmetry": [
+          "point_symmetry"
+        ],
+        "camera.rotation_direction": "counterclockwise",
+        "camera.rotation_mode": "unspecified"
+      },
+      "caveats": [
+        "カメラ並進はslow。カメラ回転・図形・点滅の速度は未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/cycle_d_01.mp4",
+      "description": "Predominantly monochrome hexagonal tiles flip in a circular wave spreading outward from the center. Lens distortion and chromatic aberration appear near the edges.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.subjects": [
+          "hexagonal_tiles"
+        ],
+        "geometry.shapes": [
+          "hexagon"
+        ],
+        "texture.patterns": [
+          "hexagonal_tiling"
+        ],
+        "motion.types": [
+          "flipping"
+        ],
+        "motion.targets": [
+          "tiles"
+        ],
+        "motion.screen_direction": [
+          "center_to_edges"
+        ],
+        "light.effects": [
+          "lens_distortion",
+          "chromatic_aberration"
+        ],
+        "rhythm.phase_relation": [
+          "radial_propagation"
+        ]
+      },
+      "caveats": [
+        "基調はモノクロだが、周縁に色収差あり。完全な無彩色のみとは断定しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/DiamondTile.mp4",
+      "description": "Monochrome diamond tiles form a grid rotated 45 degrees. Squares within each tile expand and flash, with differing brightness and timing per tile. The animation runs at medium speed.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.subjects": [
+          "diamond_tiles",
+          "squares"
+        ],
+        "geometry.shapes": [
+          "diamond",
+          "square"
+        ],
+        "composition.layout": [
+          "diagonal_grid"
+        ],
+        "texture.patterns": [
+          "grid"
+        ],
+        "motion.types": [
+          "scale_up"
+        ],
+        "motion.targets": [
+          "squares"
+        ],
+        "motion.subject_speed": "medium",
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "medium",
+        "light.timing": [
+          "independent_per_tile"
+        ],
+        "rhythm.phase_relation": [
+          "independent_per_tile"
+        ]
+      },
+      "caveats": [
+        "mediumは拡大・明滅を含むアニメーション全体の記述。カメラ速度ではない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/Flickering_01.mp4",
+      "description": "Monochrome simple outline circles and squares appear in beat-like bursts, combining expansion, contraction and rotation, then quickly disappear.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.subjects": [
+          "outline_shapes"
+        ],
+        "geometry.shapes": [
+          "circle",
+          "square"
+        ],
+        "content.style": [
+          "minimal_geometric"
+        ],
+        "motion.types": [
+          "appearing",
+          "scale_up",
+          "scale_down",
+          "rotation",
+          "disappearing"
+        ],
+        "motion.targets": [
+          "outline_shapes"
+        ],
+        "rhythm.beat_pattern": true,
+        "rhythm.repeating_event": [
+          "brief_appearance_and_disappearance"
+        ]
+      },
+      "caveats": [
+        "すぐ消滅は表示時間の短さ。回転やカメラの速度、BPMは未記載。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/fracture_03.mp4",
+      "description": "Monochrome white fragments repeatedly gather and fill inside/outside a diamond shape, then scatter and disappear.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "color.surface": [
+          "white"
+        ],
+        "content.subjects": [
+          "fragments"
+        ],
+        "geometry.shapes": [
+          "diamond"
+        ],
+        "composition.layout": [
+          "inside_and_outside_diamond"
+        ],
+        "motion.types": [
+          "gathering",
+          "scattering",
+          "disappearing"
+        ],
+        "motion.targets": [
+          "fragments"
+        ],
+        "rhythm.repeating_event": [
+          "gather_fill_scatter_disappear"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/Metal_graphic_04.mp4",
+      "description": "A monochrome object made of many intertwined metal rings rotates slowly.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white"
+        ],
+        "color.mode": "grayscale",
+        "content.subjects": [
+          "intertwined_rings"
+        ],
+        "geometry.shapes": [
+          "ring"
+        ],
+        "geometry.topology": [
+          "intertwined"
+        ],
+        "material.types": [
+          "metal"
+        ],
+        "composition.density": "many",
+        "motion.types": [
+          "rotation"
+        ],
+        "motion.targets": [
+          "ring_assembly"
+        ],
+        "motion.rotation_speed": "slow"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/night_b_540p.mp4",
+      "description": "Live-action night city entirely out of focus. Traffic signal and car lights form moving circular bokeh; most of the image stays still.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "content.setting": [
+          "city_at_night"
+        ],
+        "content.subjects": [
+          "traffic_lights",
+          "car_lights",
+          "bokeh"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "light.effects": [
+          "defocus",
+          "bokeh"
+        ],
+        "light.behaviors": [
+          "moving"
+        ],
+        "motion.targets": [
+          "bokeh_lights"
+        ]
+      },
+      "caveats": [
+        "「丸い化け」は前後の焦点説明から丸いボケと解釈。画面の大部分が静止という記述からカメラ固定とは断定しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/noise_pattern_3.mp4",
+      "description": "A grid of narrow horizontally elongated rectangles slowly flickers between blue and white following Perlin noise.",
+      "attributes": {
+        "color.palette": [
+          "blue",
+          "white"
+        ],
+        "content.subjects": [
+          "rectangular_tiles"
+        ],
+        "geometry.shapes": [
+          "rectangle"
+        ],
+        "texture.patterns": [
+          "grid"
+        ],
+        "texture.noise_family": [
+          "perlin"
+        ],
+        "composition.layout": [
+          "horizontal_narrow_rectangular_grid"
+        ],
+        "light.behaviors": [
+          "flashing"
+        ],
+        "light.speed": "slow"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/oil_macro_a_540p.mp4",
+      "description": "Live-action countless circular oil films float on black water and reflect white light.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "black"
+        ],
+        "color.illumination": [
+          "white"
+        ],
+        "content.setting": [
+          "water_surface"
+        ],
+        "content.subjects": [
+          "oil_films"
+        ],
+        "geometry.shapes": [
+          "circle"
+        ],
+        "material.types": [
+          "oil",
+          "water"
+        ],
+        "composition.density": "many",
+        "motion.types": [
+          "floating"
+        ],
+        "motion.targets": [
+          "oil_films"
+        ],
+        "light.behaviors": [
+          "reflection"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/oil_macro_b_540p.mp4",
+      "description": "Live-action bubbles on water reflect blue light with a faint glow and drift slowly from right to left.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.illumination": [
+          "blue"
+        ],
+        "content.setting": [
+          "water_surface"
+        ],
+        "content.subjects": [
+          "bubbles"
+        ],
+        "material.types": [
+          "water"
+        ],
+        "motion.types": [
+          "drifting"
+        ],
+        "motion.targets": [
+          "bubbles"
+        ],
+        "motion.subject_speed": "slow",
+        "motion.screen_direction": [
+          "right_to_left"
+        ],
+        "light.behaviors": [
+          "reflection",
+          "glowing"
+        ],
+        "light.effects": [
+          "glow"
+        ],
+        "light.intensity": "low"
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/oil_macro_c_540p.mp4",
+      "description": "Live-action oil bubbles on water drift and sway slowly from right to left in front of a red background.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.background": [
+          "red"
+        ],
+        "content.setting": [
+          "water_surface"
+        ],
+        "content.subjects": [
+          "oil_bubbles"
+        ],
+        "material.types": [
+          "oil",
+          "water"
+        ],
+        "motion.types": [
+          "drifting",
+          "swaying"
+        ],
+        "motion.targets": [
+          "oil_bubbles"
+        ],
+        "motion.subject_speed": "slow",
+        "motion.screen_direction": [
+          "right_to_left"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/oil_macro_f1_540p.mp4",
+      "description": "Live-action oil bubbles drift slowly in front of a rainbow-colored, red-heavy background. The bubbles reflect the rainbow colors of the background.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.palette": [
+          "rainbow",
+          "red"
+        ],
+        "color.background": [
+          "rainbow"
+        ],
+        "color.dominant": [
+          "red"
+        ],
+        "color.mode": "multicolor",
+        "color.illumination": [
+          "rainbow"
+        ],
+        "content.subjects": [
+          "oil_bubbles"
+        ],
+        "material.types": [
+          "oil"
+        ],
+        "motion.types": [
+          "drifting"
+        ],
+        "motion.targets": [
+          "oil_bubbles"
+        ],
+        "motion.subject_speed": "slow",
+        "light.behaviors": [
+          "reflection"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/oil_macro_f2_540p.mp4",
+      "description": "Live-action oil bubbles drift slowly in front of a rainbow-colored, red-heavy background. The bubbles reflect the rainbow colors of the background.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.palette": [
+          "rainbow",
+          "red"
+        ],
+        "color.background": [
+          "rainbow"
+        ],
+        "color.dominant": [
+          "red"
+        ],
+        "color.mode": "multicolor",
+        "color.illumination": [
+          "rainbow"
+        ],
+        "content.subjects": [
+          "oil_bubbles"
+        ],
+        "material.types": [
+          "oil"
+        ],
+        "motion.types": [
+          "drifting"
+        ],
+        "motion.targets": [
+          "oil_bubbles"
+        ],
+        "motion.subject_speed": "slow",
+        "light.behaviors": [
+          "reflection"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/polyFX.mp4",
+      "description": "A cube rolls slowly toward the camera. Its body is completely transparent and invisible, while outlined surface tiles display a pattern animation at medium speed.",
+      "attributes": {
+        "content.subjects": [
+          "cube",
+          "outlined_tiles"
+        ],
+        "geometry.shapes": [
+          "cube",
+          "tile"
+        ],
+        "material.transparency": "transparent",
+        "texture.patterns": [
+          "outlined_tiles",
+          "animated_patterns"
+        ],
+        "motion.types": [
+          "rolling",
+          "approaching",
+          "surface_pattern_animation"
+        ],
+        "motion.targets": [
+          "cube"
+        ],
+        "motion.depth_direction": [
+          "toward_camera"
+        ],
+        "motion.subject_speed": "slow"
+      },
+      "caveats": [
+        "slowはキューブの転がる移動、mediumは表面パターンのアニメーション。後者を点滅速度やキューブ速度に置換しない。動画alphaは未確認。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/RepeShape.mp4",
+      "description": "Small 2D micro-animations in pale yellow and cyan are arranged in a circle, appearing and disappearing to a beat-like pattern.",
+      "attributes": {
+        "color.palette": [
+          "pale_yellow",
+          "cyan"
+        ],
+        "content.dimension": "2d",
+        "content.subjects": [
+          "micro_animations"
+        ],
+        "composition.layout": [
+          "circular_array"
+        ],
+        "composition.scale": [
+          "small"
+        ],
+        "motion.types": [
+          "appearing",
+          "disappearing"
+        ],
+        "rhythm.beat_pattern": true,
+        "rhythm.repeating_event": [
+          "appearance_and_disappearance"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/shape_repeater_skew_01.mp4",
+      "description": "Circles, squares and circularly arranged diamonds appear from the center while expanding, then disappear. The circular arrangement resembles a ventilation fan.",
+      "attributes": {
+        "content.subjects": [
+          "geometric_shapes"
+        ],
+        "geometry.shapes": [
+          "circle",
+          "square",
+          "diamond"
+        ],
+        "composition.layout": [
+          "centered",
+          "circular_array",
+          "fan_like_pattern"
+        ],
+        "motion.types": [
+          "appearing",
+          "scale_up",
+          "disappearing"
+        ],
+        "motion.targets": [
+          "geometric_shapes"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/snow_a.mp4",
+      "description": "Fixed camera looking upward into a snowy sky, with a slight blue tint.",
+      "attributes": {
+        "color.palette": [
+          "blue"
+        ],
+        "content.setting": [
+          "sky"
+        ],
+        "content.subjects": [
+          "snow"
+        ],
+        "camera.viewpoint": [
+          "looking_up"
+        ],
+        "camera.fixed": true,
+        "motion.types": [
+          "falling"
+        ],
+        "motion.targets": [
+          "snow"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/StepTwist_01.mp4",
+      "description": "A double helix made of black-and-white cuboids flows downward, with pale-green glowing neon wrapped diagonally around it.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white",
+          "pale_green"
+        ],
+        "color.surface": [
+          "black",
+          "white"
+        ],
+        "color.emission": [
+          "pale_green"
+        ],
+        "content.subjects": [
+          "double_helix",
+          "cuboids",
+          "neon"
+        ],
+        "geometry.shapes": [
+          "cuboid"
+        ],
+        "geometry.topology": [
+          "double_helix",
+          "diagonal_neon_wrap"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ],
+        "motion.types": [
+          "translation"
+        ],
+        "motion.targets": [
+          "double_helix"
+        ],
+        "motion.screen_direction": [
+          "down"
+        ]
+      },
+      "caveats": [],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/StepTwist_02.mp4",
+      "description": "A black-and-white cuboid double helix, tilted about 75 degrees and wrapped diagonally in pale-green neon, flows from upper right to lower left.",
+      "attributes": {
+        "color.palette": [
+          "black",
+          "white",
+          "pale_green"
+        ],
+        "color.surface": [
+          "black",
+          "white"
+        ],
+        "color.emission": [
+          "pale_green"
+        ],
+        "content.subjects": [
+          "double_helix",
+          "cuboids",
+          "neon"
+        ],
+        "geometry.shapes": [
+          "cuboid"
+        ],
+        "geometry.topology": [
+          "double_helix",
+          "diagonal_neon_wrap"
+        ],
+        "light.types": [
+          "neon"
+        ],
+        "light.behaviors": [
+          "glowing"
+        ],
+        "motion.types": [
+          "translation"
+        ],
+        "motion.targets": [
+          "double_helix"
+        ],
+        "composition.layout": [
+          "tilted_about_75_degrees"
+        ],
+        "motion.screen_direction": [
+          "upper_right_to_lower_left"
+        ]
+      },
+      "caveats": [
+        "75度の基準軸は未記載。カメラ回転とは解釈しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/timelapse_night_01.mp4",
+      "description": "Live-action timelapse of a blue daytime sky with many white clouds moving quickly.",
+      "attributes": {
+        "content.style": [
+          "live_action"
+        ],
+        "content.realism": "realistic",
+        "color.palette": [
+          "blue",
+          "white"
+        ],
+        "color.background": [
+          "blue"
+        ],
+        "color.surface": [
+          "white"
+        ],
+        "content.setting": [
+          "sky"
+        ],
+        "content.subjects": [
+          "clouds"
+        ],
+        "composition.density": "many",
+        "motion.types": [
+          "drifting"
+        ],
+        "motion.targets": [
+          "clouds"
+        ],
+        "motion.subject_speed": "fast"
+      },
+      "caveats": [
+        "ファイル名にnightがあるが、説明の青空・白い雲を優先。夜景とは分類しない。"
+      ],
+      "derived_attributes": {}
+    },
+    {
+      "id": "tatsuyam/train_160327.mp4",
+      "description": "A dark view of a Japanese city from a train window, with the scenery moving from screen right to left.",
+      "attributes": {
+        "color.brightness": "dark",
+        "content.setting": [
+          "japanese_city",
+          "train_window_view"
+        ],
+        "content.subjects": [
+          "urban_scenery"
+        ],
+        "camera.viewpoint": [
+          "through_train_window"
+        ],
+        "motion.screen_direction": [
+          "right_to_left"
+        ],
+        "motion.targets": [
+          "scenery"
+        ]
+      },
+      "caveats": [
+        "景色の画面上の移動方向を保持。電車の実際の進行方向、速度、実写の明示はない。"
+      ],
+      "derived_attributes": {}
+    }
+  ]
+}

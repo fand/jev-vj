@@ -1,0 +1,19 @@
+{
+  "name": "jev-clip-effects",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && node build.mjs",
+    "check": "tsc --noEmit",
+    "test:twitch": "node --test test-twitch.mjs",
+    "test:shift-glitch": "node --test test-shift-glitch.mjs"
+  },
+  "dependencies": {
+    "@vfx-js/core": "1.1.0",
+    "@vfx-js/effects": "1.3.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.10",
+    "typescript": "5.9.2"
+  }
+}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev × Arena</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body><main>
+<header><span class="tag">LIVE DIRECTION / 01</span><span id="connection">接続確認中…</span></header>
+<h1>言葉で、映像を動かす<span class="dot">.</span></h1>
+<p class="intro">Jev × Resolume Arena <span>Example / Generators</span></p>
+<form id="form"><label for="prompt">いま、どんな映像にする？</label>
+<textarea id="prompt" maxlength="1000" placeholder="有機的な液体に、弱い残像をかけて" required></textarea>
+<div class="actions"><button id="submit" class="primary">Jevで適用 <span>↗</span></button><button id="cancel" type="button">待機中の指示を取消</button><button id="reset" type="button">効果をリセット</button></div>
+</form>
+<div id="examples" class="examples"><button>有機的な液体に、弱い残像をかけて</button><button>幾何学的な線に、強い万華鏡を</button><button>静かなオーロラに。効果は消して</button><button>映像はそのままで、効果を弱く</button></div>
+<p id="notice" role="status" aria-live="polite">指示を入力して適用。入力だけでは送信しません。</p>
+<section class="state"><article><label>最後に送ったソース</label><strong id="clip">—</strong></article><article><label>最後に送った効果</label><strong id="effect">—</strong></article><article><label>処理時間</label><strong id="latency">—</strong></article></section>
+<section><h2>使える素材</h2><div id="clips" class="clips"></div></section>
+<section><h2>操作履歴</h2><div id="history"><p class="muted">まだ操作していません。</p></div></section>
+<footer>Layer 1の素材と、CompositionのDashboard 8ノブを操作します。効果の選択は既存ノブ値を置き換えます。<br>手動操作は自由。表示は送信履歴で、Arenaの実際の状態は読み取っていません。別デッキへの切り替え・素材の並べ替え後は設定の更新が必要です。<br>音楽同期・音声入力・色指定は未対応。入力した指示をTypeSafeへ送ります。</footer>
+</main></body></html>

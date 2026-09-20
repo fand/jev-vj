@@ -1,0 +1,15 @@
+import { definition as rgb } from './rgb';
+import { definition as twitch } from './twitch';
+import { definition as hue } from './hue';
+import { definition as flip } from './flip';
+import { definition as mirror } from './mirror';
+import { definition as trails } from './trails';
+import { definition as edge } from './edge';
+import { definition as colorize } from './colorize';
+import { definition as halftone } from './halftone';
+import { definition as colorama } from './colorama';
+import { definition as hatched } from './hatched';
+import { definition as invert } from './invert';
+import { definition as lorez } from './lorez';
+import { definition as shiftGlitch } from './shift-glitch';
+export const definitions = [rgb,twitch,hue,flip,mirror,trails,edge,colorize,halftone,colorama,hatched,invert,lorez,shiftGlitch].sort((a,b)=>a.order-b.order || a.id.localeCompare(b.id));

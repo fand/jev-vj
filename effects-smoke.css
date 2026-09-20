@@ -1,0 +1,6 @@
+body { margin: 24px; background: #15181d; color: #e7edf5; font: 14px/1.45 system-ui, sans-serif; }
+h1 { font-size: 20px; margin: 0 0 12px; }
+#source { display: block; width: 360px; height: 240px; border: 1px solid #46515e; }
+#results { margin: 18px 0 0; padding-left: 22px; }
+.pass { color: #8ee8a2; }
+.fail { color: #ff9b9b; }
