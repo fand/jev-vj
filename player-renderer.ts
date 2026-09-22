@@ -16,6 +16,17 @@ let chain: EffectSetting[] = [];
 let bypassed = false;
 let failure = '';
 let frame = 0;
+let onFrame: ((source: HTMLCanvasElement | HTMLVideoElement, crop?: number[]) => void) | null = null;
+function publishFrame(){
+ const canvas=document.querySelector<HTMLCanvasElement>('canvas');
+ if(!onFrame||video.readyState<2)return;
+ if(registered&&canvas){
+  const rect=canvas.getBoundingClientRect(), content=video.getBoundingClientRect();
+  const sx=canvas.width/Math.max(rect.width,1), sy=canvas.height/Math.max(rect.height,1);
+  onFrame(canvas,[(content.left-rect.left)*sx,(content.top-rect.top)*sy,content.width*sx,content.height*sy]);
+ }else onFrame(video);
+}
+function captureFrame(){if(registered)vfx!.render();publishFrame();}
 
 function reset() { for(const node of bank.values())node.instance.reset?.(); }
 function fallback(error: unknown) {
@@ -57,12 +68,13 @@ async function apply(settings: EffectSetting[]) {
   await ensure();
   for(const item of next){const node=bank.get(item.id)!;if(!node.enabled){node.instance.reset?.();node.amount=0;}node.instance.setParams(item.params);node.targetAmount=item.mix;if(item.id==='trails')node.amount=1;}
   chain=next;syncEnabled();
-  try{vfx!.render();}catch(error){fallback(error);throw error;}
+  try{vfx!.render();publishFrame();}catch(error){fallback(error);throw error;}
   return structuredClone(chain);
 }
 let lastFrame = 0;
 function render(now = 0) {
-  if((!preview || now-lastFrame>=1000/20) && registered&&!video.paused&&video.readyState>=2){lastFrame=now;try{vfx!.render();}catch(error){fallback(error);}}
+  if((!preview || now-lastFrame>=1000/20) && registered&&!video.paused&&video.readyState>=2){lastFrame=now;try{vfx!.render();publishFrame();}catch(error){fallback(error);}}
+  if(!registered)publishFrame();
   frame=requestAnimationFrame(render);
 }
 // Native dimensions keep object-fit letterboxing out of the shader's content UV.
@@ -78,7 +90,9 @@ window.addEventListener('resize',resizeVideo);
 video.addEventListener('loadeddata',()=>{void ensure().catch(()=>{});});
 document.getElementById('playback')!.addEventListener('click',()=>{if(video.paused)void video.play();else video.pause();});
 window.addEventListener('pagehide',()=>{cancelAnimationFrame(frame);vfx?.destroy();});
-const renderer={video,definitions:definitions.map(({create,...def})=>def),apply,reset,
+const renderer={video,captureFrame,
+  get onFrame(){return onFrame;},set onFrame(callback:typeof onFrame){onFrame=callback;},
+  definitions:definitions.map(({create,...def})=>def),apply,reset,
   get chain(){return structuredClone(chain);},get error(){return failure;},
   bypass(value:boolean){bypassed=value;syncEnabled();if(registered)vfx!.render();},
 };

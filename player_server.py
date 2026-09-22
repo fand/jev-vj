@@ -513,6 +513,8 @@ def create_server(port=4319, player=None):
                 static={'/':('player.html','text/html; charset=utf-8'),'/player.js':('player.js','text/javascript; charset=utf-8'),'/player.css':('player.css','text/css; charset=utf-8')}
                 static.update({'/effect-output.html':('effect-output.html','text/html; charset=utf-8'),'/effect-output.css':('effect-output.css','text/css; charset=utf-8'),'/dist/player-renderer.js':('dist/player-renderer.js','text/javascript; charset=utf-8')})
                 static.update({'/effects-smoke.html':('effects-smoke.html','text/html; charset=utf-8'),'/effects-smoke.css':('effects-smoke.css','text/css; charset=utf-8'),'/dist/effects-smoke.js':('dist/effects-smoke.js','text/javascript; charset=utf-8')})
+                for file in ('performance-controls.js','deck-output.js','output-popup.js','output-popup.css','output-popup.html'):
+                    static['/'+file]=(file,'text/javascript; charset=utf-8' if file.endswith('.js') else 'text/css; charset=utf-8' if file.endswith('.css') else 'text/html; charset=utf-8')
                 if path in static:
                     file,kind=static[path];return self.reply((ROOT/file).read_bytes(),kind=kind)
                 if path=='/api/status':return self.reply(player.status())

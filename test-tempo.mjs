@@ -45,7 +45,7 @@ test('Tap updates current and preview rates without seeking; metadata and clip s
  let now=0;
  const context=vm.createContext({$:id=>labels[id],performance:{now:()=>now},
   document:{querySelectorAll:()=>frames}});
- vm.runInContext(source.slice(source.indexOf('let tapTimes = [];'),source.indexOf('const output =')),context);
+ vm.runInContext(source.slice(source.indexOf('let tapTimes = [];'),source.indexOf('let output =')),context);
  function media(id){
   const label={};
   const frame={id,closest:()=>({querySelector:()=>label})};

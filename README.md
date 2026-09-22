@@ -34,6 +34,25 @@ Tap four times within five seconds to set BPM. The latest four taps provide thre
 
 Source tempos live in [clip-bpm.md](clip-bpm.md). Annotated footage plays at `Tap BPM / source BPM`, including candidate previews; blank or omitted footage stays at 1×. BPM defaults to 120 on page load. Decimal source BPMs are preserved. Click Rescan after editing the list. Tap updates speed without seeking or restarting the clip.
 
+## Live controls
+
+The Transition slider beside Tap sets a 0–1 second crossfade (default 0.30s). Both clips and their effects keep playing during the fade.
+
+| Key | Action |
+| --- | --- |
+| 1–4 / click | Cut to a ready candidate |
+| Shift+1–4 / Shift-click | Crossfade to a candidate |
+| Hold 0 | Black out the master output; release to reveal the playing clip |
+| Hold 8 / 9 | White / black strobe at 12 Hz |
+| Space / Escape | Focus prompt / leave an input |
+| + / − | Increase / decrease transition duration by 0.05s |
+
+Performance shortcuts are disabled while editing text, numbers, sliders, or menus. Clips keep playing and switching while 0 is held. Releasing 0 restores output without restarting playback. Leaving the window releases blackout and strobes.
+
+Click ↗ in the stage to open the live output window. Move it to your second display, then click Fullscreen or double-click its video. The window shares the final 1280×720 output, including effects, crossfades, blackout, and strobes. Keep the deck window open. Popup and fullscreen support depend on the browser; use Chrome if an embedded browser does not open a window.
+
+On desktop, the deck fits the viewport while the right column scrolls independently. Short windows use compact candidate cards and prompt controls.
+
 ## Effects
 
 RGB Shift, Twitch, Hue, Flip, Mirror, Trails, Edge, Colorize, Halftone, Colorama, Hatched, Invert, LoRez, Shift Glitch, and Strobe.
@@ -52,6 +71,7 @@ npm run test:twitch
 npm run test:shift-glitch
 npm run test:deck
 npm run test:tempo
+npm run test:performance
 npm run test:strobe
 python3 -m unittest discover -s . -p 'test_*.py' -v
 ```
