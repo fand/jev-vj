@@ -4,6 +4,8 @@ import { defaults, sanitize, type EffectParams } from './effects/types';
 import { MixedEffect } from './effects/mix';
 
 export type EffectSetting = { id: string; params: EffectParams; mix: number };
+const preview = new URLSearchParams(location.search).has('preview');
+if(preview)document.getElementById('playback')!.hidden=true;
 const video = document.querySelector<HTMLVideoElement>('#video')!;
 const makeBank = () => new Map(definitions.map(def=>[def.id,new MixedEffect(def.create(defaults(def)))]));
 let bank = makeBank();
@@ -27,15 +29,15 @@ async function ensure() {
   if(registration)return registration;
   if(failure){failure='';bank=makeBank();}
   registration=(async()=>{
-    if(!video.getAttribute('src'))throw Error('先に映像を選択してください。');
+    if(!video.getAttribute('src'))throw Error('Select a clip first.');
     if(video.readyState<2)await new Promise<void>((resolve,reject)=>{
-      const ready=()=>{cleanup();resolve();};const fail=()=>{cleanup();reject(Error('動画を読み込めませんでした。'));};
+      const ready=()=>{cleanup();resolve();};const fail=()=>{cleanup();reject(Error('Could not load the video.'));};
       const timeout=setTimeout(fail,15000);
       const cleanup=()=>{clearTimeout(timeout);video.removeEventListener('loadeddata',ready);video.removeEventListener('error',fail);video.removeEventListener('emptied',fail);};
       video.addEventListener('loadeddata',ready,{once:true});video.addEventListener('error',fail,{once:true});
       video.addEventListener('emptied',fail,{once:true});
     });
-    vfx=new VFX({autoplay:false,pixelRatio:Math.min(1,1280/Math.max(innerWidth,1)),scrollPadding:false});
+    vfx=new VFX({autoplay:false,pixelRatio:Math.min(preview ? .7 : 1,1280/Math.max(innerWidth,1)),scrollPadding:false});
     await vfx.add(video,{effect:[...bank.values()]});registered=true;
   })().catch(error=>{fallback(error);throw error;}).finally(()=>{registration=undefined;});
   return registration;
@@ -50,16 +52,17 @@ async function apply(settings: EffectSetting[]) {
   const next=settings.map(item=>{
     const def=definitions.find(d=>d.id===item.id);
     if(!def||unique.has(item.id)||!Number.isFinite(item.mix))throw Error('Invalid effect');
-    unique.add(item.id);return {id:item.id,params:sanitize(def,item.params||{}),mix:Math.max(0,Math.min(1,item.mix))};
+    unique.add(item.id);return {id:item.id,params:sanitize(def,item.params||{}),mix:item.id==='trails'?1:Math.max(0,Math.min(1,item.mix))};
   });
   await ensure();
-  for(const item of next){const node=bank.get(item.id)!;if(!node.enabled){node.instance.reset?.();node.amount=0;}node.instance.setParams(item.params);node.targetAmount=item.mix;}
+  for(const item of next){const node=bank.get(item.id)!;if(!node.enabled){node.instance.reset?.();node.amount=0;}node.instance.setParams(item.params);node.targetAmount=item.mix;if(item.id==='trails')node.amount=1;}
   chain=next;syncEnabled();
   try{vfx!.render();}catch(error){fallback(error);throw error;}
   return structuredClone(chain);
 }
-function render() {
-  if(registered&&!video.paused&&video.readyState>=2){try{vfx!.render();}catch(error){fallback(error);}}
+let lastFrame = 0;
+function render(now = 0) {
+  if((!preview || now-lastFrame>=1000/20) && registered&&!video.paused&&video.readyState>=2){lastFrame=now;try{vfx!.render();}catch(error){fallback(error);}}
   frame=requestAnimationFrame(render);
 }
 // Native dimensions keep object-fit letterboxing out of the shader's content UV.

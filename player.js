@@ -1,144 +1,236 @@
 const $ = id => document.getElementById(id);
-const output = $('output');
-const renderer = await new Promise((resolve,reject)=>{
- const ready=()=>output.contentWindow?.jevRenderer;
- if(ready()){resolve(ready());return;}
- const timeout=setTimeout(()=>{window.removeEventListener('message',listener);reject(Error('映像エンジンを起動できません。npm run buildを確認してください。'));},20000);
- const listener=e=>{if(e.origin===location.origin&&e.source===output.contentWindow&&e.data?.type==='effects-ready'){clearTimeout(timeout);window.removeEventListener('message',listener);resolve(ready());}};
- window.addEventListener('message',listener);
+// Average the three intervals between the latest four taps within five seconds.
+let tapTimes = [];
+let targetBpm = 120;
+function tapTempo(now) {
+ tapTimes=tapTimes.filter(time=>now-time<=5000);
+ if(!tapTimes.length || now-tapTimes.at(-1)>=100){
+  tapTimes.push(now);
+  tapTimes=tapTimes.slice(-4);
+ }
+ if(tapTimes.length<4)return null;
+ return Math.round(180000/(tapTimes[3]-tapTimes[0]));
+}
+function sourcePlaybackRate(sourceBpm, bpm) {
+ if(!Number.isFinite(sourceBpm)||sourceBpm<=0||!Number.isFinite(bpm)||bpm<=0)return 1;
+ return Math.max(1/16,Math.min(16,bpm/sourceBpm));
+}
+function applyVideoTempo(media) {
+ const sourceBpm=Number(media.dataset.sourceBpm);
+ const rate=sourcePlaybackRate(sourceBpm,targetBpm);
+ media.defaultPlaybackRate=rate;
+ media.playbackRate=rate;
+ const frame=media.ownerDocument.defaultView.frameElement;
+ const label=frame?.id==='output'?$('clip-tempo'):frame?.closest('.candidate')?.querySelector('.candidate-tempo');
+ if(label)label.textContent=sourceBpm>0?`${sourceBpm} BPM · ${rate.toFixed(2)}×`:'Original speed · 1×';
+}
+function bindVideoTempo(media, sourceBpm) {
+ media.dataset.sourceBpm=sourceBpm??'';
+ media.removeEventListener('loadedmetadata',onVideoMetadata);
+ media.addEventListener('loadedmetadata',onVideoMetadata);
+ applyVideoTempo(media);
+}
+function onVideoMetadata(event){applyVideoTempo(event.currentTarget);}
+function tempoVideos() {
+ return [...document.querySelectorAll('#output, .candidate-preview iframe')]
+  .map(frame=>frame.contentDocument?.querySelector('video')).filter(Boolean);
+}
+function setTargetBpm(bpm) {
+ if(!Number.isFinite(bpm)||bpm<=0)return false;
+ targetBpm=bpm;$('bpm').textContent=String(bpm);
+ for(const media of tempoVideos())applyVideoTempo(media);
+ return true;
+}
+function editBpm() {
+ $('bpm').hidden=true;
+ const input=$('bpm-input');input.hidden=false;input.value=targetBpm??'';
+ input.focus();input.select();
+}
+function finishBpmEdit(commit) {
+ const input=$('bpm-input');if(input.hidden)return;
+ if(commit && setTargetBpm(Number(input.value)))tapTimes=[];
+ input.hidden=true;$('bpm').hidden=false;
+}
+$('tap-tempo').addEventListener('click',()=>{
+ const bpm=tapTempo(performance.now());
+ if(bpm!==null)setTargetBpm(bpm);
 });
+$('resync-tempo').addEventListener('click',()=>{
+ for(const media of tempoVideos())if(media.readyState>=1)media.currentTime=0;
+});
+$('bpm').addEventListener('dblclick',editBpm);
+$('bpm').addEventListener('keydown',event=>{
+ if(event.key==='Enter'||event.key===' '){event.preventDefault();editBpm();}
+});
+$('bpm-input').addEventListener('blur',()=>finishBpmEdit(true));
+$('bpm-input').addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.preventDefault();finishBpmEdit(false);$('bpm').focus();}
+ if(event.key==='Enter'){
+  event.preventDefault();
+  if(Number($('bpm-input').value)>0&&$('bpm-input').reportValidity()){
+   finishBpmEdit(true);$('bpm').focus();
+  }
+ }
+});
+const output = $('output');
+function waitRenderer(frame) {
+ return new Promise((resolve,reject)=>{
+  const existing=frame.contentWindow?.jevRenderer;if(existing){resolve(existing);return;}
+  const timeout=setTimeout(()=>{cleanup();reject(Error('Could not start the renderer. Run npm run build and reload.'));},20000);
+  const listener=e=>{if(e.origin===location.origin&&e.source===frame.contentWindow&&e.data?.type==='effects-ready'){cleanup();resolve(frame.contentWindow.jevRenderer);}};
+  function cleanup(){clearTimeout(timeout);window.removeEventListener('message',listener);}
+  window.addEventListener('message',listener);
+ });
+}
+const renderer = await waitRenderer(output);
 const video = renderer.video;
+let token, state, labels={}, busy=false, generation=0;
 let manualTimer, applyingEffects=false, effectDraft=[], manualVersion=0, playbackApplying=false;
-
-let token, state, busy = false, generation = 0, timer, ticker, playbackTicket = null;
-let activePrompt = '', labels = {};
-function notice(text, error=false) { $('notice').textContent=text; $('notice').classList.toggle('error',error); }
-function buttons() { const available=state?.ready && state.available>0 && state.ffmpeg; const edited=$('prompt').value.trim()!==activePrompt; $('select').disabled=busy || applyingEffects || !available; $('next').disabled=busy || applyingEffects || !available || !activePrompt || edited; $('next').title=edited?'変更した指示は「映像を選ぶ」で適用します。':'同じ指示で次の映像を選択'; $('cancel').hidden=!(busy||applyingEffects); for(const el of $('effect-controls').querySelectorAll('input'))el.disabled=busy||playbackApplying; $('effects-clear').disabled=busy||playbackApplying; }
-function loading(text) { $('loading').hidden=!text; $('loading-text').textContent=text || ''; }
-async function post(path,data={}) {
+let inputVersion=0, candidateVersion=0, requesting=false, queued=false, composing=false, requestTimer;
+let lastRequestAt=performance.now(), candidates=[];
+const THROTTLE=1000;
+function notice(text,error=false){$('notice').textContent=text;$('notice').classList.toggle('error',error);}
+function loading(text){$('loading').hidden=!text;$('loading-text').textContent=text;}
+function buttons(){
+ for(const el of $('effect-controls').querySelectorAll('input, select'))el.disabled=busy||requesting||applyingEffects;
+ $('effects-clear').disabled=busy||requesting||applyingEffects||!state?.current;
+ for(const el of $('candidates').querySelectorAll('button'))el.disabled=busy||applyingEffects||requesting||el.dataset.ready!=='true';
+}
+async function post(path,data={}){
  const res=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Jev-Token':token},body:JSON.stringify(data)});
- const body=await res.json(); if(!res.ok) throw Error(body.error || '処理に失敗しました。'); return body;
+ const body=await res.json();if(!res.ok)throw Error(body.error||'The request failed.');return body;
 }
-async function refresh() {
- const res=await fetch('/api/status'); if(!res.ok)throw Error('サーバーに接続できません。');
+async function refresh(){
+ const res=await fetch('/api/status');if(!res.ok)throw Error('Could not connect to the server.');
  state=await res.json();token=state.token;labels=state.labels;
- $('comparison-reference').textContent=state.current?`比較の基準：${state.current.name}`:'1本目を選ぶと「もっとミニマルに」などで比較できます。';
- $('connection').textContent=`${state.available} / ${state.total} clips · ${state.axis_count} attributes`;
- $('led').classList.toggle('ready',state.ready && state.available>0);
- if(!state.ready)notice('TypeSafe APIキーが未設定です。',true);
- else if(!state.available)notice('T7を接続して「再スキャン」を押してください。',true);
- else if(!state.ffmpeg)notice('動画再生にはffmpeg / ffprobeが必要です。',true);
- renderHistory(); buttons();
+ $('connection').textContent=`${state.available} / ${state.total} footage`;
+ $('led').classList.toggle('ready',state.ready&&state.available>0);
+ $('comparison-reference').textContent=state.current?`Comparing against: ${state.current.name} + current effects`:'Playback continues while you type. Click a candidate to switch.';
+ $('step').textContent=`${String(state.history.length).padStart(2,'0')} / SESSION`;
+ $('current-effects').textContent=effectNames(state.effects||[]);
+ if(!state.ready)notice('TypeSafe API key is not configured.',true);
+ else if(!state.available)notice('Connect your media drive and click Rescan.',true);
+ else if(!state.ffmpeg)notice('Video playback requires ffmpeg and ffprobe.',true);
+ renderHistory();buttons();
 }
-function renderHistory() {
+function effectNames(chain){return chain.map(e=>renderer.definitions.find(d=>d.id===e.id)?.name||e.id).join(' + ')||'No FX';}
+function renderHistory(){
  $('history-count').textContent=String(state.history.length).padStart(2,'0');
- if(!state.history.length){$('history').replaceChildren(Object.assign(document.createElement('p'),{className:'muted',textContent:'まだ再生履歴はありません。'}));return;}
- $('history').replaceChildren(...state.history.slice().reverse().map((event,index)=>{
+ $('history').replaceChildren(...state.history.slice().reverse().map(event=>{
   const card=document.createElement('article');card.className='history-item';
-  const num=document.createElement('span');num.className='num';num.textContent=`${String(state.history.length-index).padStart(2,'0')} / ${event.clip.pack}`;
   const name=document.createElement('strong');name.textContent=event.clip.name;
+  const fx=document.createElement('p');fx.textContent=effectNames(event.effects||[]);
   const prompt=document.createElement('p');prompt.textContent=event.prompt;
-  const time=document.createElement('small');time.textContent=new Date(event.played_at*1000).toLocaleTimeString('ja-JP');
-  card.append(num,name,prompt,time);return card;
+  card.append(name,fx,prompt);return card;
  }));
 }
-function showClip(clip) {
- $('empty').hidden=true;$('pack').textContent=clip.pack.toUpperCase();$('name').textContent=clip.name;$('description').textContent=clip.note;
- const entries=Object.entries(clip.attributes);
- $('attribute-count').textContent=` / ${entries.length}`;
+function showClip(clip){
+ $('empty').hidden=true;$('pack').textContent=clip.pack.toUpperCase();$('name').textContent=clip.name;$('description').textContent=clip.note||'';
+ const entries=Object.entries(clip.attributes||{});$('attribute-count').textContent=` / ${entries.length}`;
  $('attributes').replaceChildren(...entries.flatMap(([key,value])=>{
   const dt=document.createElement('dt');dt.textContent=labels[key]||key;
   const dd=document.createElement('dd');dd.textContent=Array.isArray(value)?value.join(' / '):String(value);return [dt,dd];
  }));
- const primary=['color.palette','content.setting','camera.translation_speed','motion.rotation_direction','light.speed'];
- $('tags').replaceChildren(...primary.filter(k=>clip.attributes[k]!==undefined).map(k=>{
-  const tag=document.createElement('span');const v=clip.attributes[k];tag.textContent=`${labels[k]} · ${Array.isArray(v)?v.join(' / '):v}`;return tag;
+}
+function clearCandidates(){
+ ++candidateVersion;candidates=[];$('candidates').replaceChildren(...Array.from({length:4},(_,i)=>{
+  const el=document.createElement('div');el.className='candidate-placeholder';el.textContent=String(i+1).padStart(2,'0');return el;
  }));
 }
-function stopTimer() {clearTimeout(timer);clearInterval(ticker);$('countdown').textContent='再生履歴を踏まえて選択します。';}
-function schedule() {
- stopTimer();if(!$('auto').checked || !activePrompt || video.paused || busy || applyingEffects || document.hidden)return;
- const seconds=Number($('interval').value), due=Date.now()+seconds*1000;
- const update=()=>{$('countdown').textContent=`あと ${Math.max(0,Math.ceil((due-Date.now())/1000))} 秒で次の選択へ`;};update();ticker=setInterval(update,1000);
- timer=setTimeout(()=>select('next'),seconds*1000);
+function queueRecommendations(){
+ if(!queued||requesting||busy||applyingEffects||composing||requestTimer)return;
+ requestTimer=setTimeout(()=>{requestTimer=null;void recommend();},Math.max(0,THROTTLE-(performance.now()-lastRequestAt)));
 }
-async function select(action='select') {
- const prompt=(action==='next'?activePrompt:$('prompt').value).trim();if(!prompt){$('prompt').focus();return;}
- if(busy||applyingEffects)return;
- if(manualTimer){clearTimeout(manualTimer);manualTimer=null;await applyManualEffects();}
- busy=true;const version=++generation;stopTimer();buttons();loading('Jevが次の映像を選択中');notice('素材の属性と再生履歴を読み取っています…');
- try {
-  const result=await post('/api/select',{prompt,action:action==='select'&&$('clip-lock').checked?'effects':action});if(version!==generation)return;
-  activePrompt=prompt;
-  $('latency').textContent=`${(result.ms/1000).toFixed(2)} s`;
-  $('tokens').textContent=result.usage?.input_tokens?.toLocaleString()||'—';$('model').textContent=result.model||'—';
-  $('alternatives').replaceChildren(...(result.alternatives||[]).map(a=>Object.assign(document.createElement('p'),{textContent:`${a.name} · ${(a.weight*100).toFixed(1)}%`})));
-  if(result.outcome==='effects_updated') {
-   if(await applyTicket(result,version))notice('映像を維持してエフェクトを更新しました。');return;
-  }
-  if(result.outcome!=='selected') {
-   notice(result.outcome==='keep'?'今の映像を維持します。': '合う素材が見つかりませんでした。指示を変えてみてください。');
-   if(result.outcome==='no_match')$('auto').checked=false;
-   return;
-  }
-  loading('動画を準備中');notice('選択完了。再生用の動画を準備しています…');
-  const deadline=Date.now()+330000;
-  while(true) {
-   if(version!==generation)return;
-   const res=await fetch(`/api/asset/${result.asset}`);const asset=await res.json();
-   if(!res.ok || asset.state==='error')throw Error(asset.error||'動画を準備できませんでした。');
-   if(asset.state==='ready') {
-    playbackTicket={result,version};video.src=asset.url;video.load();
-    try{await video.play();}catch{notice('再生ボタンを押すと映像が始まります。');}
-    break;
-   }
-   if(Date.now()>deadline)throw Error('動画の準備がタイムアウトしました。');
-   await new Promise(resolve=>setTimeout(resolve,700));
-  }
- } catch(error) {if(version===generation){notice(error.message,true);$('auto').checked=false;}}
- finally {if(version===generation){busy=false;loading('');buttons();schedule();}}
+function inputChanged(){
+ ++inputVersion;clearCandidates();$('prompt-count').textContent=`${$('prompt').value.length} / 1000`;
+ queued=!!$('prompt').value.trim();$('candidate-status').textContent=queued?'Updating candidates from your input…':'Type to see candidates';
+ if(!queued){clearTimeout(requestTimer);requestTimer=null;}
+ queueRecommendations();
 }
-video.addEventListener('playing',async()=>{
- const ticket=playbackTicket;
- if(ticket && ticket.version===generation) {
-  playbackTicket=null;
-  showClip(ticket.result.clip);
-  try {
-   if(!await applyTicket(ticket.result,ticket.version))return;
-   $('step').textContent=`${String(state.history.length).padStart(2,'0')} / SESSION`;notice(ticket.result.repeat_fallback?'他に合う候補がないため、最近の素材を再使用しています。':'再生中。直近3本を避けて「次の1本」へ進めます。');
-  }catch(error){notice(error.message,true);$('auto').checked=false;}
+async function recommend(){
+ if(!queued||requesting||busy||applyingEffects||composing)return;
+ if(!state?.ready||!state.available||!state.ffmpeg){queued=false;return;}
+ if(manualTimer){clearTimeout(manualTimer);manualTimer=null;await applyManualEffects();queueRecommendations();return;}
+ const version=inputVersion,prompt=$('prompt').value.trim();if(!prompt)return;
+ requesting=true;queued=false;lastRequestAt=performance.now();buttons();$('candidates').setAttribute('aria-busy','true');$('candidate-status').textContent='Jev is choosing footage and effects…';
+ try{
+  const result=await post('/api/candidates',{prompt});
+  if(version!==inputVersion)return;
+  candidates=result.candidates;renderCandidates();
+  $('latency').textContent=`${(result.ms/1000).toFixed(2)} s`;$('tokens').textContent=result.usage?.input_tokens?.toLocaleString()||'—';$('model').textContent=result.model||'—';
+  $('candidate-status').textContent=`${candidates.length} / 4 clips`;
+  notice(candidates.length?'Click a candidate to play.':'No matching candidates. Current playback continues.');
+ }catch(error){if(version===inputVersion){$('candidate-status').textContent='Could not load candidates';notice(error.message,true);}}
+ finally{requesting=false;$('candidates').setAttribute('aria-busy','false');buttons();queueRecommendations();}
+}
+async function waitAsset(asset,valid){
+ const deadline=Date.now()+330000;
+ while(valid()){
+  const res=await fetch(`/api/asset/${asset}`),data=await res.json();
+  if(!res.ok||data.state==='error')throw Error(data.error||'Could not prepare the video.');
+  if(data.state==='ready')return data.url;
+  if(Date.now()>deadline)throw Error('Video preparation timed out.');
+  await new Promise(resolve=>setTimeout(resolve,700));
  }
- schedule();
+ return null;
+}
+function renderCandidates(){
+ const version=++candidateVersion;
+ $('candidates').replaceChildren(...candidates.map((candidate,index)=>{
+  const button=document.createElement('button');button.type='button';button.className='candidate';button.disabled=true;button.dataset.id=candidate.id;button.setAttribute('aria-pressed','false');
+  const preview=document.createElement('div');preview.className='candidate-preview';
+  const frame=document.createElement('iframe');frame.title=`Candidate ${index+1}: ${candidate.clip.name}`;frame.src='/effect-output.html?preview=1';frame.allow='autoplay';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');preview.append(frame);
+  const rank=document.createElement('span');rank.className='candidate-rank';rank.textContent=String(index+1).padStart(2,'0');preview.append(rank);
+  const name=document.createElement('strong');name.textContent=candidate.clip.name;
+  const fx=document.createElement('span');fx.className='candidate-fx';fx.textContent=effectNames(candidate.effects);
+  const tempo=document.createElement('span');tempo.className='candidate-tempo';
+  const status=document.createElement('span');status.className='candidate-state';status.textContent='Preparing preview…';
+  button.append(preview,name,fx,tempo,status);button.addEventListener('click',()=>void choose(candidate));
+  // Start after the iframe is attached, so its renderer can initialize.
+  setTimeout(()=>void (async()=>{
+   const valid=()=>version===candidateVersion&&button.isConnected;
+   try{
+    if(!valid())return;
+    const [engine,url]=await Promise.all([waitRenderer(frame),waitAsset(candidate.asset,valid)]);
+    if(!valid()||!url)return;
+    bindVideoTempo(engine.video,candidate.clip.source_bpm);engine.video.src=url;await engine.video.play();if(!valid())return;
+    await engine.apply(candidate.effects);if(!valid())return;
+    status.textContent='Click to play';button.dataset.ready='true';buttons();
+   }catch(error){if(valid()){status.textContent='Preview failed';button.title=error.message;}}
+  })(),0);
+  return button;
+ }));
+}
+async function choose(candidate){
+ if(busy||requesting||applyingEffects)return;
+ if(manualTimer){clearTimeout(manualTimer);manualTimer=null;await applyManualEffects();return;}
+ busy=true;const version=++generation;buttons();loading('Switching clip');
+ try{
+  const result=await post('/api/choose',{id:candidate.id});
+  const url=await waitAsset(result.asset,()=>version===generation);if(!url||version!==generation)return;
+  bindVideoTempo(video,result.clip.source_bpm);
+  if(video.getAttribute('src')!==url){video.src=url;video.load();}
+  await video.play();
+  if(!await applyTicket(result,version))return;
+  showClip(result.clip);
+  for(const button of $('candidates').querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.id===candidate.id));
+  notice(`Playing ${result.clip.name}.`);
+ }catch(error){if(version===generation){await restorePresentation();notice(error.message,true);}}
+ finally{if(version===generation){busy=false;loading('');buttons();queueRecommendations();}}
+}
+$('form').addEventListener('submit',e=>e.preventDefault());
+$('prompt').addEventListener('input',inputChanged);
+$('prompt').addEventListener('compositionstart',()=>{composing=true;clearTimeout(requestTimer);requestTimer=null;});
+$('prompt').addEventListener('compositionend',()=>{composing=false;inputChanged();});
+for(const button of $('examples').querySelectorAll('button'))button.addEventListener('click',()=>{$('prompt').value=button.textContent;inputChanged();$('prompt').focus();});
+$('fullscreen').addEventListener('click',()=>{const change=document.fullscreenElement?document.exitFullscreen():$('stage').requestFullscreen?.();change?.catch(()=>notice('Could not enter fullscreen.',true));});
+$('clear').addEventListener('click',async()=>{
+ ++generation;++inputVersion;++manualVersion;queued=false;clearTimeout(requestTimer);requestTimer=null;clearTimeout(manualTimer);manualTimer=null;
+ busy=true;clearCandidates();buttons();
+ try{await post('/api/clear');await restorePresentation();$('prompt').value='';$('prompt-count').textContent='0 / 1000';$('candidate-status').textContent='Type to see candidates';notice('Playback history cleared.');}
+ catch(error){notice(error.message,true);}finally{busy=false;loading('');buttons();}
 });
-video.addEventListener('pause',stopTimer);
-video.addEventListener('error',()=>{if(video.getAttribute('src')){playbackTicket=null;notice('動画を再生できませんでした。履歴には追加しません。',true);$('auto').checked=false;stopTimer();}});
-$('form').addEventListener('submit',e=>{e.preventDefault();select();});
-$('next').addEventListener('click',()=>select('next'));
-$('prompt').addEventListener('input',()=>{$('prompt-count').textContent=`${$('prompt').value.length} / 1000`;if($('auto').checked){$('auto').checked=false;stopTimer();}buttons();});
-for(const b of $('examples').querySelectorAll('button'))b.addEventListener('click',()=>{$('prompt').value=b.textContent;$('prompt').dispatchEvent(new Event('input'));$('prompt').focus();});
-$('auto').addEventListener('change',schedule);$('interval').addEventListener('change',schedule);
-document.addEventListener('visibilitychange',()=>document.hidden?stopTimer():schedule());
-$('fullscreen').addEventListener('click',()=>{const change=document.fullscreenElement?document.exitFullscreen():$('stage').requestFullscreen?.();change?.catch(()=>notice('全画面表示を切り替えられませんでした。',true));});
-async function cancel(clear=false) {
- ++generation;++manualVersion;clearTimeout(manualTimer);manualTimer=null;busy=false;playbackTicket=null;$('auto').checked=false;stopTimer();loading('');buttons();
- try{await post(clear?'/api/clear':'/api/cancel');if(clear){activePrompt='';video.pause();video.removeAttribute('src');video.load();renderer.reset();effectDraft=[];renderEffectControls();$('empty').hidden=false;$('name').textContent='まだ選択されていません';$('pack').textContent='NOW PLAYING';$('step').textContent='— / SESSION';$('description').textContent='新しい流れを始めましょう。';$('tags').replaceChildren();$('attributes').replaceChildren();$('attribute-count').textContent='';}await restorePresentation();notice(clear?'履歴をクリアしました。':'待機中の選択を取り消しました。');}catch(e){notice(e.message,true);}
-}
-$('cancel').addEventListener('click',()=>cancel());$('clear').addEventListener('click',()=>cancel(true));
-$('scan').addEventListener('click',async()=>{try{$('scan').disabled=true;await post('/api/scan');await refresh();}catch(e){notice(e.message,true);}finally{$('scan').disabled=false;}});
-async function initialize() {
- await refresh();renderEffectControls();
- if(state.current) {
-  const last=state.history.at(-1);
-  activePrompt=state.prompt??last?.prompt??'';$('prompt').value=activePrompt;$('prompt-count').textContent=`${activePrompt.length} / 1000`;
-  video.addEventListener('loadeddata',()=>{void renderer.apply(state.effects||[]).then(syncEffects).catch(e=>notice(e.message,true));},{once:true});
-  showClip(state.current);$('step').textContent=`${String(state.history.length).padStart(2,'0')} / SESSION`;
-  video.src=`/media/${state.current_asset??last?.asset}`;
-  try{await video.play();notice('前回の映像を再開しました。');}catch{notice('再生ボタンで前回の映像を再開できます。');}
-  buttons();
- }
-}
-initialize().catch(e=>notice(e.message,true));
-
+$('scan').addEventListener('click',async()=>{try{await post('/api/scan');await refresh();if(state.current)bindVideoTempo(video,state.current.source_bpm);inputChanged();}catch(error){notice(error.message,true);}});
 function syncEffects(){effectDraft=structuredClone(state.effects||[]);renderEffectControls();}
 function renderEffectControls(){
  $('effects-count').textContent=String(effectDraft.length);
@@ -153,11 +245,13 @@ function renderEffectControls(){
    renderEffectControls();queueManualEffects();
   });
   const params=document.createElement('div');params.className='effect-params';
-  for(const c of [...def.controls,{key:'$mix',label:'Effect mix',min:0,max:1,step:.01,value:1}]){
-   const row=document.createElement('label'),value=document.createElement('output'),input=document.createElement('input');
-   input.type='range';input.min=c.min;input.max=c.max;input.step=c.step;input.value=c.key==='$mix'?(selected?.mix??1):(selected?.params[c.key]??c.value);
-   input.setAttribute('aria-label',def.name+' '+c.label);value.textContent=input.value;
-   input.addEventListener('input',()=>{const item=effectDraft.find(e=>e.id===def.id);if(!item)return;if(c.key==='$mix')item.mix=Number(input.value);else item.params[c.key]=Number(input.value);value.textContent=input.value;queueManualEffects();});
+  for(const c of [...def.controls,...(def.id==='trails'?[]:[{key:'$mix',label:'Effect mix',min:0,max:1,step:.01,value:1}])]){
+   const row=document.createElement('label'),value=document.createElement('output'),input=document.createElement(c.options?'select':'input');
+   if(c.options)c.options.forEach((name,index)=>{const option=document.createElement('option');option.value=index;option.textContent=name;input.append(option);});
+   else{input.type='range';input.min=c.min;input.max=c.max;input.step=c.step;}
+   input.value=c.key==='$mix'?(selected?.mix??1):(selected?.params[c.key]??c.value);
+   input.setAttribute('aria-label',def.name+' '+c.label);value.textContent=c.options?'':input.value;
+   input.addEventListener('input',()=>{const item=effectDraft.find(e=>e.id===def.id);if(!item)return;if(c.key==='$mix')item.mix=Number(input.value);else item.params[c.key]=Number(input.value);value.textContent=c.options?'':input.value;queueManualEffects();});
    row.append(document.createTextNode(c.label),value,input);params.append(row);
   }
   card.append(params);return card;
@@ -167,10 +261,11 @@ function queueManualEffects(){++manualVersion;clearTimeout(manualTimer);manualTi
 async function restorePresentation(){
  await refresh();
  if(state.current){
+  bindVideoTempo(video,state.current.source_bpm);
   const src=`/media/${state.current_asset}`;
   if(video.getAttribute('src')!==src){video.src=src;video.load();await video.play().catch(()=>{});}
   await renderer.apply(state.effects||[]).catch(()=>{});showClip(state.current);
- }else{video.pause();video.removeAttribute('src');video.load();renderer.reset();$('empty').hidden=false;}
+ }else{video.pause();video.removeAttribute('src');video.load();renderer.reset();$('empty').hidden=false;$('name').textContent='No clip selected';$('pack').textContent='NOW PLAYING';$('description').textContent='';$('attributes').replaceChildren();$('attribute-count').textContent='';$('clip-tempo').textContent='';bindVideoTempo(video,null);}
  syncEffects();
 }
 async function applyTicket(result,version){
@@ -180,14 +275,14 @@ async function applyTicket(result,version){
   if(version!==generation){await restorePresentation();return false;}
   await post('/api/played',{ticket:result.ticket,effects_failed:failed});
   if(version!==generation){await restorePresentation();return false;}
-  await refresh();syncEffects();
-  if(failed){notice('エフェクト描画に失敗したため元映像で再生しています。',true);$('auto').checked=false;return false;}
+  await refresh();syncEffects();showClip(state.current);
+  if(failed){notice('Effect rendering failed. Playing the original footage.',true);return false;}
   return true;
  }catch(error){await restorePresentation();throw error;}
  finally{applyingEffects=false;playbackApplying=false;buttons();}
 }
 async function applyManualEffects(){
- if(busy||!state.current){syncEffects();$('effects-status').textContent='映像の再生後、選択処理が終わってから調整してください。';return;}
+ if(busy||requesting||!state.current){syncEffects();$('effects-status').textContent='Start playback and wait for selection to finish before adjusting effects.';return;}
  if(applyingEffects)return;
  applyingEffects=true;buttons();
  let processed=manualVersion;
@@ -202,9 +297,29 @@ async function applyManualEffects(){
    if(version!==generation){await restorePresentation();return;}
    await refresh();
   }while(processed!==manualVersion);
-  syncEffects();$('effects-status').textContent='手動設定を適用しました。次の指示でも比較に使います。';
+  syncEffects();$('effects-status').textContent='Manual settings applied. Future prompts will compare against them.';
  }catch(error){notice(error.message,true);await restorePresentation();}
- finally{applyingEffects=false;buttons();}
+ finally{applyingEffects=false;buttons();queueRecommendations();}
 }
+
 $('effects-clear').addEventListener('click',()=>{effectDraft=[];renderEffectControls();queueManualEffects();});
-window.addEventListener('message',e=>{if(e.origin===location.origin&&e.source===output.contentWindow&&e.data?.type==='effects-error'){notice('エフェクト描画に失敗したため元映像を表示しています。',true);$('auto').checked=false;stopTimer();if(state?.current&&!busy&&!applyingEffects){void post('/api/effects',{effects:[],clip_id:state.current.id,revision:state.effect_revision}).then(refresh).then(syncEffects).catch(()=>{});}}});
+window.addEventListener('message',e=>{
+ if(e.origin!==location.origin||e.data?.type!=='effects-error')return;
+ if(e.source!==output.contentWindow){
+  for(const frame of $('candidates').querySelectorAll('iframe'))if(e.source===frame.contentWindow){
+   const button=frame.closest('button');button.dataset.ready='false';button.disabled=true;
+   button.querySelector('.candidate-state').textContent='FX preview failed';
+  }
+  return;
+ }
+ notice('Effect rendering failed. Showing the original footage.',true);
+ if(state?.current&&!busy&&!requesting&&!applyingEffects)void post('/api/effects',{effects:[],clip_id:state.current.id,revision:state.effect_revision}).then(refresh).then(syncEffects).catch(()=>{});
+});
+clearCandidates();
+try{
+ await refresh();syncEffects();
+ if(state.current){
+  const savedPrompt=state.prompt||'';$('prompt').value=savedPrompt;$('prompt-count').textContent=`${savedPrompt.length} / 1000`;
+  await restorePresentation();notice('Previous clip resumed. Type to update candidates.');
+ }
+}catch(error){notice(error.message,true);}

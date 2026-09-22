@@ -97,6 +97,38 @@ async function main(): Promise<void> {
     try {
         await vfx.add(source, { effect: [] });
         if (!outputContext()) throw Error('VFX WebGL canvas unavailable');
+        // Check the requested per-frame feedback equation, fading and reset.
+        for (const feedback of [0, .4, .5, 1]) {
+            const trails = effect('trails').create({feedback});
+            let level = 1;
+            await vfx.updateEffects(source, [{
+                render(ctx) {
+                    ctx.draw({frag: `#version 300 es
+precision highp float;
+uniform float level;
+out vec4 outColor;
+void main(){outColor=vec4(vec3(level),1.0);}`, uniforms: {level}, target: ctx.target});
+                },
+            }, {
+                init: ctx => trails.effect.init?.(ctx),
+                render: ctx => trails.effect.render?.({...ctx, deltaTime: 1/60}),
+                dispose: () => trails.effect.dispose?.(),
+            }]);
+            vfx.render(); // Seed white, then fade toward black.
+            level = 0;
+            vfx.render();
+            const expected = 255*feedback*.5;
+            if (!close(readPixel(outputContext()!, .5, .5)!, [expected,expected,expected,255], 3)) {
+                throw Error(`Trails feedback ${feedback}: first frame does not match mix equation`);
+            }
+            for (let i=0;i<20;i++)vfx.render();
+            const faded = readPixel(outputContext()!, .5, .5)!;
+            const final = 0;
+            if (!close(faded, [final,final,final,255], 3))throw Error('Trails feedback decay/hold mismatch');
+            trails.reset?.();vfx.render();
+            if (!close(readPixel(outputContext()!, .5, .5)!, [0,0,0,255], 2))throw Error('Trails reset retained history');
+            line(`Trails feedback ${feedback}: blend, fade and reset pixel checks: pass`);
+        }
         for (const definition of definitions) {
             try {
                 const params = defaults(definition);
@@ -146,6 +178,48 @@ async function main(): Promise<void> {
                 throw Error('Colorize grayscale check failed');
             }
             line('Colorize grayscale pixel check: pass');
+
+            // Known source pixels verify every palette and folding AFTER the time offset.
+            const luma = (.299*left[0]+.587*left[1]+.114*left[2])/255;
+            const paletteColor = (index:number,t:number):Pixel => {
+                const pairs = [[[1,0,0],[0,0,1]], [[1,1,0],[1,.1,.6]], [[0,1,1],[.6,0,1]], [[1,1,1],[0,0,0]]];
+                const rgb = index===0 ? [0,2/3,1/3].map(offset=>Math.max(0,Math.min(1,Math.abs(((t+offset)%1)*6-3)-1)))
+                    : pairs[index-1][0].map((value,i)=>value*(1-t)+pairs[index-1][1][i]*t);
+                return [rgb[0]*255,rgb[1]*255,rgb[2]*255,255];
+            };
+            for(let palette=0;palette<5;palette++)for(const frequency of [0,1,4]){
+                const instance=effect('colorama').create({palette,frequency,speed:1});
+                let delta=0;
+                await vfx.updateEffects(source, {render:ctx=>instance.effect.render?.({...ctx,deltaTime:delta})});
+                vfx.render();
+                if(!close(readPixel(gl,.18,.5)!,paletteColor(palette,1-Math.abs(((luma*frequency)%2)-1)),5))throw Error('Colorama static palette mismatch: '+palette);
+                delta=.25;
+                for(let i=0;i<3;i++)vfx.render();
+                const folded=1-Math.abs(((luma*frequency+.75)%2)-1);
+                if(!close(readPixel(gl,.18,.5)!,paletteColor(palette,folded),5))throw Error('Colorama animated fold mismatch: '+palette);
+                if(readPixel(gl,.47,.5)![3]>4 || Math.abs(readPixel(gl,.73,.88)![3]-halfAlpha[3])>4)throw Error('Colorama lost alpha');
+                instance.setParams({speed:0});
+                const frozen=readPixel(gl,.18,.5)!;vfx.render();
+                if(!close(readPixel(gl,.18,.5)!,frozen,1))throw Error('Colorama zero speed did not freeze');
+                instance.reset?.();vfx.render();
+                if(!close(readPixel(gl,.18,.5)!,paletteColor(palette,1-Math.abs(((luma*frequency)%2)-1)),5))throw Error('Colorama reset failed');
+            }
+            line('Colorama: five palettes, frequency 0/1/4, fold after animation, zero-speed hold, alpha and reset: pass');
+
+            const strobe = effect('strobe');
+            for (const white of [0, 1]) {
+                await render(strobe, {...defaults(strobe), duty: 1, white}, 1);
+                const solid = readPixel(gl, 0.18, 0.5)!;
+                const half = readPixel(gl, 0.73, 0.88)!;
+                const hole = readPixel(gl, 0.47, 0.5)!;
+                if (!close(solid, [white*255,white*255,white*255,left[3]], 4)) throw Error('Strobe black/white pixel mismatch');
+                if (Math.abs(half[3]-halfAlpha[3])>4 || hole[3]>4) throw Error('Strobe lost alpha');
+            }
+            for (const params of [{frequency:0}, {amount:0}, {duty:0}] as EffectParams[]) {
+                await render(strobe, {...defaults(strobe), ...params}, 1);
+                if (!close(readPixel(gl, 0.18, 0.5)!, left, 4)) throw Error('Strobe bypass mismatch');
+            }
+            line('Strobe: black/white, alpha preservation, zero frequency/amount/duty: pass');
 
             // Opaque vertical bars make empty edges and accidental rotation visible.
             const ctx = source.getContext('2d')!;
@@ -219,14 +293,17 @@ async function main(): Promise<void> {
             if (first.some(p=>p[3]<250)) throw Error('Shift Glitch repeat wrapping introduced empty edges');
             const full = {...settings, vertical:1, horizontal:1};
             const fullFirst = await capture(full, 0.01), fullNext = await capture(full, 0.095);
-            if (!fullFirst.every((p,i)=>close(p,fullNext[i],1))) throw Error('Shift Glitch per-band transforms must stay fixed');
+            if (fullFirst.every((p,i)=>close(p,fullNext[i],2))) throw Error('Shift Glitch full-coverage pattern did not change');
+            const frozen = {...full, frequency:0};
+            const frozenFirst = await capture(frozen, .01), frozenNext = await capture(frozen, .095);
+            if (!frozenFirst.every((p,i)=>close(p,frozenNext[i],1))) throw Error('Shift Glitch zero frequency must freeze the pattern');
             if (fullFirst.some(p=>p[3]<250)) throw Error('Shift Glitch overlap lost opacity');
             for (const axis of ['vertical','horizontal']) {
                 const solo = await capture({...settings,[axis]:.3},0.01);
                 const count = solo.filter((p,i)=>!close(p,original[i],3)).length;
                 if (count<1 || count>120) throw Error('Shift Glitch independent axis coverage failed: '+axis);
             }
-            line('Shift Glitch: partial coverage, independent axes, held transforms, mask updates, repeat: pass');
+            line('Shift Glitch: partial coverage, independent axes, held frames, refreshed patterns, zero-frequency freeze, repeat: pass');
 
 
 

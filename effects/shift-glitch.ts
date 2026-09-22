@@ -26,8 +26,8 @@ float randomBand(int band, int axis, int stream, int epoch) {
 }
 float boundary(int band, int axis) {
     // Sorted jittered boundaries: widths vary from 0.04x to 1.96x base size.
-    // Boundaries, offsets and scales are independent of time/eventIndex.
-    return float(band) + 0.02 + 0.96 * randomBand(band, axis, 1, 0);
+    // Each event redraws the layout; it stays still until the next event.
+    return float(band) + 0.02 + 0.96 * randomBand(band, axis, 1, eventIndex + 1);
 }
 vec2 transformBand(vec2 original, vec2 transformed, int axis, float coverage) {
     if (coverage <= 0.0) return transformed;
@@ -35,13 +35,13 @@ vec2 transformBand(vec2 original, vec2 transformed, int axis, float coverage) {
     float coordinate = (axis == 0 ? original.x : original.y) * pixels / size;
     int band = int(floor(coordinate));
     if (coordinate < boundary(band, axis)) band -= 1;
-    // Only the active mask changes at each update. Coverage is probabilistic:
+    // Each event changes both the layout and active mask. Coverage is probabilistic:
     // e.g. 0.2 affects approximately 20% per axis over many bands/updates.
     if (randomBand(band, axis, 2, eventIndex + 1) >= coverage) return transformed;
     float center = (boundary(band, axis) + boundary(band + 1, axis)) * 0.5 * size / pixels;
     vec2 anchor = axis == 0 ? vec2(center, 0.5) : vec2(0.5, center);
-    vec2 offset = (vec2(randomBand(band, axis, 3, 0), randomBand(band, axis, 4, 0)) * 2.0 - 1.0) * 0.35;
-    vec2 scale = exp2((vec2(randomBand(band, axis, 5, 0), randomBand(band, axis, 6, 0)) * 2.0 - 1.0) * 1.5);
+    vec2 offset = (vec2(randomBand(band, axis, 3, eventIndex + 1), randomBand(band, axis, 4, eventIndex + 1)) * 2.0 - 1.0) * 0.35;
+    vec2 scale = exp2((vec2(randomBand(band, axis, 5, eventIndex + 1), randomBand(band, axis, 6, eventIndex + 1)) * 2.0 - 1.0) * 1.5);
     return (transformed - anchor) / scale + anchor + offset;
 }
 vec4 readSource(vec2 uv) {
@@ -89,5 +89,5 @@ function create(initial: EffectParams) {
 }
 export const definition: EffectDefinition = {
     id:'shift-glitch', name:'Shift Glitch', order:30, controls, create,
-    description:'Partial vertical and horizontal bands of irregular width. Independent per-axis coverage. Random 2D UV offsets and scales stay fixed per band; only active bands update at 0–30 Hz. Repeat wrapping; 0 Hz freezes the mask.',
+    description:'Partial vertical and horizontal bands of irregular width. Independent per-axis coverage. Band boundaries, active masks, and random 2D UV offsets/scales refresh at 0–30 Hz and hold between updates. Repeat wrapping; 0 Hz freezes the pattern.',
 };

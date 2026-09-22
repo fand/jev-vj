@@ -1,8 +1,12 @@
 import math
 import unittest
 
-from effect_selection import controls, presets, validate_chain
+from effect_selection import controls, presets, validate_chain, select_effects
 from player_server import Player, Problem
+
+def adjust_intent(_):
+    return {'answers':{'effect_mode':{'type':'choice','choice':'adjust'}}}
+
 
 
 def clip_answer(choice):
@@ -39,6 +43,27 @@ class FakeLibrary:
 
 
 class EffectStateTests(unittest.TestCase):
+    def test_multicolor_palette_removes_current_single_tint(self):
+        current = [{'id':'colorize','params':{'hue':0,'saturation':.8,'brightness':1},'mix':1}]
+        def conflicting(body):
+            result = effects_off(body)
+            result['answers']['colorize']['choice'] = 'keep'
+            result['answers']['colorama']['choice'] = 'rainbow'
+            return result
+        chain, _ = select_effects(conflicting, 'make it colurful', {}, current, [])
+        self.assertEqual([item['id'] for item in chain], ['colorama'])
+        self.assertEqual(chain[0]['params'], {'palette':0, 'frequency':1, 'speed':0})
+
+    def test_colorama_frequency_does_not_trigger_legacy_palette_mapping(self):
+        for palette in range(5):
+            params = {'palette':palette, 'frequency':8, 'speed':.2}
+            chain = validate_chain([{'id':'colorama', 'params':params}])
+            self.assertEqual(chain[0]['params'], params)
+
+    def test_colorama_migrates_old_monochrome_palette(self):
+        chain = validate_chain([{'id':'colorama','params':{'palette':3,'frequency':1,'offset':0,'repeat':2,'speed':.1}}])
+        self.assertEqual(chain[0]['params'], {'palette':4,'frequency':1,'speed':.1})
+
     def test_shift_glitch_migrates_legacy_axis_to_partial_coverage(self):
         for vertical in [0,1]:
             p = validate_chain([{'id':'shift-glitch','params':{'amount':40,'bandSize':48,'vertical':vertical,'frequency':8}}])[0]['params']
@@ -105,7 +130,7 @@ class EffectStateTests(unittest.TestCase):
 
 class PlayerEffectStateTests(unittest.TestCase):
     def test_renderer_failure_records_raw_output_not_requested_effects(self):
-        player = Player(FakeLibrary(), evaluator=lambda _: clip_answer('pack/a.mp4'), effect_evaluator=trails_medium)
+        player = Player(FakeLibrary(), intent_evaluator=adjust_intent, evaluator=lambda _: clip_answer('pack/a.mp4'), effect_evaluator=trails_medium)
         selected = player.select('trails')
         self.assertTrue(selected['effects'])
         player.played(selected['ticket'], effects_failed=True)
@@ -115,7 +140,7 @@ class PlayerEffectStateTests(unittest.TestCase):
 
     def make_playing_player(self, effect_evaluator=effects_off):
         player = Player(
-            FakeLibrary(),
+            FakeLibrary(), intent_evaluator=adjust_intent,
             evaluator=lambda _: clip_answer('pack/a.mp4'),
             effect_evaluator=effect_evaluator,
         )
@@ -139,7 +164,7 @@ class PlayerEffectStateTests(unittest.TestCase):
         self.assertEqual(len(player.history), history_len)
 
     def test_manual_effects_checks_current_revision_and_pending_state(self):
-        player = Player(FakeLibrary(), evaluator=lambda _: clip_answer('pack/a.mp4'), effect_evaluator=trails_medium)
+        player = Player(FakeLibrary(), intent_evaluator=adjust_intent, evaluator=lambda _: clip_answer('pack/a.mp4'), effect_evaluator=trails_medium)
         chain = validate_chain([{'id': 'invert', 'params': {}, 'mix': 1}])
         with self.assertRaises(Problem):
             player.manual_effects(chain, 'pack/a.mp4', 0)

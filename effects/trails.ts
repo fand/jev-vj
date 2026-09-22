@@ -9,7 +9,7 @@ out vec4 outColor;
 
 uniform sampler2D src;
 uniform sampler2D history;
-uniform float retention;
+uniform float u_feedback;
 uniform bool seed;
 
 void main() {
@@ -21,26 +21,10 @@ void main() {
 
   // Both textures are premultiplied. Interpolating all four channels keeps
   // transparent edges free of unassociated RGB when this is finally blended.
-  outColor = mix(current, texture(history, uvContent), retention);
+  float t = clamp(u_feedback, 0.0, 1.0);
+  outColor = mix(current, texture(history, uvContent), t * 0.5);
 }
 `;
-
-const FRAG_OUTPUT = `#version 300 es
-precision highp float;
-in vec2 uvContent;
-in vec2 uvSrc;
-out vec4 outColor;
-
-uniform sampler2D src;
-uniform sampler2D history;
-uniform float mixAmount;
-
-void main() {
-  outColor = mix(texture(src, uvSrc), texture(history, uvContent), mixAmount);
-}
-`;
-
-const MAX_DELTA_SECONDS = 0.25;
 
 class TrailsEffect implements Effect {
   #params: EffectParams;
@@ -61,7 +45,8 @@ class TrailsEffect implements Effect {
   }
 
   init(ctx: EffectContext): void {
-    this.#history = ctx.createRenderTarget({ persistent: true, filter: 'linear' });
+    // Preserve fractional history values between frames.
+    this.#history = ctx.createRenderTarget({ persistent: true, float: true, filter: 'linear' });
     ctx.onContextRestored(() => this.reset());
   }
 
@@ -82,23 +67,12 @@ class TrailsEffect implements Effect {
       this.#resetPending = true;
     }
 
-    const halfLife = this.#params.halfLife;
-    // Clamp a resumed tab's delta so a long suspension does not erase trails
-    // in a single frame. For ordinary frames the exponential is exact.
-    const dt = Math.min(Math.max(ctx.deltaTime, 0), MAX_DELTA_SECONDS);
-    const retention = 2 ** (-dt / halfLife);
-    const seed = this.#resetPending;
-
     ctx.draw({
       frag: FRAG_ACCUMULATE,
-      uniforms: { src: ctx.src, history, retention, seed },
+      uniforms: { src: ctx.src, history, u_feedback: this.#params.feedback, seed: this.#resetPending },
       target: history,
     });
-    ctx.draw({
-      frag: FRAG_OUTPUT,
-      uniforms: { src: ctx.src, history, mixAmount: this.#params.mix },
-      target: ctx.target,
-    });
+    ctx.blit(history, ctx.target);
 
     this.#resetPending = false;
   }
@@ -113,11 +87,10 @@ class TrailsEffect implements Effect {
 export const definition: EffectDefinition = {
   id: 'trails',
   name: 'Trails',
-  description: 'Persistent, fading frame accumulation for motion trails.',
+  description: 'Per-frame feedback trails, blending 0–50% of the previous frame.',
   order: 60,
   controls: [
-    { key: 'halfLife', label: 'Half-life', min: 0.05, max: 10, step: 0.05, value: 0.8 },
-    { key: 'mix', label: 'Mix', min: 0, max: 1, step: 0.01, value: 0.7 },
+    { key: 'feedback', label: 'Feedback', min: 0, max: 1, step: 0.001, value: 0.4 },
   ],
   create(params: EffectParams) {
     const effect = new TrailsEffect(params);

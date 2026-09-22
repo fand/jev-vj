@@ -6,7 +6,10 @@
     "build": "tsc --noEmit && node build.mjs",
     "check": "tsc --noEmit",
     "test:twitch": "node --test test-twitch.mjs",
-    "test:shift-glitch": "node --test test-shift-glitch.mjs"
+    "test:shift-glitch": "node --test test-shift-glitch.mjs",
+    "test:deck": "node --test test-deck-input.mjs",
+    "test:strobe": "node --test test-strobe.mjs",
+    "test:tempo": "node --test test-tempo.mjs"
   },
   "dependencies": {
     "@vfx-js/core": "1.1.0",

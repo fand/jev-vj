@@ -1,6 +1,6 @@
 import type { Effect } from '@vfx-js/core';
 export type EffectParams = Record<string, number>;
-export type Control = { key: string; label: string; min: number; max: number; step: number; value: number };
+export type Control = { key: string; label: string; min: number; max: number; step: number; value: number; options?: string[] };
 export type EffectInstance = { effect: Effect; setParams(params: EffectParams): void; reset?(): void };
 export type EffectDefinition = {
   id: string; name: string; description: string; order: number;

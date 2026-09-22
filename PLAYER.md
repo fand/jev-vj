@@ -1,5 +1,9 @@
 # Jev Clip Director
 
+## Deck UI
+
+現在のページは「再生中clip → 候補4個 → プロンプト」の縦配置。clipはfootageとFXの組み合わせ。入力を1秒間隔でthrottleし、同時リクエストは1件。古い入力の応答を表示しない。Choice確率の上位4素材それぞれにFXを選択し、FX込みでプレビューする。クリックで初めて再生を切り替え、履歴へ記録する。入力中は現在の再生を維持。候補が少ない場合は最大4個。日本語IME変換中は送信を待つ。旧「映像を選ぶ」「次の1本」「自動切替」「素材固定」はこのUIでは使用しない。以下は素材管理と旧フローを含む実装記録。
+
 テキストから動画を選択し、ブラウザーでループ再生。説明済み111本の素材を使用。
 
 ```sh
@@ -98,4 +102,6 @@ Motion blurは発火用のFrequencyを持たず、Pos／Scaleの変換軌跡を�
 
 `npm run test:twitch`でノイズの再現性、系統の独立性、無効化、Frequencyと不規則な発火回数の関係を検証する。
 
-Shift GlitchはFrequency（0〜30Hz）、Vertical／Horizontal coverage（各0〜1）、Base band width（px）で制御。帯幅は基準の約0.04〜1.96倍で不規則に分割する。Coverageはその軸で帯が有効になる確率で、画面の該当割合は更新ごとに揺れる。縦横の交差では両方の変換を合成する。帯の2D UV offset／scaleはseedに基づく固定値で、時間更新するのは有効な帯の選択だけ。Frequency=0ではその配置で静止。帯の外は元映像、texture wrapはRepeat。
+Shift GlitchはFrequency（0〜30Hz）、Vertical／Horizontal coverage（各0〜1）、Base band width（px）で制御。帯幅は基準の約0.04〜1.96倍で不規則に分割する。Coverageはその軸で帯が有効になる確率で、画面の該当割合は更新ごとに揺れる。縦横の交差では両方の変換を合成する。Frequencyに応じて帯の境界・有効マスク・2D UV offset／scaleを再抽選し、更新間は固定する。Frequency=0ではその配置で静止。帯の外は元映像、texture wrapはRepeat。
+
+Strobeを追加。Frequency（0〜30Hz、0で無効）、Flash duty（点滅色を表示する時間の割合）、Amount、White flash（0=黒、1=白）。Trails・Colorizeの後に適用しalphaを保持する。Jevは黒／白×slow 2Hz／medium 8Hz／fast 16Hzのプリセットを選択。音楽同期なし。

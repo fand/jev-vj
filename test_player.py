@@ -9,6 +9,10 @@ from unittest.mock import patch
 
 from player_server import Library, Player, Problem, byte_range, create_server, request_body, evaluate
 
+def adjust_intent(_):
+    return {'answers':{'effect_mode':{'type':'choice','choice':'adjust'}}}
+
+
 
 def answer(choice):
     return {'answers': {'clip': {'type': 'choice', 'choice': choice, 'probabilities': {choice: 1}}}}
@@ -38,7 +42,7 @@ class FakeLibrary:
 class PlayerTests(unittest.TestCase):
     def setUp(self):
         self.library = FakeLibrary()
-        self.player = Player(self.library, evaluator=lambda _: answer('pack/a.mp4'), effect_evaluator=effects_off)
+        self.player = Player(self.library, intent_evaluator=adjust_intent, evaluator=lambda _: answer('pack/a.mp4'), effect_evaluator=effects_off)
 
     def test_context_keeps_all_metadata_but_only_playable_choices_and_last_12(self):
         history = [{'clip_id': str(n), 'played_at': n, 'prompt': 'カラフルに'} for n in range(20)]
@@ -153,7 +157,7 @@ class PlayerTests(unittest.TestCase):
         result = self.player.select('test', 'next')
         self.assertEqual(seen, [[ids[3]], [ids[0], ids[3]]])
         self.assertTrue(result['repeat_fallback'])
-        self.assertEqual(result['api_calls'], 3)  # Two clip judgments plus effects.
+        self.assertEqual(result['api_calls'], 4)  # Intent, two clip judgments, and effects.
         self.assertEqual(result['usage']['input_tokens'], 200)
         self.assertEqual(len(self.player.history), 3)  # Retry attempts aren't playback.
 
@@ -257,7 +261,7 @@ class PlayerHTTPTests(unittest.TestCase):
             library = FakeLibrary()
             library.path = Path(tmp)/'clip.mp4'
             library.path.write_bytes(b'0123456789')
-            player = Player(library, evaluator=lambda _: answer('pack/a.mp4'), effect_evaluator=effects_off)
+            player = Player(library, intent_evaluator=adjust_intent, evaluator=lambda _: answer('pack/a.mp4'), effect_evaluator=effects_off)
             server = create_server(0, player)
             thread = threading.Thread(target=server.serve_forever, daemon=True)
             thread.start()

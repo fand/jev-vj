@@ -1,71 +1,51 @@
-import type { Effect, EffectContext } from '@vfx-js/core';
-import { GradientMapEffect } from '@vfx-js/effects';
-import { defaults, sanitize, type EffectDefinition, type EffectParams } from './types';
+import type { Effect } from '@vfx-js/core';
+import { sanitize, type EffectDefinition, type EffectParams } from './types';
 
-const MAX_DELTA_SECONDS = 0.25;
+const FRAG = `#version 300 es
+precision highp float;
+in vec2 uvSrc;
+out vec4 outColor;
+uniform sampler2D src;
+uniform int paletteIndex;
+uniform float phase;
+uniform float frequency;
 
-const palettes = [
-  ['#f72585', '#7209b7', '#4361ee', '#4cc9f0', '#f9c74f'],
-  ['#12000a', '#7d110c', '#e74c16', '#ffb000', '#fff3bf'],
-  ['#06152d', '#0b4f8a', '#25a9d8', '#a8ebff', '#f5fdff'],
-  ['#080808', '#f5f5f5'],
-  ['#090012', '#5b00a8', '#ff2db2', '#74ffdf', '#fff36b'],
-] as const;
-
-const repeatModes = ['none', 'repeat', 'mirror'] as const;
-
-class ContinuousGradientMapEffect implements Effect {
-  #params: EffectParams;
-  #phase = 0;
-  #effect: GradientMapEffect;
-
-  constructor(initial: EffectParams) {
-    this.#params = sanitize(definition, { ...defaults(definition), ...initial });
-    this.#effect = new GradientMapEffect();
-    this.#apply();
-  }
-
-  setParams(updates: EffectParams): void {
-    this.#params = sanitize(definition, { ...this.#params, ...updates });
-    this.#apply();
-  }
-
-  reset(): void {
-    this.#phase = 0;
-  }
-
-  render(ctx: EffectContext): void {
-    const dt = Math.min(Math.max(ctx.deltaTime, 0), MAX_DELTA_SECONDS);
-    this.#phase += dt * this.#params.speed;
-    this.#effect.render({ ...ctx, time: this.#phase });
-  }
-
-  #apply(): void {
-    this.#effect.setParams({
-      colors: [...palettes[Math.round(this.#params.palette)]],
-      frequency: this.#params.frequency,
-      offset: this.#params.offset,
-      repeat: repeatModes[Math.round(this.#params.repeat)],
-      mixSpace: 'oklab',
-      speed: 1,
-    });
-  }
+vec3 palette(float t) {
+  if (paletteIndex == 1) return mix(vec3(1,0,0), vec3(0,0,1), t);
+  if (paletteIndex == 2) return mix(vec3(1,1,0), vec3(1,0.1,0.6), t);
+  if (paletteIndex == 3) return mix(vec3(0,1,1), vec3(0.6,0,1), t);
+  if (paletteIndex == 4) return vec3(1.0 - t);
+  // Full hue spectrum: red, yellow, green, cyan, blue, magenta, red.
+  return clamp(abs(fract(t + vec3(0.0, 2.0/3.0, 1.0/3.0))*6.0-3.0)-1.0, 0.0, 1.0);
 }
+void main() {
+  vec4 color = texture(src, uvSrc);
+  vec3 rgb = color.a > 0.0 ? color.rgb / color.a : vec3(0.0);
+  float gray = dot(rgb, vec3(0.299, 0.587, 0.114));
+  float x = gray * frequency + phase;
+  float folded = 1.0 - abs(mod(x, 2.0) - 1.0);
+  outColor = vec4(palette(folded) * color.a, color.a);
+}
+`;
 
 export const definition: EffectDefinition = {
-  id: 'colorama',
-  name: 'Colorama',
-  description: 'Maps luminance through a cycling color palette while preserving transparency.',
-  order: 50,
+  id: 'colorama', name: 'Colorama', order: 50,
+  description: 'Remap grayscale through a folded animated palette. Rainbow adds many colors; paired palettes use two colors; white-black is monochrome. Preserves alpha.',
   controls: [
-    { key: 'palette', label: 'Palette: 0 rainbow, 1 fire, 2 ice, 3 monochrome, 4 neon', min: 0, max: 4, step: 1, value: 0 },
-    { key: 'frequency', label: 'Color bands', min: 0.25, max: 4, step: 0.05, value: 1 },
-    { key: 'offset', label: 'Phase', min: 0, max: 1, step: 0.01, value: 0 },
-    { key: 'repeat', label: 'Repeat: 0 clamp, 1 repeat, 2 mirror', min: 0, max: 2, step: 1, value: 2 },
-    { key: 'speed', label: 'Cycle speed', min: 0, max: 1, step: 0.01, value: 0.08 },
+    {key:'palette', label:'Palette', min:0, max:4, step:1, value:0,
+      options:['Rainbow','Red–Blue','Yellow–Pink','Cyan–Purple','White–Black']},
+    {key:'frequency', label:'Frequency', min:0, max:10, step:0.1, value:1},
+    {key:'speed', label:'Speed', min:0, max:1, step:0.01, value:0.08},
   ],
-  create(params: EffectParams) {
-    const effect = new ContinuousGradientMapEffect(params);
-    return { effect, setParams: updates => effect.setParams(updates), reset: () => effect.reset() };
+  create(initial: EffectParams) {
+    let params = sanitize(definition, initial);
+    let phase = 0;
+    const effect: Effect = {
+      render(ctx) {
+        phase = (phase + Math.min(Math.max(ctx.deltaTime,0),.25)*params.speed) % 2;
+        ctx.draw({frag:FRAG, uniforms:{src:ctx.src, paletteIndex:Math.round(params.palette), frequency:params.frequency, phase}, target:ctx.target});
+      },
+    };
+    return {effect, setParams(updates){params=sanitize(definition,{...params,...updates});}, reset(){phase=0;}};
   },
 };

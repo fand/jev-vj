@@ -12,4 +12,5 @@ import { definition as hatched } from './hatched';
 import { definition as invert } from './invert';
 import { definition as lorez } from './lorez';
 import { definition as shiftGlitch } from './shift-glitch';
-export const definitions = [rgb,twitch,hue,flip,mirror,trails,edge,colorize,halftone,colorama,hatched,invert,lorez,shiftGlitch].sort((a,b)=>a.order-b.order || a.id.localeCompare(b.id));
+import { definition as strobe } from './strobe';
+export const definitions = [rgb,twitch,hue,flip,mirror,trails,edge,colorize,halftone,colorama,hatched,invert,lorez,shiftGlitch,strobe].sort((a,b)=>a.order-b.order || a.id.localeCompare(b.id));

@@ -35,11 +35,11 @@ and commit the lockfile; upstream main and published docs can differ.
 | Hue | HueShiftEffect adapter | angle, cycle speed |
 | Flip | Custom UV reflection | horizontal, vertical |
 | Mirror | Custom UV folding around an axis | axis, center, mix |
-| Trails | Custom persistent render target accumulation | half-life, mix |
+| Trails | Custom persistent render target accumulation | feedback |
 | Edge | ColoredEdgesEffect adapter | threshold, thickness, colors, mix |
 | Colorize | Custom luminance-preserving tint / Duotone adapter | target color, saturation, mix |
 | Halftone | HalftoneEffect | ink preset, dot size, angle, mix |
-| Colorama | GradientMapEffect adapter; Tritone reference | palette, frequency, phase, cycle speed, mix |
+| Colorama | Custom folded luminance palette | palette (rainbow, red-blue, yellow-pink, cyan-purple, white-black), frequency, speed |
 | Hatched | Custom luminance-thresholded crosshatching | line spacing, width, angle, layers, mix |
 | Invert | Custom RGB inversion | channels, mix |
 | LoRez | PixelateEffect plus color quantization | pixel size, color levels, mix |
@@ -79,7 +79,7 @@ pixel equivalence with Resolume.
   Keep a continuous local phase so changing speed does not jump in time.
 - Trails uses a persistent ping-pong render target. Read history, composite
   current input, write new history, then output. Retention derives from elapsed
-  time and half-life (`2 ** (-dt / halfLife)`), not a per-frame constant.
+  per-frame feedback (`clamp(feedback, 0, 1) * 0.5`).
 - Reset temporal history on clip change, seek, resolution change and context
   restore. Preserve it on ordinary parameter changes; allow continuous trails
   across normal loop boundaries. Resume after a long suspension without a dt spike.
