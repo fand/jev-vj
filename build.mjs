@@ -1,6 +1,7 @@
 import { build } from 'esbuild';
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 await mkdir('dist',{recursive:true});
+await build({entryPoints:['library.js'],bundle:true,format:'esm',outfile:'dist/library.js'});
 await build({entryPoints:['player-renderer.ts'],bundle:true,format:'esm',outfile:'dist/player-renderer.js',sourcemap:true});
 await build({entryPoints:['effects-smoke.ts'],bundle:true,format:'esm',outfile:'dist/effects-smoke.js'});
 await build({entryPoints:['effects/registry.ts'],bundle:true,platform:'node',format:'esm',outfile:'dist/registry.mjs'});

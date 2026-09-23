@@ -33,3 +33,6 @@ dist/
 metadata-study/
 gemini-study/
 .DS_Store
+
+# Private local media catalog and root paths.
+.library/

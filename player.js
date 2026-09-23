@@ -24,7 +24,7 @@ function applyVideoTempo(media) {
  media.playbackRate=rate;
  const frame=media.ownerDocument.defaultView.frameElement;
  const label=frame?.id==='output'?$('clip-tempo'):frame?.closest('.candidate')?.querySelector('.candidate-tempo');
- if(label)label.textContent=sourceBpm>0?`${sourceBpm} BPM · ${rate.toFixed(2)}×`:'Original speed · 1×';
+ if(label){label.textContent=sourceBpm>0?`${sourceBpm} BPM · ${rate.toFixed(2)}×`:'Original speed · 1×';label.hidden=frame?.id!=='output'&&!(sourceBpm>0);}
 }
 function bindVideoTempo(media, sourceBpm) {
  media.dataset.sourceBpm=sourceBpm??'';
@@ -94,7 +94,18 @@ const heldBlackout=new Set();
 function setFadeSeconds(value){fadeSeconds=transitionDuration(value);$('transition-duration').value=fadeSeconds;$('transition-value').textContent=fadeSeconds.toFixed(2)+'s';}
 $('transition-duration').addEventListener('input',event=>setFadeSeconds(event.target.value));
 $('popup-output').addEventListener('click',()=>program.openPopup());
-function setBlackout(value){program.blackout(value);$('stage').classList.toggle('blacked-out',value);}
+function updateMasterControls(){
+ const strobe=heldStrobes.at(-1)?.white;
+ for(const [id,on] of [['strobe-white',strobe===true],['strobe-black',strobe===false],['master-kill',heldBlackout.size>0]]){
+  const button=$(id);button.setAttribute('aria-pressed',String(on));button.querySelector('output').textContent=on?'ON':'OFF';
+ }
+}
+function setBlackout(value){program.blackout(value);$('stage').classList.toggle('blacked-out',value);updateMasterControls();}
+function holdPerformance(code,action){
+ if(action.type==='kill'){heldBlackout.add(code);setBlackout(true);return;}
+ heldStrobes=heldStrobes.filter(item=>item.code!==code);heldStrobes.push({code,white:action.white});
+ program.strobe(action.white);updateMasterControls();
+}
 function releasePerformanceKeys(){heldStrobes=[];program.strobe(null);heldBlackout.clear();setBlackout(false);}
 function performanceKey(event){
  const target=event.target;
@@ -102,13 +113,9 @@ function performanceKey(event){
  const action=performanceAction(event,editing);if(!action)return;
  event.preventDefault?.();
  if(action.type==='blur'){target.blur();return;}
- if(action.type==='focus'){$('prompt').focus();return;}
+ if(action.type==='focus'){$('prompt').focus();$('prompt').select();return;}
  if(action.type==='duration'){setFadeSeconds(fadeSeconds+action.delta);return;}
- if(action.type==='kill'){heldBlackout.add(event.code);setBlackout(true);return;}
- if(action.type==='strobe'){
-  heldStrobes=heldStrobes.filter(item=>item.code!==event.code);heldStrobes.push({code:event.code,white:action.white});
-  program.strobe(action.white);return;
- }
+ if(action.type==='kill'||action.type==='strobe'){holdPerformance(event.code,action);return;}
  const candidate=candidates[action.index];
  const card=[...$('candidates').querySelectorAll('button')][action.index];
  if(candidate&&card&&!card.disabled)void choose(candidate,action.transition?fadeSeconds:0);
@@ -117,12 +124,29 @@ function performanceKeyUp(event){
  if(heldBlackout.delete(event.code))setBlackout(heldBlackout.size>0);
  if(!heldStrobes.some(item=>item.code===event.code))return;
  heldStrobes=heldStrobes.filter(item=>item.code!==event.code);
- program.strobe(heldStrobes.length?heldStrobes.at(-1).white:null);
+ program.strobe(heldStrobes.length?heldStrobes.at(-1).white:null);updateMasterControls();
 }
 function remotePerformance(data){
  if(data.type==='output-key')performanceKey(data);
  if(data.type==='output-keyup')performanceKeyUp(data);
  if(data.type==='output-blur')releasePerformanceKeys();
+}
+for(const [id,action] of [['strobe-white',{type:'strobe',white:true}],['strobe-black',{type:'strobe',white:false}],['master-kill',{type:'kill'}]]){
+ const button=$(id);
+ button.addEventListener('pointerdown',event=>{
+  if(event.button!==0)return;
+  event.preventDefault();button.setPointerCapture(event.pointerId);
+  holdPerformance(`pointer:${id}:${event.pointerId}`,action);
+ });
+ for(const type of ['pointerup','pointercancel','lostpointercapture'])button.addEventListener(type,event=>performanceKeyUp({code:`pointer:${id}:${event.pointerId}`}));
+ // Enter/Space on a focused button act like a hold, without opening the prompt.
+ for(const type of ['keydown','keyup'])button.addEventListener(type,event=>{
+  if(!['Enter','Space'].includes(event.code))return;
+  event.preventDefault();event.stopPropagation();
+  const code=`button:${id}:${event.code}`;
+  if(type==='keyup')performanceKeyUp({code});else if(!event.repeat)holdPerformance(code,action);
+ });
+ button.addEventListener('blur',()=>{for(const key of ['Enter','Space'])performanceKeyUp({code:`button:${id}:${key}`});});
 }
 window.addEventListener('keydown',performanceKey);
 window.addEventListener('keyup',performanceKeyUp);
@@ -133,6 +157,7 @@ let token, state, labels={}, busy=false, generation=0;
 let manualTimer, applyingEffects=false, effectDraft=[], manualVersion=0, playbackApplying=false;
 let inputVersion=0, candidateVersion=0, requesting=false, queued=false, composing=false, requestTimer;
 let lastRequestAt=performance.now(), candidates=[];
+let candidatePreparation=null, candidatesStale=false;
 const THROTTLE=1000;
 function notice(text,error=false){$('notice').textContent=text;$('notice').classList.toggle('error',error);}
 function loading(text){$('loading').hidden=!text;$('loading-text').textContent=text;}
@@ -140,7 +165,7 @@ function buttons(){
  $('clear').disabled=busy||applyingEffects;
  for(const el of $('effect-controls').querySelectorAll('input, select'))el.disabled=busy||requesting||applyingEffects;
  $('effects-clear').disabled=busy||requesting||applyingEffects||!state?.current;
- for(const el of $('candidates').querySelectorAll('button'))el.disabled=busy||applyingEffects||requesting||el.dataset.ready!=='true';
+ for(const el of $('candidates').querySelectorAll('button'))el.disabled=busy||applyingEffects||requesting||candidatesStale||el.dataset.ready!=='true';
 }
 async function post(path,data={}){
  const res=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Jev-Token':token},body:JSON.stringify(data)});
@@ -178,8 +203,11 @@ function showClip(clip){
   const dd=document.createElement('dd');dd.textContent=Array.isArray(value)?value.join(' / '):String(value);return [dt,dd];
  }));
 }
+function cancelCandidatePreparation(){
+ ++candidateVersion;candidatePreparation?.cancel();candidatePreparation?.element.remove();candidatePreparation=null;
+}
 function clearCandidates(){
- ++candidateVersion;candidates=[];$('candidates').replaceChildren(...Array.from({length:4},(_,i)=>{
+ cancelCandidatePreparation();candidatesStale=false;candidates=[];$('candidates').replaceChildren(...Array.from({length:4},(_,i)=>{
   const el=document.createElement('div');el.className='candidate-placeholder';el.textContent=String(i+1).padStart(2,'0');return el;
  }));
 }
@@ -188,7 +216,7 @@ function queueRecommendations(){
  requestTimer=setTimeout(()=>{requestTimer=null;void recommend();},Math.max(0,THROTTLE-(performance.now()-lastRequestAt)));
 }
 function inputChanged(){
- ++inputVersion;clearCandidates();$('prompt-count').textContent=`${$('prompt').value.length} / 1000`;
+ ++inputVersion;cancelCandidatePreparation();$('prompt-count').textContent=`${$('prompt').value.length} / 1000`;
  queued=!!$('prompt').value.trim();$('candidate-status').textContent=queued?'Updating candidates from your input…':'Type to see candidates';
  if(!queued){clearTimeout(requestTimer);requestTimer=null;}
  queueRecommendations();
@@ -198,11 +226,13 @@ async function recommend(){
  if(!state?.ready||!state.available||!state.ffmpeg){queued=false;return;}
  if(manualTimer){clearTimeout(manualTimer);manualTimer=null;await applyManualEffects();queueRecommendations();return;}
  const version=inputVersion,prompt=$('prompt').value.trim();if(!prompt)return;
- requesting=true;queued=false;lastRequestAt=performance.now();buttons();$('candidates').setAttribute('aria-busy','true');$('candidate-status').textContent='Jev is choosing footage and effects…';
+ requesting=true;candidatesStale=true;queued=false;lastRequestAt=performance.now();buttons();$('candidates').setAttribute('aria-busy','true');$('candidate-status').textContent='Jev is choosing footage and effects…';
  try{
   const result=await post('/api/candidates',{prompt});
   if(version!==inputVersion)return;
-  candidates=result.candidates;renderCandidates();
+  if(!result.candidates.length)throw Error('No playable candidates returned. Previous previews retained.');
+  $('candidate-status').textContent='Preparing new previews…';
+  if(!await renderCandidates(result.candidates,version))return;
   $('latency').textContent=`${(result.ms/1000).toFixed(2)} s`;$('tokens').textContent=result.usage?.input_tokens?.toLocaleString()||'—';$('model').textContent=result.model||'—';
   $('candidate-status').textContent=`${candidates.length} / 4 clips`;
   notice(candidates.length?'Click a candidate to play.':'No matching candidates. Current playback continues.');
@@ -220,9 +250,15 @@ async function waitAsset(asset,valid){
  }
  return null;
 }
-function renderCandidates(){
+async function renderCandidates(nextCandidates,inputRevision){
  const version=++candidateVersion;
- $('candidates').replaceChildren(...candidates.map((candidate,index)=>{
+ const previous=$('candidates'),staging=document.createElement('div');
+ staging.className='candidates candidate-staging';staging.inert=true;staging.setAttribute('aria-hidden','true');
+ previous.parentElement.append(staging);
+ let cancel;const canceled=new Promise(resolve=>{cancel=()=>resolve(false);});
+ const preparation={element:staging,cancel};candidatePreparation=preparation;
+ const valid=()=>version===candidateVersion&&inputRevision===inputVersion&&staging.isConnected;
+ const tasks=nextCandidates.map(async(candidate,index)=>{
   const button=document.createElement('button');button.type='button';button.className='candidate';button.disabled=true;button.dataset.id=candidate.id;button.setAttribute('aria-pressed','false');
   const preview=document.createElement('div');preview.className='candidate-preview';
   const frame=document.createElement('iframe');frame.title=`Candidate ${index+1}: ${candidate.clip.name}`;frame.src='/effect-output.html?preview=1';frame.allow='autoplay';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');preview.append(frame);
@@ -232,23 +268,32 @@ function renderCandidates(){
   const tempo=document.createElement('span');tempo.className='candidate-tempo';
   const status=document.createElement('span');status.className='candidate-state';status.textContent='Preparing preview…';
   button.append(preview,name,fx,tempo,status);button.addEventListener('click',event=>void choose(candidate,event.shiftKey?fadeSeconds:0));
-  // Start after the iframe is attached, so its renderer can initialize.
-  setTimeout(()=>void (async()=>{
-   const valid=()=>version===candidateVersion&&button.isConnected;
-   try{
-    if(!valid())return;
-    const [engine,url]=await Promise.all([waitRenderer(frame),waitAsset(candidate.asset,valid)]);
-    if(!valid()||!url)return;
-    bindVideoTempo(engine.video,candidate.clip.source_bpm);engine.video.src=url;await engine.video.play();if(!valid())return;
-    await engine.apply(candidate.effects);if(!valid())return;
-    status.textContent='Click to play';button.dataset.ready='true';buttons();
-   }catch(error){if(valid()){status.textContent='Preview failed';button.title=error.message;}}
-  })(),0);
-  return button;
- }));
+  staging.append(button);
+  try{
+   const [engine,url]=await Promise.all([waitRenderer(frame),waitAsset(candidate.asset,valid)]);
+   if(!valid()||!url)return false;
+   bindVideoTempo(engine.video,candidate.clip.source_bpm);engine.video.src=url;await engine.video.play();if(!valid())return false;
+   await engine.apply(candidate.effects);if(!valid())return false;
+   status.textContent='';status.hidden=true;button.dataset.ready='true';
+   return true;
+  }catch(error){
+   if(valid()){status.textContent='Preview failed';status.hidden=false;button.title=error.message;}
+   return false;
+  }
+ });
+ try{
+  const ready=await Promise.race([Promise.all(tasks),canceled]);
+  if(!ready||!valid())return false;
+  if(!ready.some(Boolean))throw Error('Could not prepare new previews. Previous previews retained.');
+  previous.remove();staging.id='candidates';staging.classList.remove('candidate-staging');staging.inert=false;staging.removeAttribute('aria-hidden');
+  candidates=nextCandidates;candidatesStale=false;buttons();return true;
+ }finally{
+  if(staging.id!=='candidates')staging.remove();
+  if(candidatePreparation===preparation)candidatePreparation=null;
+ }
 }
 async function choose(candidate,seconds=0){
- if(busy||requesting||applyingEffects)return;
+ if(busy||requesting||applyingEffects||candidatesStale)return;
  if(manualTimer){clearTimeout(manualTimer);manualTimer=null;await applyManualEffects();return;}
  busy=true;const version=++generation;buttons();loading('Switching clip');
  const previous={output,renderer,video,view:currentView};
@@ -292,7 +337,6 @@ $('form').addEventListener('submit',e=>e.preventDefault());
 $('prompt').addEventListener('input',inputChanged);
 $('prompt').addEventListener('compositionstart',()=>{composing=true;clearTimeout(requestTimer);requestTimer=null;});
 $('prompt').addEventListener('compositionend',()=>{composing=false;inputChanged();});
-for(const button of $('examples').querySelectorAll('button'))button.addEventListener('click',()=>{$('prompt').value=button.textContent;inputChanged();$('prompt').focus();});
 $('fullscreen').addEventListener('click',()=>{const change=document.fullscreenElement?document.exitFullscreen():$('stage').requestFullscreen?.();change?.catch(()=>notice('Could not enter fullscreen.',true));});
 $('clear').addEventListener('click',async()=>{
  ++generation;++inputVersion;++manualVersion;queued=false;clearTimeout(requestTimer);requestTimer=null;clearTimeout(manualTimer);manualTimer=null;
@@ -378,12 +422,23 @@ window.addEventListener('message',e=>{
  if(e.source!==output.contentWindow){
   for(const frame of $('candidates').querySelectorAll('iframe'))if(e.source===frame.contentWindow){
    const button=frame.closest('button');button.dataset.ready='false';button.disabled=true;
-   button.querySelector('.candidate-state').textContent='FX preview failed';
+   const status=button.querySelector('.candidate-state');status.textContent='FX preview failed';status.hidden=false;
   }
   return;
  }
  notice('Effect rendering failed. Showing the original footage.',true);
  if(state?.current&&!busy&&!requesting&&!applyingEffects)void post('/api/effects',{effects:[],clip_id:state.current.id,revision:state.effect_revision}).then(refresh).then(syncEffects).catch(()=>{});
+});
+const libraryChannel=new BroadcastChannel('jev-library');
+libraryChannel.addEventListener('message',async event=>{
+ if(event.data!=='changed')return;
+ ++inputVersion;cancelCandidatePreparation();candidatesStale=true;buttons();
+ try{
+  await refresh();
+  if(state.current)bindVideoTempo(video,state.current.source_bpm);
+  $('candidate-status').textContent='Library updated · edit direction to refresh';
+  notice('Library updated. Your next suggestions will use the saved descriptions.');
+ }catch(error){notice(error.message,true);}
 });
 clearCandidates();
 try{

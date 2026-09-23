@@ -52,7 +52,25 @@ class EffectStateTests(unittest.TestCase):
             return result
         chain, _ = select_effects(conflicting, 'make it colurful', {}, current, [])
         self.assertEqual([item['id'] for item in chain], ['colorama'])
-        self.assertEqual(chain[0]['params'], {'palette':0, 'frequency':1, 'speed':0})
+        self.assertEqual(chain[0]['params'], {'palette':0, 'frequency':1, 'speed':.4})
+        self.assertEqual(chain[0]['mix'],.4)
+
+    def test_colorful_can_use_source_palette_without_colorama(self):
+        current=[{'id':'colorize','params':{'hue':0,'saturation':.8,'brightness':1},'mix':1}]
+        chain,_=select_effects(effects_off,'Colorful',{'description':'Multicolored flowing neon'},current,[])
+        self.assertEqual(chain,[])
+
+    def test_rainbow_automatic_presets_are_light_and_animated(self):
+        definition=next(d for d in controls() if d['id']=='colorama')
+        for name,preset in presets(definition).items():
+            setting=preset['setting']
+            if setting['params']['palette']==0:
+                self.assertEqual(setting['mix'],.4)
+                self.assertGreaterEqual(setting['params']['speed'],.4)
+            elif name.endswith('_cycle'):
+                self.assertEqual(setting['params']['speed'],.08)
+            else:
+                self.assertEqual(setting['params']['speed'],0)
 
     def test_colorama_frequency_does_not_trigger_legacy_palette_mapping(self):
         for palette in range(5):

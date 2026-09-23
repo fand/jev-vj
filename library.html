@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev — Library</title><link rel="stylesheet" href="/dist/library.css"><link rel="stylesheet" href="/library.css"><script type="module" src="/dist/library.js"></script></head>
+<body><main>
+<header><a class="wordmark" href="/">jev<span> / library</span></a><div><span id="save-state">Loading…</span><button id="save" disabled>Save changes</button><a href="/">Deck ↗</a></div></header>
+<section class="workspace" aria-label="Footage import and preview">
+<div class="preview"><video id="preview" controls loop playsinline></video><div class="preview-caption"><strong id="preview-name">Select footage to preview</strong><span id="preview-state">Original speed · local playback</span></div><button id="remove-row" disabled>Remove selected row</button></div>
+<div class="import-panel">
+<div id="drop-zone" tabindex="0" role="button" aria-label="Drop videos or choose video files"><strong>Drop videos here</strong><span>Keep originals in place. Match files inside your media folders.</span><button id="browse" type="button">Choose videos</button><input id="files" type="file" accept="video/*,.mov,.dxv,.mkv" multiple hidden></div>
+<details><summary>Media folders <span id="roots-summary"></span></summary><div class="form-row"><textarea id="roots" aria-label="Media folders, one absolute path per line" placeholder="~/Movies/vj"></textarea><button id="save-roots">Set folders</button></div><small>Browsers hide absolute file paths. These folders let the local server identify dropped files. Ambiguous matches require your choice.</small></details>
+<details><summary>Add file or folder paths</summary><div class="form-row"><textarea id="paths" aria-label="Video or folder paths, one per line" placeholder="~/Movies/vj/foo/test.mp4"></textarea><button id="import-paths">Add paths</button></div><small>One absolute path per line. Folders include videos in subfolders.</small></details>
+</div>
+</section>
+<section id="matches-panel" hidden aria-label="Choose matching files"><h2>Locate dropped videos</h2><div id="matches"></div><button id="add-matches">Add matched files</button><button id="dismiss-matches">Dismiss</button></section>
+<div class="sheet-toolbar"><div><input id="search" type="search" aria-label="Search footage" placeholder="Search footage…"><span id="row-count"></span></div><div><input id="column-name" aria-label="New column name" placeholder="New column"><button id="add-column">Add column</button><select id="column-select" aria-label="Column to remove"><option value="">Custom column…</option></select><button id="remove-column">Remove column</button><button id="export">Export CSV</button></div></div>
+<p id="notice" role="status">Select a row to preview. Double-click cells to edit. Blank descriptions stay out of Jev suggestions.</p>
+<div id="library-table" aria-label="Footage spreadsheet"></div>
+<footer><span>Name, path, BPM and description are required columns. Add your own attributes as columns.</span><span>CSV: .library/footage.csv · Save to apply changes to the deck.</span></footer>
+</main></body></html>

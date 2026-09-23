@@ -154,6 +154,23 @@ class DeckTests(unittest.TestCase):
         self.assertFalse(self.player.busy)
         self.assertEqual(self.player.history, [])
 
+    def test_candidates_offer_only_footage_and_keep_low_probability_options(self):
+        seen=[]
+        def rank(body):
+            seen.append(body)
+            ids=body['state']['candidate_ids']
+            self.assertEqual(set(body['questions']['clip']['criteria']),set(ids))
+            self.assertNotIn('no_match',body['questions']['clip']['instructions'])
+            return {'answers':{'clip':{'type':'choice','choice':ids[0],
+                'probabilities':{cid:1/len(ids) for cid in ids}}}}
+        self.player.evaluator=rank
+        for prompt in ['もっとミニマルに','ゆったりしたアンビエント','deep sea']:
+            cards=self.player.select(prompt,'candidates')['candidates']
+            self.assertEqual(len(cards),4)
+            self.assertTrue(all(c['weight']<.2 for c in cards))
+        self.assertEqual(len(seen),3)
+        self.assertIsNone(self.player.current)
+
     def test_top_four_includes_zero_weight_options_without_inventing_scores(self):
         self.player.evaluator = lambda body: {'answers': {'clip': {'type': 'choice',
             'choice': self.ids[0], 'probabilities': {cid: int(i == 0) for i, cid in enumerate(self.ids)}}}}
@@ -161,11 +178,14 @@ class DeckTests(unittest.TestCase):
         self.assertEqual(len(cards), 4)
         self.assertEqual([c['weight'] for c in cards], [1, 0, 0, 0])
 
-    def test_no_match_small_library_and_failed_fx(self):
+    def test_small_library_invalid_choice_and_failed_fx(self):
         self.library.available = lambda: self.ids[:2]
         self.assertEqual(len(self.player.select('minimal', 'candidates')['candidates']), 2)
         self.player.evaluator = lambda _: {'answers': {'clip': {'type':'choice','choice':'no_match','probabilities':{}}}}
-        self.assertEqual(self.player.select('nonvisual', 'candidates')['candidates'], [])
+        with self.assertRaises(Problem) as error:
+            self.player.select('nonvisual', 'candidates')
+        self.assertEqual(error.exception.status,502)
+        self.assertEqual(self.player.candidates,{})
         self.player.evaluator = self.ranking
         self.player.effect_evaluator = lambda _: {'answers': {}}
         with self.assertRaises(Problem):

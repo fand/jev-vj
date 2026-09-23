@@ -65,11 +65,16 @@ test('compositor crossfades two live sources; blackout and held strobes preserve
 
 test('0 down → candidate → 0 up: cue while blacked out; release only restores master output',()=>{
  const source=readFileSync(new URL('./player.js',import.meta.url),'utf8');
- let black=false, chosen=0;const listeners={};
- const element={addEventListener(){},classList:{toggle(){}},querySelectorAll:()=>[{disabled:false}]};
+ let black=false, chosen=0, strobe=null;const listeners={},elements=new Map();
+ const $=id=>{
+  if(!elements.has(id))elements.set(id,{listeners:{},attrs:{},status:{},
+   addEventListener(type,fn){this.listeners[type]=fn;},setAttribute(key,value){this.attrs[key]=value;},
+   setPointerCapture(){},querySelector(){return this.status;},classList:{toggle(){}},querySelectorAll:()=>[{disabled:false}]});
+  return elements.get(id);
+ };
  const context={performanceAction,transitionDuration,Set,
-  $:()=>element,window:{addEventListener:(type,fn)=>{listeners[type]=fn;}},
-  document:{addEventListener(){}},program:{blackout:value=>{black=value;},strobe(){}},
+  $,window:{addEventListener:(type,fn)=>{listeners[type]=fn;}},
+  document:{addEventListener(){}},program:{blackout:value=>{black=value;},strobe:value=>{strobe=value;}},
   candidates:[{id:'next'}],choose:()=>{chosen++;},
  };
  vm.runInNewContext(source.slice(source.indexOf('let fadeSeconds='),source.indexOf('let token,')),context);
@@ -84,4 +89,20 @@ test('0 down → candidate → 0 up: cue while blacked out; release only restore
  listeners.keyup(key('Numpad0'));assert.equal(black,false);
  listeners.keydown(key('Digit0'));listeners.blur();assert.equal(black,false);
  listeners.keydown(key('Digit0',{target:{closest:()=>true}}));assert.equal(black,false);
+ const active=id=>$(id).attrs['aria-pressed'];
+ listeners.keydown(key('Digit8'));assert.equal(active('strobe-white'),'true');assert.equal($('strobe-white').status.textContent,'ON');
+ listeners.keydown(key('Digit9'));assert.equal(active('strobe-white'),'false');assert.equal(active('strobe-black'),'true');
+ listeners.keyup(key('Digit9'));assert.equal(strobe,true);assert.equal(active('strobe-white'),'true');
+ const pointer={button:0,pointerId:42,preventDefault(){}};
+ $('master-kill').listeners.pointerdown(pointer);assert.equal(black,true);assert.equal(active('master-kill'),'true');
+ listeners.keydown(key('Digit0'));
+ $('master-kill').listeners.lostpointercapture(pointer);assert.equal(black,true);
+ listeners.keyup(key('Digit0'));assert.equal(black,false);assert.equal(active('master-kill'),'false');
+ $('strobe-black').listeners.pointerdown(pointer);assert.equal(strobe,false);
+ $('strobe-black').listeners.pointercancel(pointer);assert.equal(strobe,true);
+ listeners.blur();assert.equal(strobe,null);assert.equal(active('strobe-white'),'false');
+ const enter=key('Enter',{stopPropagation(){}});
+ $('master-kill').listeners.keydown(enter);assert.equal(black,true);
+ $('master-kill').listeners.blur();assert.equal(black,false);
+
 });

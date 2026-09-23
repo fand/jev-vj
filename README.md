@@ -2,7 +2,7 @@
 
 A local VJ player controlled with natural language. Jev selects clips using their metadata and playback history; VFX-JS applies effects in the browser. Resolume is optional.
 
-A deck stacks the current clip, four candidate previews, and a prompt. Here, a **clip** is footage plus effects. Typing requests candidates at most once per second, with one request in flight; stale responses are discarded. Jev ranks footage, then selects effects for each of the top four candidates. Click a preview to play that exact combination. Typing never switches the current output. Fewer candidates appear when fewer options are available.
+A deck stacks the current clip, four candidate previews, and a prompt. Here, a **clip** is footage plus effects. Typing requests candidates at most once per second, with one request in flight; stale responses are discarded. Jev ranks footage, then selects effects for each of the top four candidates. Click a preview to play that exact combination. Typing never switches the current output. Fewer candidates appear when fewer options are available. Deck ranking offers only playable footage choices and shows the closest alternatives, even for imperfect matches; it does not include a “no match” choice. Suggestions are not guarantees that every requested attribute is satisfied.
 
 Try “calm ambient”, “more minimal”, “build up gradually”, or “add subtle trails”. Relative prompts compare against the currently playing footage and effects. The deck sits on the left; effect controls and playback history scroll independently on the right.
 
@@ -22,7 +22,7 @@ python3 player_server.py --media-root /path/to/vj
 
 Open [localhost:4319](http://127.0.0.1:4319/).
 
-**Footage is not included.** Supply the clips referenced in `clip-metadata/`, or update that catalog for your own collection. The player matches catalog entries to local files; it does not analyze new videos automatically.
+**Footage is not included.** Open **Library** to register your videos and describe them. The player does not analyze video content automatically. Existing matching clips from `clip-metadata/` are imported the first time you open Library.
 
 Jev receives prompts, metadata, and history—not video files. API keys stay on the server. Playback history and effect state reset when the server restarts. Voice input and music analysis are not implemented.
 
@@ -32,7 +32,19 @@ See [PLAYER.md](PLAYER.md) for detailed behavior and controls (Japanese).
 
 Tap four times within five seconds to set BPM. The latest four taps provide three intervals to average; fewer than four retains the previous tempo. Double-click the BPM value to enter a positive number, including decimals. Enter or blur applies it; Escape cancels. Resync restarts current footage and candidate previews from the first frame without changing BPM.
 
-Source tempos live in [clip-bpm.md](clip-bpm.md). Annotated footage plays at `Tap BPM / source BPM`, including candidate previews; blank or omitted footage stays at 1×. BPM defaults to 120 on page load. Decimal source BPMs are preserved. Click Rescan after editing the list. Tap updates speed without seeking or restarting the clip.
+Edit source tempos in Library’s BPM column. Before Library is initialized, tempos come from [clip-bpm.md](clip-bpm.md). Annotated footage plays at `Tap BPM / source BPM`, including candidate previews; blank or omitted footage stays at 1×. BPM defaults to 120 on page load. Decimal source BPMs are preserved. Save Library changes, or click Rescan after editing its CSV externally. Tap updates speed without seeking or restarting the clip.
+
+## Library
+
+Open [Library](http://127.0.0.1:4319/library) from the deck header. Set **Media folders**, then drop video files or use **Add file or folder paths**. Originals remain in place. The browser cannot reveal a dropped file’s absolute path, so the local server matches its filename and size within the registered folders. Multiple matches require a choice; unmatched files need another folder or an explicit path. No video bytes are uploaded.
+
+Select a row to preview its video; double-click a cell to edit. The table uses [Tabulator](https://tabulator.info/). Name, path, BPM and description are core columns; add or remove custom attribute columns with the toolbar. BPM is optional. A blank description excludes the footage from Jev suggestions, but it remains available for preview and editing.
+
+**Save changes** writes `.library/footage.csv` and notifies open deck tabs to use the catalog for subsequent suggestions. Existing candidate tickets expire; current playback continues. Editing is local until saved. Export CSV saves first, then downloads a copy. Imported paths are deduplicated; reimporting footage preserves its descriptions and BPMs. IDs stay stable when names are edited. The CSV preserves quoted text, commas, multiline descriptions, Unicode and custom columns. Concurrent edits from another window are rejected rather than overwritten.
+
+On first use, existing located footage, notes and BPMs migrate to CSV; the old files are retained. Thereafter the CSV is the catalog source of truth. Existing derived attributes are reused only while the original description is unchanged. Edited descriptions and custom attribute columns become Jev context directly, without carrying over stale derived claims. Paths stay local. New descriptions do not trigger a separate AI extraction step.
+
+`.library/` also contains media-folder settings and is Git-ignored. Do not publish it: it contains your local paths and notes. Removing rows never deletes original footage. Offline media stays listed; reconnect the drive and rescan. Previews use the same H.264 conversion cache as the deck.
 
 ## Live controls
 
@@ -44,7 +56,7 @@ The Transition slider beside Tap sets a 0–1 second crossfade (default 0.30s). 
 | Shift+1–4 / Shift-click | Crossfade to a candidate |
 | Hold 0 | Black out the master output; release to reveal the playing clip |
 | Hold 8 / 9 | White / black strobe at 12 Hz |
-| Space / Escape | Focus prompt / leave an input |
+| Space / Escape | Focus and select all prompt text / leave an input |
 | + / − | Increase / decrease transition duration by 0.05s |
 
 Performance shortcuts are disabled while editing text, numbers, sliders, or menus. Clips keep playing and switching while 0 is held. Releasing 0 restores output without restarting playback. Leaving the window releases blackout and strobes.
@@ -58,6 +70,8 @@ On desktop, the deck fits the viewport while the right column scrolls independen
 RGB Shift, Twitch, Hue, Flip, Mirror, Trails, Edge, Colorize, Halftone, Colorama, Hatched, Invert, LoRez, Shift Glitch, and Strobe.
 
 Strobe controls: frequency (0–30 Hz; 0 disables flashing), flash duty, amount, and black/white mode. It runs after Trails and color effects; timing is independent of music.
+
+“Colorful” does not force Colorama: source colors or removing a tint may be enough. When Jev selects a new Rainbow preset, it uses 0.4 mix and 0.4 speed (0.6 for faster cycling). Manual settings remain adjustable.
 
 The same prompt drives clip and effect selection. Relative instructions compare against the current clip and effects; recent playback history helps avoid repetition.
 
