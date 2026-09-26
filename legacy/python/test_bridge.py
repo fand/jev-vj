@@ -8,7 +8,7 @@ from server import Bridge, Problem, ROOT, osc, plan
 
 class BridgeTests(unittest.TestCase):
     def setUp(self):
-        self.catalog = json.loads((ROOT / 'catalog.json').read_text())
+        self.catalog = json.loads((ROOT / 'legacy/python/catalog.json').read_text())
         self.selection = dict(scope='now', clip='lines', effect='kaleido', strength='soft')
 
     def test_osc_wire_encoding(self):

@@ -1,8 +1,8 @@
 import {join} from 'node:path';
 import {ROOT, readJSON, record, finite} from './common.mjs';
-const prompts = readJSON(join(ROOT, 'backend/prompts.json'));
-const variants = readJSON(join(ROOT, 'backend/presets.json'));
-export const controls = () => readJSON(join(ROOT, 'effects/controls.json'));
+const prompts = readJSON(join(ROOT, 'src/server/prompts.json'));
+const variants = readJSON(join(ROOT, 'src/server/presets.json'));
+export const controls = () => readJSON(join(ROOT, 'src/effects/controls.json'));
 const invalid = () => { throw new TypeError('Invalid effect settings'); };
 function legacyRange(params, key, min = -Infinity, max = Infinity) {
   if (Object.hasOwn(params, key) && (!finite(params[key]) || params[key] < min || params[key] > max)) invalid();

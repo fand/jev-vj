@@ -1,1 +1,18 @@
-{"compilerOptions":{"target":"ES2022","module":"ESNext","moduleResolution":"Bundler","lib":["ES2022","DOM"],"strict":true,"skipLibCheck":true,"noEmit":true},"include":["effects/**/*.ts","player-renderer.ts","effects-smoke.ts"]}
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2022",
+      "DOM"
+    ],
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/gpu/**/*.ts"
+  ]
+}

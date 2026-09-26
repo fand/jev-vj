@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {prepareClipCue} from './deck-output.js';
+import {prepareClipCue} from '../src/client/deck-output.js';
 
-const player=readFileSync(new URL('./player.js',import.meta.url),'utf8');
+const player=readFileSync(new URL('../src/client/player.js',import.meta.url),'utf8');
 const chooseSource=player.slice(player.indexOf('async function choose('),player.indexOf("$('form').addEventListener"));
 function harness(){
  const log=[],pending=[];

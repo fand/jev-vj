@@ -4,7 +4,7 @@ import {join} from 'node:path';
 import {createHash, randomBytes} from 'node:crypto';
 import {parseEnv} from 'node:util';
 
-export const ROOT = fileURLToPath(new URL('../', import.meta.url));
+export const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 export class Problem extends Error {
   constructor(message, status = 400) { super(message); this.status = status; }
 }

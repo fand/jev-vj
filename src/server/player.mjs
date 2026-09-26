@@ -4,7 +4,7 @@ import {ROOT, Problem, readJSON, readKey, token, finite, record} from './common.
 import {Library, videoTools} from './library.mjs';
 import {isFile} from './footage-store.mjs';
 import {classifyEffectIntent, selectEffects, validateChain} from './effects.mjs';
-const prompts = readJSON(join(ROOT,'backend/prompts.json'));
+const prompts = readJSON(join(ROOT,'src/server/prompts.json'));
 export const recentClipIds = (history,current) => [...new Set([...(current ? [current] : []), ...history.toReversed().map(h=>h.clip_id)])].slice(0,3);
 export function footageRequest(prompt, clips, history, current, available, action, packNotes = {}, excluded = recentClipIds(history,current)) {
   const candidates = available.filter(id=>!excluded.includes(id) && (action !== 'next' || id !== current));

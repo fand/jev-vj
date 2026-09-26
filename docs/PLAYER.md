@@ -23,7 +23,7 @@ http://127.0.0.1:4319/ を開く。Node.js 22.12以降が必要。ビルドとNo
 
 ## Jevに渡すもの
 
-`clip-metadata/jev-candidates.json` の全111本、76軸のうち各素材で既知の属性、説明、注意点を毎回contextへ渡す。未記入属性をfalseや0で埋めない。候補の事前絞り込みや手作業の総合スコアは使わない。
+`data/clip-metadata/jev-candidates.json` の全111本、76軸のうち各素材で既知の属性、説明、注意点を毎回contextへ渡す。未記入属性をfalseや0で埋めない。候補の事前絞り込みや手作業の総合スコアは使わない。
 
 追加context：今回の指示、現在の素材ID、実在するファイルのID一覧、直近12本の実際に再生できた素材ID・再生開始時刻。過去の指示は画面表示用に保持するが、今回の判断contextからは除外する。Choiceの各候補には素材固有の説明を付ける。素材IDまたは該当なしを選ぶ。「映像を選ぶ」では現在の素材IDが選ばれた場合のみ現状維持。「次の1本」では現在の素材を選べない。
 
@@ -92,7 +92,7 @@ VFX-JSで14種類：RGB、Twitch、Hue、Flip、Mirror、Trails、Edge、Coloriz
 
 効果の追加はmixを短くフェード。個別パラメータの補間、効果除去のクロスフェード、元設定を保持する一時的なA/B切替は未実装。Resolumeとのピクセル単位の一致は目標にしていない。Trailsは時間ベースの残像で、素材切替・シーク・リサイズ時に履歴をリセットする。
 
-`npm run dev`で描画bundleと`effects/controls.json`を自動生成。後者はNodeサーバーとフロントエンドで共通の制御定義。FX変更時は自動再ビルド後にページをリロードする。GPU確認ページは http://127.0.0.1:4319/effects-smoke.html 。14種類の初期化・描画・mix、透過、Flip/Invert/Colorizeのピクセルを検証する。これは長時間運転や全パラメータ組合せの性能保証ではない。
+`npm run dev`で描画bundleと`src/effects/controls.json`を自動生成。後者はNodeサーバーとフロントエンドで共通の制御定義。FX変更時は自動再ビルド後にページをリロードする。GPU確認ページは http://127.0.0.1:4319/effects-smoke.html 。14種類の初期化・描画・mix、透過、Flip/Invert/Colorizeのピクセルを検証する。これは長時間運転や全パラメータ組合せの性能保証ではない。
 
 実装時検証：Python 35件、TypeScriptビルド、ブラウザーGPU 14/14を通過。「青く、左右対称。網点は外して、薄い残像を加えて」でMirror＋Trails＋Colorizeを選択し、実映像と全画面で確認。素材固定時は履歴を増やさず加工を更新。「次の1本」でInferno_demise_02.movへの素材切替・加工適用・履歴更新も確認。
 

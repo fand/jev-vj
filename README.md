@@ -74,11 +74,11 @@ Jev receives prompts, metadata, and history—not video files. API keys stay on 
 
 Videos that need conversion are cached as H.264 previews in `.player-cache/`. Originals are unchanged; previews do not preserve alpha or master quality. The cache has no automatic cleanup.
 
-See [PLAYER.md](PLAYER.md) for detailed behavior and controls (Japanese).
+See [player guide](docs/PLAYER.md) for detailed behavior and controls (Japanese).
 
 Tap four times within five seconds to set BPM. The latest four taps provide three intervals to average; fewer than four retains the previous tempo. Double-click the BPM value to enter a positive number, including decimals. Enter or blur applies it; Escape cancels. Resync restarts current footage and candidate previews from the first frame without changing BPM.
 
-Edit source tempos in Library’s BPM column. Before Library is initialized, tempos come from [clip-bpm.md](clip-bpm.md). Annotated footage plays at `Tap BPM / source BPM`, including candidate previews; blank or omitted footage stays at 1×. BPM defaults to 120 on page load. Decimal source BPMs are preserved. Save Library changes, or click Rescan after editing its CSV externally. Tap updates speed without seeking or restarting the clip.
+Edit source tempos in Library’s BPM column. Before Library is initialized, tempos come from [data/clip-bpm.md](data/clip-bpm.md). Annotated footage plays at `Tap BPM / source BPM`, including candidate previews; blank or omitted footage stays at 1×. BPM defaults to 120 on page load. Decimal source BPMs are preserved. Save Library changes, or click Rescan after editing its CSV externally. Tap updates speed without seeking or restarting the clip.
 
 ## Library
 
@@ -146,16 +146,32 @@ With the player running, open [the GPU checks](http://127.0.0.1:4319/effects-smo
 The original OSC bridge is legacy and runs separately. Only this optional bridge requires Python 3.9+:
 
 ```sh
-python3 server.py
+python3 legacy/python/server.py
 ```
 
-Open [localhost:4318](http://127.0.0.1:4318/). Enable Arena's OSC input on port 7000. The bundled `catalog.json` targets Arena 7.3.2's Example / Generators deck: five sources on Layer 1 and eight Composition Dashboard knobs. Update the catalog to match your deck and knob links; higher layers are left untouched.
+Open [localhost:4318](http://127.0.0.1:4318/). Enable Arena's OSC input on port 7000. The bundled `legacy/python/catalog.json` targets Arena 7.3.2's Example / Generators deck: five sources on Layer 1 and eight Composition Dashboard knobs. Update the catalog to match your deck and knob links; higher layers are left untouched.
 
 Selecting an effect overwrites all eight mapped knobs. Relative changes use the bridge's last sent state; manual changes in Arena are not detected. Successful OSC transmission does not confirm rendering, and a UDP failure can leave a partially applied change. Canceling a pending decision does not undo commands already sent.
 
 Both servers bind to localhost and keep credentials server-side. Press Ctrl+C to stop them.
 
 ## Repository contents
+
+```text
+src/
+  client/          Deck, Library, popup UI and renderer
+  server/          Node HTTP server, catalog and Jev selection
+  effects/         VFX-JS effects and shared controls
+scripts/           Development server and asset build
+tests/             Node tests; browser GPU checks in gpu/
+data/              Bundled clip descriptions, BPMs and derived metadata
+docs/              Player guide, design notes and completed TODOs
+legacy/python/     Previous Python player and optional Resolume bridge
+```
+
+`npm run dev` starts the Node app. `npm test` runs the Node suite; `npm run build` checks types and builds browser assets. The Python files are retained for reference and the optional bridge, not used by the Node app.
+
+Local `.env`, `.library/` and `.player-cache/` stay at the repository root and remain Git-ignored. Generated browser bundles are in `dist/`.
 
 Code, tests, documentation, and selection metadata only. Keep API keys, `.env`, footage, extracted frames, thumbnails, and caches out of Git. `.env.example` is an empty template.
 

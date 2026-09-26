@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 
 // Exercise the actual input queue with a fake clock and deferred API responses.
-const source=readFileSync(new URL('./player.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../src/client/player.js',import.meta.url),'utf8');
 const queue=source.slice(source.indexOf('function queueRecommendations(){'),source.indexOf('async function waitAsset('));
 function harness({deferPreviews=false}={}){
  let now=0,id=0;

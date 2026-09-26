@@ -4,10 +4,10 @@ import json
 import math
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 
 def controls():
-    return json.loads((ROOT / 'effects/controls.json').read_text())
+    return json.loads((ROOT / 'src/effects/controls.json').read_text())
 
 def migrate_twitch_params(params):
     """Accept the previous live-session schema; new judgments use the new controls."""

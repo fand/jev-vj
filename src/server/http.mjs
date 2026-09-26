@@ -6,8 +6,13 @@ import {ROOT, Problem, record} from './common.mjs';
 import {Player} from './player.mjs';
 import {CORE, mediaPath, displayPath, isFile, isDirectory} from './footage-store.mjs';
 
-const staticFiles = new Map(['player.js','player.css','effect-output.html','effect-output.css','dist/player-renderer.js','effects-smoke.html','effects-smoke.css','dist/effects-smoke.js','library.html','library.css','dist/library.js','dist/library.css','performance-controls.js','deck-output.js','output-popup.js','output-popup.css','output-popup.html'].map(file=>['/'+file,file]));
-staticFiles.set('/','player.html'); staticFiles.set('/library','library.html');
+// Keep browser URLs stable while serving only these explicitly listed assets.
+const staticFiles = new Map([
+  ...['player.js','player.css','effect-output.html','effect-output.css','library.html','library.css','performance-controls.js','deck-output.js','output-popup.js','output-popup.css','output-popup.html'].map(file=>['/'+file,'src/client/'+file]),
+  ...['player-renderer.js','effects-smoke.js','library.js','library.css'].map(file=>['/dist/'+file,'dist/'+file]),
+  ...['effects-smoke.html','effects-smoke.css'].map(file=>['/'+file,'tests/gpu/'+file]),
+  ['/','src/client/player.html'], ['/library','src/client/library.html'],
+]);
 const mime = {'.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.html':'text/html; charset=utf-8'};
 const headers = {'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; media-src 'self'; frame-ancestors 'self'"};
 export function byteRange(header, size) {

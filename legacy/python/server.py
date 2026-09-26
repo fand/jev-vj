@@ -14,7 +14,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-ROOT = Path(__file__).resolve().parent
+LEGACY_DIR = Path(__file__).resolve().parent
+ROOT = LEGACY_DIR.parents[1]
 
 
 class Problem(Exception):
@@ -124,7 +125,7 @@ def plan(selection, previous, catalog):
 
 class Bridge:
     def __init__(self, sender=None, evaluator=infer):
-        self.catalog = json.loads((ROOT / 'catalog.json').read_text())
+        self.catalog = json.loads((LEGACY_DIR / 'catalog.json').read_text())
         self.lock = threading.Lock()
         self.busy = False
         self.generation = 0
@@ -216,7 +217,7 @@ def create_server(port=4318, bridge=None):
             if self.path not in files:
                 return self.reply({'error': 'Not found'}, 404)
             name, kind = files[self.path]
-            self.reply((ROOT / name).read_bytes(), content_type=kind)
+            self.reply((LEGACY_DIR / name).read_bytes(), content_type=kind)
 
         def do_POST(self):
             try:

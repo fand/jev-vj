@@ -75,7 +75,7 @@ Opti8はカメラslow、点滅fast。mantissa 052はカメラ並進fast、カメ
 ## 再生成
 
 ```sh
-python3 resolume-jev/clip-metadata/build.py
+python3 data/clip-metadata/build.py
 ```
 
 原文を変更した場合は、該当注釈の意味を再確認し、`source_note_sha256` も更新する。

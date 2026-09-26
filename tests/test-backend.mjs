@@ -7,11 +7,11 @@ import {join} from 'node:path';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {setTimeout as delay} from 'node:timers/promises';
-import {FootageStore, CORE, videoFiles} from './backend/footage-store.mjs';
-import {Library, videoTools, parseSourceBpms} from './backend/library.mjs';
-import {Player, evaluate, footageRequest} from './backend/player.mjs';
-import {controls, presets, validateChain, effectRequest, selectEffects} from './backend/effects.mjs';
-import {createPlayerServer, byteRange} from './backend/http.mjs';
+import {FootageStore, CORE, videoFiles} from '../src/server/footage-store.mjs';
+import {Library, videoTools, parseSourceBpms} from '../src/server/library.mjs';
+import {Player, evaluate, footageRequest} from '../src/server/player.mjs';
+import {controls, presets, validateChain, effectRequest, selectEffects} from '../src/server/effects.mjs';
+import {createPlayerServer, byteRange} from '../src/server/http.mjs';
 const run = promisify(execFile);
 function fixture(t) {
   const dir = realpathSync(mkdtempSync(join(tmpdir(),'jev-node-')));
@@ -182,9 +182,15 @@ test('HTTP Library workflow, static allowlist, token/origin validation and byte 
   t.after(async()=>{ server.closeAllConnections(); await new Promise(r=>server.close(r)); });
   const base = `http://127.0.0.1:${server.address().port}`;
   const post = (path,data,headers = {})=>fetch(base+path,{method:'POST',headers:{'Content-Type':'application/json','X-Jev-Token':p.token,...headers},body:JSON.stringify(data)});
+  for (const path of ['/', '/library', '/player.js', '/player.css', '/library.css', '/performance-controls.js', '/deck-output.js', '/effect-output.html', '/effect-output.css', '/output-popup.html', '/output-popup.js', '/output-popup.css', '/effects-smoke.html', '/effects-smoke.css']) {
+    const asset = await fetch(base+path);
+    assert.equal(asset.status,200,path);
+    assert.ok((await asset.text()).length > 0,path);
+  }
+  for (const path of ['/data/clip-notes.md', '/legacy/python/server.py', '/src/client/player.js']) assert.equal((await fetch(base+path)).status,404,path);
   const initial = await (await fetch(base+'/api/library')).json(); assert.deepEqual(initial.rows,[]);
   assert.equal((await fetch(base+'/.env')).status,404);
-  assert.equal((await fetch(base+'/backend/common.mjs')).status,404);
+  assert.equal((await fetch(base+'/src/server/common.mjs')).status,404);
   const badHost = await new Promise((resolve,reject)=>get(base+'/api/status',{headers:{Host:'attacker.test'}},res=>{ res.resume(); resolve(res.statusCode); }).on('error',reject));
   assert.equal(badHost,403);
   assert.equal((await post('/api/clear',{}, {'X-Jev-Token':''})).status,403);

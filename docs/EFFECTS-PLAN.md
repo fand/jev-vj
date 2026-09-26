@@ -1,5 +1,7 @@
 # VFX-JS effects integration plan
 
+Historical implementation plan. Current code lives in `src/client/`, `src/effects/` and `src/server/`; Python references below are preserved in `legacy/python/`.
+
 Status: implemented (2026-09-19). See PLAYER.md for operation.
 
 Implementation notes: all 14 effects, manual controls, clip lock, staged Jev

@@ -173,11 +173,11 @@ def parse_source_bpms(text, notes):
 
 class Library:
     def __init__(self, root=None, cache=None):
-        catalog = json.loads((ROOT / 'clip-metadata/jev-candidates.json').read_text())
+        catalog = json.loads((ROOT / 'data/clip-metadata/jev-candidates.json').read_text())
         self.clips = catalog['clips']
         self.pack_notes = catalog.get('pack_notes', {})
-        self.notes = {c['id']: c for c in json.loads((ROOT / 'clip-metadata/metadata.json').read_text())['clips']}
-        self.axes = json.loads((ROOT / 'clip-metadata/axes.json').read_text())
+        self.notes = {c['id']: c for c in json.loads((ROOT / 'data/clip-metadata/metadata.json').read_text())['clips']}
+        self.axes = json.loads((ROOT / 'data/clip-metadata/axes.json').read_text())
         self.root = Path(root or '/Volumes/T7/vj').resolve()
         self.cache = Path(cache or ROOT / '.player-cache')
         self.cache.mkdir(parents=True, exist_ok=True)
@@ -195,7 +195,7 @@ class Library:
         if self.store is not None:
             self.apply_catalog(self.store.snapshot())
             return
-        bpm_file = ROOT / 'clip-bpm.md'
+        bpm_file = ROOT / 'data/clip-bpm.md'
         bpms = parse_source_bpms(bpm_file.read_text() if bpm_file.exists() else '', self.notes)
         index = {}
         for pack in {c['id'].split('/')[0] for c in self.clips}:
@@ -596,7 +596,9 @@ def create_server(port=4319, player=None):
                     static['/'+file]=(file,'text/javascript; charset=utf-8' if file.endswith('.js') else 'text/css; charset=utf-8' if file.endswith('.css') else 'text/html; charset=utf-8')
                 static['/library'] = ('library.html', 'text/html; charset=utf-8')
                 if path in static:
-                    file,kind=static[path];return self.reply((ROOT/file).read_bytes(),kind=kind)
+                    file,kind=static[path]
+                    directory = ROOT if file.startswith('dist/') else ROOT/'tests/gpu' if file.startswith('effects-smoke.') else ROOT/'src/client'
+                    return self.reply((directory/file).read_bytes(),kind=kind)
                 if path=='/api/status':return self.reply(player.status())
                 if path=='/api/library':
                     if player.library.store is None and not (player.library.data_dir/'footage.csv').exists() and not player.library.root.is_dir():

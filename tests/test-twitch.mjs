@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {build} from 'esbuild';
 import {readFile} from 'node:fs/promises';
-const {outputFiles} = await build({entryPoints:['effects/twitch-motion.ts'],bundle:true,format:'esm',write:false});
+const {outputFiles} = await build({entryPoints:['src/effects/twitch-motion.ts'],bundle:true,format:'esm',write:false});
 const {sampleMotion,sampleShutter,gate,noiseRate,channels} = await import('data:text/javascript;base64,'+Buffer.from(outputFiles[0].text).toString('base64'));
-const catalog = JSON.parse(await readFile('effects/controls.json','utf8'));
+const catalog = JSON.parse(await readFile('src/effects/controls.json','utf8'));
 const defaults = Object.fromEntries(catalog.find(e=>e.id==='twitch').controls.map(c=>[c.key,c.value]));
 const sample = (time,p=defaults) => Object.fromEntries(Object.entries(sampleMotion(channels.map(c=>time*noiseRate(p[c+'Freq'])),p)).map(([k,v])=>[k,v+0]));
 test('deterministic seeded noise and zero frequencies',()=>{

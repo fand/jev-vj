@@ -1,7 +1,7 @@
 import { VFX } from '@vfx-js/core';
-import { definitions } from './effects/registry';
-import { defaults, sanitize, type EffectParams } from './effects/types';
-import { MixedEffect } from './effects/mix';
+import { definitions } from '../effects/registry';
+import { defaults, sanitize, type EffectParams } from '../effects/types';
+import { MixedEffect } from '../effects/mix';
 
 export type EffectSetting = { id: string; params: EffectParams; mix: number };
 const preview = new URLSearchParams(location.search).has('preview');

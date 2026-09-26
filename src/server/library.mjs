@@ -25,7 +25,7 @@ export function parseSourceBpms(text, notes) {
       const pos = line.lastIndexOf(':');
       if (pos < 0 || !line.slice(pos+1).trim()) continue;
       const name = line.slice(2,pos).trim().replaceAll('\\_','_'), id = names.get(JSON.stringify([pack,name])), bpm = Number(line.slice(pos+1).trim());
-      if (!id || Object.hasOwn(result,id) || !Number.isFinite(bpm) || bpm <= 0) throw new Problem(`Invalid BPM entry in clip-bpm.md: ${name}`);
+      if (!id || Object.hasOwn(result,id) || !Number.isFinite(bpm) || bpm <= 0) throw new Problem(`Invalid BPM entry in data/clip-bpm.md: ${name}`);
       result[id] = bpm;
     }
   }
@@ -33,10 +33,10 @@ export function parseSourceBpms(text, notes) {
 }
 export class Library {
   constructor({root = null, cache = join(ROOT,'.player-cache'), dataDir = join(ROOT,'.library')} = {}) {
-    const catalog = readJSON(join(ROOT,'clip-metadata/jev-candidates.json'));
+    const catalog = readJSON(join(ROOT,'data/clip-metadata/jev-candidates.json'));
     this.clips = catalog.clips; this.pack_notes = catalog.pack_notes ?? {};
-    this.notes = Object.fromEntries(readJSON(join(ROOT,'clip-metadata/metadata.json')).clips.map(c=>[c.id,c]));
-    this.axes = readJSON(join(ROOT,'clip-metadata/axes.json'));
+    this.notes = Object.fromEntries(readJSON(join(ROOT,'data/clip-metadata/metadata.json')).clips.map(c=>[c.id,c]));
+    this.axes = readJSON(join(ROOT,'data/clip-metadata/axes.json'));
     this.legacyClips = new Map(this.clips.map(c=>[c.id,c])); this.legacyNotes = {...this.notes};
     this.root = root ? mediaPath(root) : null; this.cache = cache; this.dataDir = dataDir;
     this.paths = new Map(); this.jobs = new Map(); this.store = null; this.sourceBpms = {};
@@ -45,7 +45,7 @@ export class Library {
   }
   scan() {
     if (this.store) { this.applyCatalog(this.store.snapshot()); return; }
-    const bpmFile = join(ROOT,'clip-bpm.md');
+    const bpmFile = join(ROOT,'data/clip-bpm.md');
     this.sourceBpms = parseSourceBpms(existsSync(bpmFile) ? readFileSync(bpmFile,'utf8') : '', this.notes);
     const index = new Map();
     if (this.root) for (const pack of new Set(this.clips.map(c=>c.id.split('/')[0]))) for (const path of videoFiles(join(this.root,pack))) {

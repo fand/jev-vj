@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {performanceAction,transitionDuration,transitionProgress} from './performance-controls.js';
-import {createDeckOutput} from './deck-output.js';
+import {performanceAction,transitionDuration,transitionProgress} from '../src/client/performance-controls.js';
+import {createDeckOutput} from '../src/client/deck-output.js';
 
 test('performance shortcuts respect editing, IME, modifiers, and held-key repeats',()=>{
  const event=(code,key,other={})=>({code,key,...other});
@@ -64,7 +64,7 @@ test('compositor crossfades two live sources; blackout and held strobes preserve
 
 
 test('0 down → candidate → 0 up: cue while blacked out; release only restores master output',()=>{
- const source=readFileSync(new URL('./player.js',import.meta.url),'utf8');
+ const source=readFileSync(new URL('../src/client/player.js',import.meta.url),'utf8');
  let black=false, chosen=0, strobe=null;const listeners={},elements=new Map();
  const $=id=>{
   if(!elements.has(id))elements.set(id,{listeners:{},attrs:{},status:{},

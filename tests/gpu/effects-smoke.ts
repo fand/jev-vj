@@ -1,7 +1,7 @@
 import { VFX } from '@vfx-js/core';
-import { definitions } from './effects/registry';
-import { MixedEffect } from './effects/mix';
-import { defaults, type EffectDefinition, type EffectParams } from './effects/types';
+import { definitions } from '../../src/effects/registry';
+import { MixedEffect } from '../../src/effects/mix';
+import { defaults, type EffectDefinition, type EffectParams } from '../../src/effects/types';
 
 const source = document.querySelector<HTMLCanvasElement>('#source')!;
 const results = document.querySelector<HTMLElement>('#results')!;

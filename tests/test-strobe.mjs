@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {build} from 'esbuild';
-const {outputFiles}=await build({entryPoints:['effects/strobe.ts'],bundle:true,format:'esm',write:false});
+const {outputFiles}=await build({entryPoints:['src/effects/strobe.ts'],bundle:true,format:'esm',write:false});
 const {definition}=await import('data:text/javascript;base64,'+Buffer.from(outputFiles[0].text).toString('base64'));
 function sample(instance,dt=0){
  let uniforms;
