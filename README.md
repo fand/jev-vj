@@ -8,21 +8,67 @@ Try “calm ambient”, “more minimal”, “build up gradually”, or “add 
 
 ## Setup
 
-Requires Node.js, Python 3.9+, ffmpeg, ffprobe, and a TypeSafe API key.
+Run the app on the computer that holds your videos. You need Git, Node.js 22.12+ with npm, a [TypeSafe API key](https://console.typesafe.ai/), and a browser with WebGL2 support.
+
+**1. Clone**
 
 ```sh
 git clone https://github.com/fand/jev-vj.git
 cd jev-vj
-npm ci
-npm run build
-cp .env.example .env
-# Set TYPESAFE_API_KEY in .env, then start the player:
-python3 player_server.py --media-root /path/to/vj
 ```
 
-Open [localhost:4319](http://127.0.0.1:4319/).
+**2. Configure your API key**
 
-**Footage is not included.** Open **Library** to register your videos and describe them. The player does not analyze video content automatically. Existing matching clips from `clip-metadata/` are imported the first time you open Library.
+```sh
+cp .env.example .env
+```
+
+Open `.env` and set your key:
+
+```dotenv
+TYPESAFE_API_KEY=your_api_key_here
+```
+
+`.env` is Git-ignored. Environment variables take precedence over values in this file.
+
+**3. Install**
+
+```sh
+npm i
+```
+
+This installs the app and platform-specific ffmpeg/ffprobe binaries. Python and a separate ffmpeg installation are not required for the deck or Library.
+
+**4. Run**
+
+```sh
+npm run dev
+```
+
+Open [localhost:4319/library](http://127.0.0.1:4319/library). The dev command builds browser assets automatically, starts the local Node server, and rebuilds bundled browser code when it changes. Reload the page after a rebuild. Restart the command after changing backend code or `.env`. Stop with Ctrl+C.
+
+For another port, use `npm run dev -- --port 4320`. An optional `MEDIA_ROOT` in `.env` (or `--media-root "/path/to/videos"`) seeds matching bundled metadata on first use; it is not needed to start. Existing `.library/footage.csv` and media-folder settings are reused automatically.
+
+### Add footage and play
+
+1. Under **Media folders**, enter the absolute paths of folders containing your footage, one per line, and click **Set folders**. Paths starting with `~/` work too.
+2. Drop videos onto **Drop videos here**, or paste file/folder paths into **Add file or folder paths** and click **Add paths**. Folder imports include videos in subfolders.
+3. Fill in each video's `desc` cell. Jev only suggests footage with a nonblank description. Add an optional source `bpm` for beat-driven loops; leave it blank otherwise.
+4. Click **Save changes**. The catalog stays in `.library/footage.csv`; videos stay at their original paths.
+5. Click **Deck ↗**, type a direction such as “calm ambient”, and wait for previews. Click a candidate to play it, or press Escape and use **1–4**. Typing updates suggestions without switching the output.
+
+A fresh library starts empty. Keep external media drives connected while playing. Initial video conversion can take a while. Set the performance BPM with **Tap**, or double-click the number to enter it. Use **↗** in NOW PLAYING to open the output window for a second display.
+
+### Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Library or effects fail to load | Check the dev terminal for a build error, run `npm i`, and restart `npm run dev`. |
+| TypeSafe API key is not configured | Fill in `.env`, check for an overriding environment variable, and restart. |
+| Port 4319 is already in use | Stop the previous server, or use `npm run dev -- --port 4320`. |
+| Video conversion fails | Check the source file. Run `npm i` to restore bundled video tools; custom binaries can be set with `FFMPEG_PATH` and `FFPROBE_PATH`. |
+| Dropped files cannot be located | Register their containing folder under **Media folders**, or paste their paths under **Add file or folder paths**. |
+| Footage is missing from suggestions | Add a description and save. Reconnect offline drives, then click **Rescan** on the deck. |
 
 Jev receives prompts, metadata, and history—not video files. API keys stay on the server. Playback history and effect state reset when the server restarts. Voice input and music analysis are not implemented.
 
@@ -42,11 +88,13 @@ Select a row to preview its video; double-click a cell to edit. The table uses [
 
 **Save changes** writes `.library/footage.csv` and notifies open deck tabs to use the catalog for subsequent suggestions. Existing candidate tickets expire; current playback continues. Editing is local until saved. Export CSV saves first, then downloads a copy. Imported paths are deduplicated; reimporting footage preserves its descriptions and BPMs. IDs stay stable when names are edited. The CSV preserves quoted text, commas, multiline descriptions, Unicode and custom columns. Concurrent edits from another window are rejected rather than overwritten.
 
-On first use, existing located footage, notes and BPMs migrate to CSV; the old files are retained. Thereafter the CSV is the catalog source of truth. Existing derived attributes are reused only while the original description is unchanged. Edited descriptions and custom attribute columns become Jev context directly, without carrying over stale derived claims. Paths stay local. New descriptions do not trigger a separate AI extraction step.
+On first use with `MEDIA_ROOT` configured, existing located footage, notes and BPMs migrate to CSV; the old files are retained. Thereafter the CSV is the catalog source of truth. Existing derived attributes are reused only while the original description is unchanged. Edited descriptions and custom attribute columns become Jev context directly, without carrying over stale derived claims. Paths stay local. New descriptions do not trigger a separate AI extraction step.
 
 `.library/` also contains media-folder settings and is Git-ignored. Do not publish it: it contains your local paths and notes. Removing rows never deletes original footage. Offline media stays listed; reconnect the drive and rescan. Previews use the same H.264 conversion cache as the deck.
 
 ## Live controls
+
+Candidates share one warmed video/FX renderer between their thumbnail and the live output. Preparation also caches the first rendered frame. A cue restarts the existing decoder and switches output immediately; ticket confirmation and history updates follow. Idle candidates render at up to 20 fps, and the playing clip renders every animation frame. This uses more GPU memory than small preview-only renderers; replacing candidates releases unused renderers while preserving the playing clip.
 
 The Transition slider beside Tap sets a 0–1 second crossfade (default 0.30s). Both clips and their effects keep playing during the fade.
 
@@ -61,7 +109,7 @@ The Transition slider beside Tap sets a 0–1 second crossfade (default 0.30s). 
 
 Performance shortcuts are disabled while editing text, numbers, sliders, or menus. Clips keep playing and switching while 0 is held. Releasing 0 restores output without restarting playback. Leaving the window releases blackout and strobes.
 
-Click ↗ in the stage to open the live output window. Move it to your second display, then click Fullscreen or double-click its video. The window shares the final 1280×720 output, including effects, crossfades, blackout, and strobes. Keep the deck window open. Popup and fullscreen support depend on the browser; use Chrome if an embedded browser does not open a window.
+Click ↗ in the stage to open the live output window. Move it to your second display, then click Fullscreen or double-click its video. The window shares the final 1280×720 output, including effects, crossfades, blackout, and strobes. While the popup is connected, NOW PLAYING shows a placeholder and its canvas is not drawn. The final composite is rendered only to the popup stream; source video and FX keep running. Closing or pausing the popup restores the deck preview. Keep the deck window open. Popup and fullscreen support depend on the browser; use Chrome if an embedded browser does not open a window.
 
 On desktop, the deck fits the viewport while the right column scrolls independently. Short windows use compact candidate cards and prompt controls.
 
@@ -75,7 +123,7 @@ Strobe controls: frequency (0–30 Hz; 0 disables flashing), flash duty, amount,
 
 The same prompt drives clip and effect selection. Relative instructions compare against the current clip and effects; recent playback history helps avoid repetition.
 
-Rebuild with `npm run build` after changing effect code. This generates the browser bundle and shared control definitions.
+`npm run dev` rebuilds effect code automatically. Reload the page to use the new bundle. `npm run build` is available for a one-off build and type check.
 
 ## Checks
 
@@ -86,15 +134,16 @@ npm run test:shift-glitch
 npm run test:deck
 npm run test:tempo
 npm run test:performance
+npm run test:cue
 npm run test:strobe
-python3 -m unittest discover -s . -p 'test_*.py' -v
+npm run test:backend
 ```
 
 With the player running, open [the GPU checks](http://127.0.0.1:4319/effects-smoke.html).
 
 ## Optional Resolume Arena bridge
 
-The original OSC bridge runs separately:
+The original OSC bridge is legacy and runs separately. Only this optional bridge requires Python 3.9+:
 
 ```sh
 python3 server.py

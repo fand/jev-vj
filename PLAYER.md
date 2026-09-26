@@ -8,12 +8,12 @@
 
 ```sh
 cd jev-vj
-npm ci
-npm run build
-python3 player_server.py
+cp .env.example .env  # TYPESAFE_API_KEY を設定
+npm i
+npm run dev
 ```
 
-http://127.0.0.1:4319/ を開く。Node.js（ビルド用）、Python 3.9以降、`ffmpeg` / `ffprobe` が必要。APIキーは既存ブリッジと共通：環境変数 `TYPESAFE_API_KEY` → `.env` → 隣接する `jev-avatar-feed/.env`（開発時の後方互換）。
+http://127.0.0.1:4319/ を開く。Node.js 22.12以降が必要。ビルドとNodeサーバーの起動は自動。`ffmpeg` / `ffprobe` はnpmで導入。Pythonは不要。APIキーは環境変数 `TYPESAFE_API_KEY` → リポジトリの `.env` の順。
 
 - 指示を入力し「映像を選ぶ」。例のボタンは指示欄にセットする。
 - 「次の1本」は同じ指示と再生履歴から再選択。現在を含む直近3種類の素材を避ける。通常の「映像を選ぶ」は、加工だけで指示に応えられるよう現在素材も候補に残す。
@@ -33,7 +33,7 @@ http://127.0.0.1:4319/ を開く。Node.js（ビルド用）、Python 3.9以降�
 
 ## ファイル・再生
 
-素材の既定ルートは `/Volumes/T7/vj`。packフォルダーを再帰検索し、メタデータのファイル名と一意に一致した動画のみ配信。同名重複・不在ファイルは選択対象外。「再スキャン」で再確認。別の配置には `--media-root /path/to/vj` を指定する。
+初回はLibraryで素材フォルダーを登録・インポートする。既存CSVがあれば自動で再利用。初回に `MEDIA_ROOT` または `--media-root /path/to/vj` を指定すると、packフォルダーを検索して旧メタデータと一意に一致した素材をCSVへ移行。「再スキャン」で所在を再確認。
 
 H.264 / yuv420p のMP4はそのまま配信。その他は初回選択時に幅最大1280pxのH.264へ変換し、`.player-cache/` に保存。MOVを含む素材をブラウザーで確認するためのプレビューであり、アルファ・元の画質を保つマスター出力ではない。元動画は変更しない。キャッシュはGit対象外、容量制限・自動削除なし。動画は初期ミュート。
 
@@ -44,7 +44,7 @@ H.264 / yuv420p のMP4はそのまま配信。その他は初回選択時に幅�
 ## 検証
 
 ```sh
-python3 -m unittest discover -s . -p 'test_*.py' -v
+npm run test:backend
 node --check player.js
 ```
 
@@ -92,7 +92,7 @@ VFX-JSで14種類：RGB、Twitch、Hue、Flip、Mirror、Trails、Edge、Coloriz
 
 効果の追加はmixを短くフェード。個別パラメータの補間、効果除去のクロスフェード、元設定を保持する一時的なA/B切替は未実装。Resolumeとのピクセル単位の一致は目標にしていない。Trailsは時間ベースの残像で、素材切替・シーク・リサイズ時に履歴をリセットする。
 
-`npm run build`で描画bundleと`effects/controls.json`を生成。後者はPythonとフロントエンドで共通の制御定義。開発時は変更後に再ビルドする。GPU確認ページは http://127.0.0.1:4319/effects-smoke.html 。14種類の初期化・描画・mix、透過、Flip/Invert/Colorizeのピクセルを検証する。これは長時間運転や全パラメータ組合せの性能保証ではない。
+`npm run dev`で描画bundleと`effects/controls.json`を自動生成。後者はNodeサーバーとフロントエンドで共通の制御定義。FX変更時は自動再ビルド後にページをリロードする。GPU確認ページは http://127.0.0.1:4319/effects-smoke.html 。14種類の初期化・描画・mix、透過、Flip/Invert/Colorizeのピクセルを検証する。これは長時間運転や全パラメータ組合せの性能保証ではない。
 
 実装時検証：Python 35件、TypeScriptビルド、ブラウザーGPU 14/14を通過。「青く、左右対称。網点は外して、薄い残像を加えて」でMirror＋Trails＋Colorizeを選択し、実映像と全画面で確認。素材固定時は履歴を増やさず加工を更新。「次の1本」でInferno_demise_02.movへの素材切替・加工適用・履歴更新も確認。
 

@@ -1,5 +1,5 @@
 import {performanceAction, transitionDuration} from './performance-controls.js';
-import {createDeckOutput} from './deck-output.js';
+import {createDeckOutput,prepareClipCue} from './deck-output.js';
 const $ = id => document.getElementById(id);
 // Average the three intervals between the latest four taps within five seconds.
 let tapTimes = [];
@@ -23,7 +23,7 @@ function applyVideoTempo(media) {
  media.defaultPlaybackRate=rate;
  media.playbackRate=rate;
  const frame=media.ownerDocument.defaultView.frameElement;
- const label=frame?.id==='output'?$('clip-tempo'):frame?.closest('.candidate')?.querySelector('.candidate-tempo');
+ const label=frame?.id==='output'?$('clip-tempo'):(frame?.tempoLabel||frame?.closest('.candidate')?.querySelector('.candidate-tempo'));
  if(label){label.textContent=sourceBpm>0?`${sourceBpm} BPM · ${rate.toFixed(2)}×`:'Original speed · 1×';label.hidden=frame?.id!=='output'&&!(sourceBpm>0);}
 }
 function bindVideoTempo(media, sourceBpm) {
@@ -34,7 +34,7 @@ function bindVideoTempo(media, sourceBpm) {
 }
 function onVideoMetadata(event){applyVideoTempo(event.currentTarget);}
 function tempoVideos() {
- return [...document.querySelectorAll('#output, #outgoing, .candidate-preview iframe')]
+ return [...document.querySelectorAll('.stage > iframe')]
   .map(frame=>frame.contentDocument?.querySelector('video')).filter(Boolean);
 }
 function setTargetBpm(bpm) {
@@ -78,7 +78,7 @@ let output = $('output');
 function waitRenderer(frame) {
  return new Promise((resolve,reject)=>{
   const existing=frame.contentWindow?.jevRenderer;if(existing){resolve(existing);return;}
-  const timeout=setTimeout(()=>{cleanup();reject(Error('Could not start the renderer. Run npm run build and reload.'));},20000);
+  const timeout=setTimeout(()=>{cleanup();reject(Error('Could not start the renderer. Check the dev terminal and reload.'));},20000);
   const listener=e=>{if(e.origin===location.origin&&e.source===frame.contentWindow&&e.data?.type==='effects-ready'){cleanup();resolve(frame.contentWindow.jevRenderer);}};
   function cleanup(){clearTimeout(timeout);window.removeEventListener('message',listener);}
   window.addEventListener('message',listener);
@@ -86,7 +86,10 @@ function waitRenderer(frame) {
 }
 let renderer = await waitRenderer(output);
 let video = renderer.video;
-const program=createDeckOutput($('program-output'),notice,remotePerformance);
+const program=createDeckOutput($('program-output'),notice,remotePerformance,active=>{
+ $('stage').classList.toggle('popup-active',active);
+ $('program-output').setAttribute('aria-label',active?'Output is playing in the popup window':'Live program output');
+});
 let currentView=program.connect(renderer);
 void program.show(currentView);
 let fadeSeconds=.3, heldStrobes=[];
@@ -154,10 +157,11 @@ window.addEventListener('blur',releasePerformanceKeys);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)releasePerformanceKeys();});
 window.addEventListener('pagehide',()=>program.dispose());
 let token, state, labels={}, busy=false, generation=0;
-let manualTimer, applyingEffects=false, effectDraft=[], manualVersion=0, playbackApplying=false;
+let manualTimer, applyingEffects=false, effectDraft=[], manualVersion=0;
 let inputVersion=0, candidateVersion=0, requesting=false, queued=false, composing=false, requestTimer;
 let lastRequestAt=performance.now(), candidates=[];
 let candidatePreparation=null, candidatesStale=false;
+let preparedCandidates=new Map();
 const THROTTLE=1000;
 function notice(text,error=false){$('notice').textContent=text;$('notice').classList.toggle('error',error);}
 function loading(text){$('loading').hidden=!text;$('loading-text').textContent=text;}
@@ -181,7 +185,7 @@ async function refresh(){
  $('current-effects').textContent=effectNames(state.effects||[]);
  if(!state.ready)notice('TypeSafe API key is not configured.',true);
  else if(!state.available)notice('Connect your media drive and click Rescan.',true);
- else if(!state.ffmpeg)notice('Video playback requires ffmpeg and ffprobe.',true);
+ else if(!state.ffmpeg)notice('Video tools are unavailable. Run npm i and restart the dev server.',true);
  renderHistory();buttons();
 }
 function effectNames(chain){return chain.map(e=>renderer.definitions.find(d=>d.id===e.id)?.name||e.id).join(' + ')||'No FX';}
@@ -206,7 +210,14 @@ function showClip(clip){
 function cancelCandidatePreparation(){
  ++candidateVersion;candidatePreparation?.cancel();candidatePreparation?.element.remove();candidatePreparation=null;
 }
+function releasePrepared(entry){
+ if(entry.frame===output||entry.disposed)return;
+ entry.disposed=true;entry.engine?.dispose();
+ if(entry.view)program.disconnect(entry.view);
+ entry.engine?.video.pause();entry.frame.remove();
+}
 function clearCandidates(){
+ for(const entry of preparedCandidates.values())releasePrepared(entry);preparedCandidates.clear();
  cancelCandidatePreparation();candidatesStale=false;candidates=[];$('candidates').replaceChildren(...Array.from({length:4},(_,i)=>{
   const el=document.createElement('div');el.className='candidate-placeholder';el.textContent=String(i+1).padStart(2,'0');return el;
  }));
@@ -255,82 +266,104 @@ async function renderCandidates(nextCandidates,inputRevision){
  const previous=$('candidates'),staging=document.createElement('div');
  staging.className='candidates candidate-staging';staging.inert=true;staging.setAttribute('aria-hidden','true');
  previous.parentElement.append(staging);
- let cancel;const canceled=new Promise(resolve=>{cancel=()=>resolve(false);});
+ const prepared=new Map();
+ let cancel;const canceled=new Promise(resolve=>{cancel=()=>{for(const entry of prepared.values())releasePrepared(entry);resolve(false);};});
  const preparation={element:staging,cancel};candidatePreparation=preparation;
  const valid=()=>version===candidateVersion&&inputRevision===inputVersion&&staging.isConnected;
  const tasks=nextCandidates.map(async(candidate,index)=>{
   const button=document.createElement('button');button.type='button';button.className='candidate';button.disabled=true;button.dataset.id=candidate.id;button.setAttribute('aria-pressed','false');
   const preview=document.createElement('div');preview.className='candidate-preview';
-  const frame=document.createElement('iframe');frame.title=`Candidate ${index+1}: ${candidate.clip.name}`;frame.src='/effect-output.html?preview=1';frame.allow='autoplay';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');preview.append(frame);
+  const thumbnail=document.createElement('canvas');thumbnail.width=320;thumbnail.height=180;preview.append(thumbnail);
+  const thumbnailContext=thumbnail.getContext('2d',{alpha:false});
+  const frame=document.createElement('iframe');frame.title=`Candidate ${index+1}: ${candidate.clip.name}`;frame.className='output-renderer prepared-renderer';frame.src='/effect-output.html?preview=1';frame.allow='autoplay';frame.tabIndex=-1;frame.setAttribute('aria-hidden','true');
+  // Keep the full-size renderer in one place for its entire lifetime. Moving an
+  // iframe between DOM parents reloads it and would discard the warmed GPU state.
+  $('stage').prepend(frame);
+  const entry={frame,candidate,button};prepared.set(candidate.id,entry);
   const rank=document.createElement('span');rank.className='candidate-rank';rank.textContent=String(index+1).padStart(2,'0');preview.append(rank);
   const name=document.createElement('strong');name.textContent=candidate.clip.name;
   const fx=document.createElement('span');fx.className='candidate-fx';fx.textContent=effectNames(candidate.effects);
-  const tempo=document.createElement('span');tempo.className='candidate-tempo';
-  const status=document.createElement('span');status.className='candidate-state';status.textContent='Preparing preview…';
+  const tempo=document.createElement('span');tempo.className='candidate-tempo';frame.tempoLabel=tempo;
+  const status=document.createElement('span');status.className='candidate-state';status.textContent='Preparing clip…';
   button.append(preview,name,fx,tempo,status);button.addEventListener('click',event=>void choose(candidate,event.shiftKey?fadeSeconds:0));
   staging.append(button);
   try{
    const [engine,url]=await Promise.all([waitRenderer(frame),waitAsset(candidate.asset,valid)]);
    if(!valid()||!url)return false;
+   entry.engine=engine;
    bindVideoTempo(engine.video,candidate.clip.source_bpm);engine.video.src=url;await engine.video.play();if(!valid())return false;
    await engine.apply(candidate.effects);if(!valid())return false;
+   entry.view=program.connect(engine,buffer=>thumbnailContext.drawImage(buffer,0,0,320,180));
+   entry.cue=await prepareClipCue(engine,entry.view);if(!valid())return false;
    status.textContent='';status.hidden=true;button.dataset.ready='true';
    return true;
   }catch(error){
    if(valid()){status.textContent='Preview failed';status.hidden=false;button.title=error.message;}
    return false;
+  }finally{
+   if(!valid()||button.dataset.ready!=='true'){releasePrepared(entry);prepared.delete(candidate.id);}
   }
  });
  try{
   const ready=await Promise.race([Promise.all(tasks),canceled]);
   if(!ready||!valid())return false;
   if(!ready.some(Boolean))throw Error('Could not prepare new previews. Previous previews retained.');
+  for(const entry of preparedCandidates.values())releasePrepared(entry);
+  preparedCandidates=prepared;
   previous.remove();staging.id='candidates';staging.classList.remove('candidate-staging');staging.inert=false;staging.removeAttribute('aria-hidden');
   candidates=nextCandidates;candidatesStale=false;buttons();return true;
  }finally{
-  if(staging.id!=='candidates')staging.remove();
+  if(staging.id!=='candidates'){for(const entry of prepared.values())releasePrepared(entry);staging.remove();}
   if(candidatePreparation===preparation)candidatePreparation=null;
  }
 }
 async function choose(candidate,seconds=0){
  if(busy||requesting||applyingEffects||candidatesStale)return;
  if(manualTimer){clearTimeout(manualTimer);manualTimer=null;await applyManualEffects();return;}
- busy=true;const version=++generation;buttons();loading('Switching clip');
+ const next=preparedCandidates.get(candidate.id);if(!next?.cue)return;
+ busy=true;const version=++generation;buttons();
  const previous={output,renderer,video,view:currentView};
- let nextFrame, nextView, committed=false;
+ let shown=false;
  try{
-  const result=await post('/api/choose',{id:candidate.id});
-  const url=await waitAsset(result.asset,()=>version===generation);if(!url||version!==generation)return;
-  nextFrame=document.createElement('iframe');nextFrame.className='output-renderer';nextFrame.title='Incoming clip';nextFrame.allow='autoplay';nextFrame.src='/effect-output.html';
-  $('stage').prepend(nextFrame);
-  const nextRenderer=await waitRenderer(nextFrame);
-  bindVideoTempo(nextRenderer.video,result.clip.source_bpm);
-  nextRenderer.video.src=url;nextRenderer.video.currentTime=0;await nextRenderer.video.play();
-  await nextRenderer.apply(result.effects||[]);
-  if(version!==generation)return;
-  nextView=program.connect(nextRenderer);
-  output.id='outgoing';nextFrame.id='output';nextFrame.title='Current clip';
-  output=nextFrame;renderer=nextRenderer;video=renderer.video;currentView=nextView;
-  if(!await applyTicket(result,version))return;
-  committed=true;
-  // The prepared incoming clip is triggered from its first frame at the cue.
-  video.currentTime=0;renderer.reset();renderer.captureFrame();
-  showClip(result.clip);
+  // No request, iframe creation, video load or FX initialization on the cue path.
+  const playing=next.cue.trigger(candidate.effects||[]);
+  output.id='outgoing';next.frame.id='output';
+  output=next.frame;renderer=next.engine;video=renderer.video;currentView=next.view;
+  applyVideoTempo(video);
+  const transition=program.show(currentView,seconds);shown=true;
+  showClip(candidate.clip);
   for(const button of $('candidates').querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.id===candidate.id));
-  loading('');
-  await program.show(nextView,seconds);
-  program.disconnect(previous.view);previous.video.pause();previous.output.remove();
-  notice(`Playing ${result.clip.name}.`);
+  // Persist only after the output switch has begun. Keep ticket requests ordered.
+  const confirmation=(async()=>{
+   await playing;
+   const result=await post('/api/choose',{id:candidate.id});
+   await post('/api/played',{ticket:result.ticket,effects_failed:false});
+  })();
+  const completed=await Promise.allSettled([playing,transition,confirmation]);
+  const failure=completed.find(result=>result.status==='rejected');if(failure)throw failure.reason;
+  if(version!==generation)return;
+  await refresh();syncEffects();
+  notice(`Playing ${candidate.clip.name}.`);
  }catch(error){
-  if(version===generation)notice(error.message,true);
+  // A rejected/stale ticket restores the server-confirmed presentation.
+  candidatesStale=true;
+  for(const button of $('candidates').querySelectorAll('button'))button.setAttribute('aria-pressed','false');
+  if(shown){output.id='';output=previous.output;output.id='output';renderer=previous.renderer;video=previous.video;currentView=previous.view;}
+  await restorePresentation().catch(()=>{});
+  notice(error.message,true);
  }finally{
-  if(!committed){
-   if(nextView)program.disconnect(nextView);
-   nextFrame?.remove();
-   output=previous.output;output.id='output';renderer=previous.renderer;video=previous.video;currentView=previous.view;
-   if(version===generation)await restorePresentation().catch(error=>notice(error.message,true));
+  // Retain candidate decoders for repeated cues; retire only orphaned outputs.
+  for(const item of [previous,{output:next.frame,renderer:next.engine,video:next.engine.video,view:next.view}]){
+   if(item.output===output)continue;
+   item.output.id='';item.renderer.setActive(false);
+   const entry=[...preparedCandidates.values()].find(entry=>entry.frame===item.output);
+   if(entry){
+    // Manual FX edits affect the playing renderer; restore its candidate preset
+    // in the background before making it available for another cue.
+    await entry.engine.apply(entry.candidate.effects||[]).catch(()=>{entry.button.dataset.ready='false';});
+   }else{program.disconnect(item.view);item.renderer.dispose();item.output.remove();}
   }
-  if(version===generation){busy=false;loading('');buttons();queueRecommendations();}
+  if(version===generation){busy=false;buttons();queueRecommendations();}
  }
 }
 $('form').addEventListener('submit',e=>e.preventDefault());
@@ -382,19 +415,6 @@ async function restorePresentation(){
  }else{program.clear();video.pause();video.removeAttribute('src');video.load();renderer.reset();$('empty').hidden=false;$('name').textContent='No clip selected';$('pack').textContent='NOW PLAYING';$('description').textContent='';$('attributes').replaceChildren();$('attribute-count').textContent='';$('clip-tempo').textContent='';bindVideoTempo(video,null);}
  syncEffects();
 }
-async function applyTicket(result,version){
- applyingEffects=true;playbackApplying=true;buttons();let failed=false;
- try{
-  try{await renderer.apply(result.effects||[]);}catch{failed=true;}
-  if(version!==generation){await restorePresentation();return false;}
-  await post('/api/played',{ticket:result.ticket,effects_failed:failed});
-  if(version!==generation){await restorePresentation();return false;}
-  await refresh();syncEffects();showClip(state.current);
-  if(failed){notice('Effect rendering failed. Playing the original footage.',true);return false;}
-  return true;
- }catch(error){await restorePresentation();throw error;}
- finally{applyingEffects=false;playbackApplying=false;buttons();}
-}
 async function applyManualEffects(){
  if(busy||requesting||!state.current){syncEffects();$('effects-status').textContent='Start playback and wait for selection to finish before adjusting effects.';return;}
  if(applyingEffects)return;
@@ -420,8 +440,8 @@ $('effects-clear').addEventListener('click',()=>{effectDraft=[];renderEffectCont
 window.addEventListener('message',e=>{
  if(e.origin!==location.origin||e.data?.type!=='effects-error')return;
  if(e.source!==output.contentWindow){
-  for(const frame of $('candidates').querySelectorAll('iframe'))if(e.source===frame.contentWindow){
-   const button=frame.closest('button');button.dataset.ready='false';button.disabled=true;
+  for(const entry of preparedCandidates.values())if(e.source===entry.frame.contentWindow){
+   const button=entry.button;button.dataset.ready='false';button.disabled=true;
    const status=button.querySelector('.candidate-state');status.textContent='FX preview failed';status.hidden=false;
   }
   return;

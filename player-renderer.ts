@@ -5,6 +5,7 @@ import { MixedEffect } from './effects/mix';
 
 export type EffectSetting = { id: string; params: EffectParams; mix: number };
 const preview = new URLSearchParams(location.search).has('preview');
+let active = !preview;
 if(preview)document.getElementById('playback')!.hidden=true;
 const video = document.querySelector<HTMLVideoElement>('#video')!;
 const makeBank = () => new Map(definitions.map(def=>[def.id,new MixedEffect(def.create(defaults(def)))]));
@@ -19,7 +20,7 @@ let frame = 0;
 let onFrame: ((source: HTMLCanvasElement | HTMLVideoElement, crop?: number[]) => void) | null = null;
 function publishFrame(){
  const canvas=document.querySelector<HTMLCanvasElement>('canvas');
- if(!onFrame||video.readyState<2)return;
+ if(!onFrame||video.readyState<2||video.seeking)return;
  if(registered&&canvas){
   const rect=canvas.getBoundingClientRect(), content=video.getBoundingClientRect();
   const sx=canvas.width/Math.max(rect.width,1), sy=canvas.height/Math.max(rect.height,1);
@@ -48,7 +49,7 @@ async function ensure() {
       video.addEventListener('loadeddata',ready,{once:true});video.addEventListener('error',fail,{once:true});
       video.addEventListener('emptied',fail,{once:true});
     });
-    vfx=new VFX({autoplay:false,pixelRatio:Math.min(preview ? .7 : 1,1280/Math.max(innerWidth,1)),scrollPadding:false});
+    vfx=new VFX({autoplay:false,pixelRatio:Math.min(1,1280/Math.max(innerWidth,1)),scrollPadding:false});
     await vfx.add(video,{effect:[...bank.values()]});registered=true;
   })().catch(error=>{fallback(error);throw error;}).finally(()=>{registration=undefined;});
   return registration;
@@ -57,7 +58,7 @@ function syncEnabled() {
   const ids=new Set(chain.map(e=>e.id));
   for(const [id,node]of bank)node.enabled=!bypassed&&ids.has(id);
 }
-async function apply(settings: EffectSetting[]) {
+function setChain(settings: EffectSetting[]) {
   if(!Array.isArray(settings))throw Error('Invalid effect chain');
   const unique=new Set<string>();
   const next=settings.map(item=>{
@@ -65,15 +66,17 @@ async function apply(settings: EffectSetting[]) {
     if(!def||unique.has(item.id)||!Number.isFinite(item.mix))throw Error('Invalid effect');
     unique.add(item.id);return {id:item.id,params:sanitize(def,item.params||{}),mix:item.id==='trails'?1:Math.max(0,Math.min(1,item.mix))};
   });
-  await ensure();
   for(const item of next){const node=bank.get(item.id)!;if(!node.enabled){node.instance.reset?.();node.amount=0;}node.instance.setParams(item.params);node.targetAmount=item.mix;if(item.id==='trails')node.amount=1;}
   chain=next;syncEnabled();
+}
+async function apply(settings: EffectSetting[]) {
+  await ensure();setChain(settings);
   try{vfx!.render();publishFrame();}catch(error){fallback(error);throw error;}
   return structuredClone(chain);
 }
 let lastFrame = 0;
 function render(now = 0) {
-  if((!preview || now-lastFrame>=1000/20) && registered&&!video.paused&&video.readyState>=2){lastFrame=now;try{vfx!.render();publishFrame();}catch(error){fallback(error);}}
+  if((active || now-lastFrame>=1000/20) && registered&&!video.paused&&!video.seeking&&video.readyState>=2){lastFrame=now;try{vfx!.render();publishFrame();}catch(error){fallback(error);}}
   if(!registered)publishFrame();
   frame=requestAnimationFrame(render);
 }
@@ -89,8 +92,18 @@ video.addEventListener('seeking',reset);
 window.addEventListener('resize',resizeVideo);
 video.addEventListener('loadeddata',()=>{void ensure().catch(()=>{});});
 document.getElementById('playback')!.addEventListener('click',()=>{if(video.paused)void video.play();else video.pause();});
-window.addEventListener('pagehide',()=>{cancelAnimationFrame(frame);vfx?.destroy();});
-const renderer={video,captureFrame,
+function dispose(){
+  cancelAnimationFrame(frame);onFrame=null;registered=false;vfx?.destroy();vfx=undefined;
+  video.pause();video.removeAttribute('src');video.load();
+}
+window.addEventListener('pagehide',dispose);
+const renderer={video,captureFrame,dispose,
+  setActive(value:boolean){active=value;},
+  cue(settings:EffectSetting[]){
+    if(!registered)throw Error('Clip is not prepared.');
+    setChain(settings);reset();active=true;video.currentTime=0;
+    return video.play();
+  },
   get onFrame(){return onFrame;},set onFrame(callback:typeof onFrame){onFrame=callback;},
   definitions:definitions.map(({create,...def})=>def),apply,reset,
   get chain(){return structuredClone(chain);},get error(){return failure;},

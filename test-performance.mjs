@@ -106,3 +106,59 @@ test('0 down → candidate → 0 up: cue while blacked out; release only restore
  $('master-kill').listeners.blur();assert.equal(black,false);
 
 });
+
+test('popup renders only offscreen; pause, close, reload and autoplay failure restore the deck',async()=>{
+ const originals={};for(const key of ['document','window','location','requestAnimationFrame','cancelAnimationFrame'])originals[key]=Object.getOwnPropertyDescriptor(globalThis,key);
+ const listeners={},surfaces=[],messages=[],states=[];let tick,popup,denyPlay=false,blocked=false,notices=[];
+ function makeCanvas(){
+  const surface={width:10,height:10,dataset:{},draws:[],stopped:0};
+  const context={globalAlpha:1,fillStyle:'',fillRect(){surface.draws.push(['fill',this.fillStyle]);},drawImage(source){surface.draws.push(['draw',source,this.globalAlpha]);}};
+  surface.getContext=()=>context;
+  surface.captureStream=()=>({getTracks:()=>[{stop(){surface.stopped++;}}]});
+  surfaces.push(surface);return surface;
+ }
+ function open(){
+  if(blocked)return null;
+  const video={play:()=>denyPlay?Promise.reject(Error('autoplay denied')):Promise.resolve()};
+  return popup={closed:false,focus(){},close(){this.closed=true;},document:{querySelector:()=>video}};
+ }
+ try{
+  Object.assign(globalThis,{document:{createElement:makeCanvas},location:{origin:'http://localhost'},
+   window:{open,addEventListener(type,fn){listeners[type]=fn;},removeEventListener(type){delete listeners[type];}},
+   requestAnimationFrame(fn){tick=fn;return 1;},cancelAnimationFrame(){}});
+  const canvas=makeCanvas(),program=createDeckOutput(canvas,(...args)=>notices.push(args),event=>messages.push(event),active=>states.push(active));
+  const offscreen=surfaces[1];
+  const a=program.connect({captureFrame(){}}),b=program.connect({captureFrame(){}});
+  a.engine.onFrame({width:1280,height:720});b.engine.onFrame({width:1280,height:720});
+  await program.show(a);tick(0);
+  const send=type=>listeners.message({origin:location.origin,source:popup,data:{type}});
+  program.openPopup();tick(1);assert.equal(states.length,0); // Keep the deck visible until handshake.
+  listeners.message({origin:'https://other.example',source:popup,data:{type:'output-ready'}});
+  assert.equal(states.length,0);
+  send('output-ready');assert.deepEqual(states,[true]);
+  const frozenDrawCount=canvas.draws.length;
+  const start=performance.now(),fade=program.show(b,.5);
+  tick(start+250);
+  assert.equal(canvas.draws.length,frozenDrawCount);
+  assert.equal(offscreen.draws.at(-1)[1],b.buffer);
+  assert.ok(Math.abs(offscreen.draws.at(-1)[2]-.5)<.03);
+  program.blackout(true);tick(start+300);assert.deepEqual(offscreen.draws.at(-1),['fill','#000']);
+  program.blackout(false);program.strobe(true);tick(performance.now());assert.deepEqual(offscreen.draws.at(-1),['fill','#fff']);
+  program.strobe(null);tick(start+600);await fade;
+  assert.equal(canvas.draws.length,frozenDrawCount);
+  send('output-paused');tick(start+700);assert.equal(canvas.draws.at(-1)[1],b.buffer);
+  send('output-playing');const pausedDrawCount=canvas.draws.length;tick(start+800);
+  assert.equal(canvas.draws.length,pausedDrawCount);
+  popup.closed=true;tick(start+900);assert.equal(states.at(-1),false);assert.equal(offscreen.stopped,1);
+  assert.equal(canvas.draws.at(-1)[1],b.buffer);assert.equal(messages.at(-1).type,'output-blur');
+  program.openPopup();send('output-ready');send('output-closed');assert.equal(states.at(-1),false);
+  send('output-ready');assert.equal(states.at(-1),true); // Reloading the popup reuses the same WindowProxy.
+  send('output-closed');denyPlay=true;send('output-ready');await Promise.resolve();await Promise.resolve();
+  assert.equal(states.at(-1),false);tick(start+1000);assert.equal(canvas.draws.at(-1)[1],b.buffer);
+  assert.match(notices.at(-1)[0],/Click Play/);
+  send('output-playing');assert.equal(states.at(-1),true);
+  popup.closed=true;tick(start+1100);blocked=true;program.openPopup();tick(start+1200);
+  assert.equal(states.at(-1),false);assert.match(notices.at(-1)[0],/Allow popups/);
+  program.dispose();
+ }finally{for(const [key,desc] of Object.entries(originals))if(desc)Object.defineProperty(globalThis,key,desc);else delete globalThis[key];}
+});

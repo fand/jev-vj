@@ -19,5 +19,7 @@ window.addEventListener('keydown',event=>{
 });
 window.addEventListener('keyup',event=>window.opener?.postMessage({type:'output-keyup',code:event.code},location.origin));
 window.addEventListener('blur',()=>window.opener?.postMessage({type:'output-blur'},location.origin));
+video.addEventListener('playing',()=>window.opener?.postMessage({type:'output-playing'},location.origin));
+video.addEventListener('pause',()=>window.opener?.postMessage({type:'output-paused'},location.origin));
 window.opener?.postMessage({type:'output-ready'},location.origin);
-window.addEventListener('pagehide',()=>window.opener?.postMessage({type:'output-blur'},location.origin));
+window.addEventListener('pagehide',()=>window.opener?.postMessage({type:'output-closed'},location.origin));

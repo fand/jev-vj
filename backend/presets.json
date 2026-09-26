@@ -1,0 +1,506 @@
+{
+  "flip": {
+    "horizontal": {
+      "description": "Reverse left/right.",
+      "params": {},
+      "mix": 1
+    },
+    "vertical": {
+      "description": "Reverse up/down.",
+      "params": {
+        "horizontal": 0,
+        "vertical": 1
+      },
+      "mix": 1
+    },
+    "both": {
+      "description": "Reverse both axes.",
+      "params": {
+        "vertical": 1
+      },
+      "mix": 1
+    }
+  },
+  "mirror": {
+    "horizontal": {
+      "description": "left/right symmetry (左右対称), reflect around a vertical center line",
+      "params": {},
+      "mix": 1
+    },
+    "vertical": {
+      "description": "top/bottom symmetry (上下対称), reflect around a horizontal center line",
+      "params": {
+        "mode": 1
+      },
+      "mix": 1
+    },
+    "both": {
+      "description": "both left/right and top/bottom symmetry",
+      "params": {
+        "mode": 2
+      },
+      "mix": 1
+    }
+  },
+  "halftone": {
+    "subtle": {
+      "description": "subtle Print-style RGB or CMYK dot screen.",
+      "params": {},
+      "mix": 0.3
+    },
+    "medium": {
+      "description": "medium Print-style RGB or CMYK dot screen.",
+      "params": {},
+      "mix": 0.65
+    },
+    "strong": {
+      "description": "strong Print-style RGB or CMYK dot screen.",
+      "params": {},
+      "mix": 1
+    }
+  },
+  "hatched": {
+    "subtle": {
+      "description": "subtle Luminance-based crosshatching on light paper, with an inverted paper mode.",
+      "params": {},
+      "mix": 0.3
+    },
+    "medium": {
+      "description": "medium Luminance-based crosshatching on light paper, with an inverted paper mode.",
+      "params": {},
+      "mix": 0.65
+    },
+    "strong": {
+      "description": "strong Luminance-based crosshatching on light paper, with an inverted paper mode.",
+      "params": {},
+      "mix": 1
+    }
+  },
+  "lorez": {
+    "subtle": {
+      "description": "subtle Square pixel blocks with per-channel colour quantization.",
+      "params": {
+        "pixelSize": 4,
+        "colorLevels": 24
+      },
+      "mix": 1
+    },
+    "medium": {
+      "description": "medium Square pixel blocks with per-channel colour quantization.",
+      "params": {
+        "pixelSize": 12
+      },
+      "mix": 1
+    },
+    "strong": {
+      "description": "strong Square pixel blocks with per-channel colour quantization.",
+      "params": {
+        "pixelSize": 32,
+        "colorLevels": 4
+      },
+      "mix": 1
+    }
+  },
+  "edge": {
+    "subtle": {
+      "description": "subtle Sobel-detected outlines in a selected palette.",
+      "params": {},
+      "mix": 0.3
+    },
+    "medium": {
+      "description": "medium Sobel-detected outlines in a selected palette.",
+      "params": {},
+      "mix": 0.65
+    },
+    "strong": {
+      "description": "strong Sobel-detected outlines in a selected palette.",
+      "params": {},
+      "mix": 1
+    }
+  },
+  "rgb": {
+    "subtle": {
+      "description": "subtle Animated horizontal separation of red, green, and blue channels.",
+      "params": {
+        "amount": 3,
+        "speed": 0.25
+      },
+      "mix": 0.3
+    },
+    "medium": {
+      "description": "medium Animated horizontal separation of red, green, and blue channels.",
+      "params": {
+        "amount": 10
+      },
+      "mix": 0.65
+    },
+    "strong": {
+      "description": "strong Animated horizontal separation of red, green, and blue channels.",
+      "params": {
+        "amount": 30,
+        "speed": 1.5
+      },
+      "mix": 1
+    }
+  },
+  "shift-glitch": {
+    "subtle": {
+      "description": "subtle Partial vertical and horizontal bands of irregular width. Independent per-axis coverage. Band boundaries, active masks, and random 2D UV offsets/scales refresh at 0–30 Hz and hold between updates. Repeat wrapping; 0 Hz freezes the pattern.",
+      "params": {
+        "frequency": 4,
+        "vertical": 0.04,
+        "horizontal": 0.12,
+        "size": 32
+      },
+      "mix": 1
+    },
+    "medium": {
+      "description": "medium Partial vertical and horizontal bands of irregular width. Independent per-axis coverage. Band boundaries, active masks, and random 2D UV offsets/scales refresh at 0–30 Hz and hold between updates. Repeat wrapping; 0 Hz freezes the pattern.",
+      "params": {
+        "frequency": 15
+      },
+      "mix": 1
+    },
+    "strong": {
+      "description": "strong Partial vertical and horizontal bands of irregular width. Independent per-axis coverage. Band boundaries, active masks, and random 2D UV offsets/scales refresh at 0–30 Hz and hold between updates. Repeat wrapping; 0 Hz freezes the pattern.",
+      "params": {
+        "frequency": 30,
+        "vertical": 0.25,
+        "horizontal": 0.4,
+        "size": 72
+      },
+      "mix": 1
+    }
+  },
+  "twitch": {
+    "subtle": {
+      "description": "subtle Independent noise-gated position, scale, RGB separation and light bursts, each with amount and frequency. Constant motion blur follows position/scale speed. Non-periodic; no rotation; Repeat or Hold edges.",
+      "params": {
+        "posX": 0.12,
+        "posY": 0.015,
+        "posFreq": 0.2,
+        "scaleAmount": 0.08,
+        "scaleFreq": 0.15,
+        "rgbAmount": 0.08,
+        "rgbFreq": 0.15,
+        "lightAmount": 0.12,
+        "lightFreq": 0.15,
+        "blurAmount": 0.6
+      },
+      "mix": 1
+    },
+    "medium": {
+      "description": "medium Independent noise-gated position, scale, RGB separation and light bursts, each with amount and frequency. Constant motion blur follows position/scale speed. Non-periodic; no rotation; Repeat or Hold edges.",
+      "params": {
+        "posX": 0.3,
+        "posY": 0.06,
+        "posFreq": 0.45,
+        "scaleAmount": 0.25,
+        "scaleFreq": 0.4,
+        "rgbAmount": 0.3,
+        "rgbFreq": 0.4,
+        "lightAmount": 0.4,
+        "lightFreq": 0.35
+      },
+      "mix": 1
+    },
+    "strong": {
+      "description": "strong Independent noise-gated position, scale, RGB separation and light bursts, each with amount and frequency. Constant motion blur follows position/scale speed. Non-periodic; no rotation; Repeat or Hold edges.",
+      "params": {
+        "posX": 0.56,
+        "posY": 0.12,
+        "posFreq": 0.7,
+        "scaleAmount": 0.35,
+        "scaleFreq": 0.92,
+        "rgbAmount": 0.45,
+        "rgbFreq": 0.65,
+        "lightAmount": 0.63,
+        "lightFreq": 0.6,
+        "blurAmount": 1
+      },
+      "mix": 1
+    }
+  },
+  "hue": {
+    "rotate_0.15": {
+      "description": "Static relative hue rotation 0.15",
+      "params": {
+        "shift": 0.15
+      },
+      "mix": 1
+    },
+    "rotate_0.33": {
+      "description": "Static relative hue rotation 0.33",
+      "params": {
+        "shift": 0.33
+      },
+      "mix": 1
+    },
+    "rotate_0.5": {
+      "description": "Static relative hue rotation 0.5",
+      "params": {
+        "shift": 0.5
+      },
+      "mix": 1
+    },
+    "rotate_0.66": {
+      "description": "Static relative hue rotation 0.66",
+      "params": {
+        "shift": 0.66
+      },
+      "mix": 1
+    },
+    "slow_cycle": {
+      "description": "Slow color cycle.",
+      "params": {
+        "speed": 0.035
+      },
+      "mix": 1
+    },
+    "fast_cycle": {
+      "description": "Fast color cycle.",
+      "params": {
+        "speed": 0.3
+      },
+      "mix": 1
+    }
+  },
+  "colorama": {
+    "rainbow": {
+      "description": "Animated rainbow accent, 40% mix, speed 0.4; retain source color and detail.",
+      "params": {
+        "speed": 0.4
+      },
+      "mix": 0.4
+    },
+    "rainbow_cycle": {
+      "description": "Faster animated rainbow accent, 40% mix, speed 0.6.",
+      "params": {
+        "speed": 0.6
+      },
+      "mix": 0.4
+    },
+    "red_blue": {
+      "description": "Static luminance palette: red_blue",
+      "params": {
+        "palette": 1,
+        "speed": 0
+      },
+      "mix": 1
+    },
+    "red_blue_cycle": {
+      "description": "Slowly cycling luminance palette: red_blue",
+      "params": {
+        "palette": 1
+      },
+      "mix": 1
+    },
+    "yellow_pink": {
+      "description": "Static luminance palette: yellow_pink",
+      "params": {
+        "palette": 2,
+        "speed": 0
+      },
+      "mix": 1
+    },
+    "yellow_pink_cycle": {
+      "description": "Slowly cycling luminance palette: yellow_pink",
+      "params": {
+        "palette": 2
+      },
+      "mix": 1
+    },
+    "cyan_purple": {
+      "description": "Static luminance palette: cyan_purple",
+      "params": {
+        "palette": 3,
+        "speed": 0
+      },
+      "mix": 1
+    },
+    "cyan_purple_cycle": {
+      "description": "Slowly cycling luminance palette: cyan_purple",
+      "params": {
+        "palette": 3
+      },
+      "mix": 1
+    },
+    "white_black": {
+      "description": "Static luminance palette: white_black",
+      "params": {
+        "palette": 4,
+        "speed": 0
+      },
+      "mix": 1
+    },
+    "white_black_cycle": {
+      "description": "Slowly cycling luminance palette: white_black",
+      "params": {
+        "palette": 4
+      },
+      "mix": 1
+    }
+  },
+  "invert": {
+    "subtle": {
+      "description": "subtle Invert selected RGB channels while preserving alpha.",
+      "params": {},
+      "mix": 0.3
+    },
+    "medium": {
+      "description": "medium Invert selected RGB channels while preserving alpha.",
+      "params": {},
+      "mix": 0.65
+    },
+    "strong": {
+      "description": "strong Invert selected RGB channels while preserving alpha.",
+      "params": {},
+      "mix": 1
+    }
+  },
+  "trails": {
+    "subtle": {
+      "description": "subtle Per-frame feedback trails, blending 0–50% of the previous frame.",
+      "params": {
+        "feedback": 0.15
+      },
+      "mix": 1
+    },
+    "medium": {
+      "description": "medium Per-frame feedback trails, blending 0–50% of the previous frame.",
+      "params": {},
+      "mix": 1
+    },
+    "strong": {
+      "description": "strong Per-frame feedback trails, blending 0–50% of the previous frame.",
+      "params": {
+        "feedback": 0.48
+      },
+      "mix": 1
+    }
+  },
+  "colorize": {
+    "red": {
+      "description": "Tint the whole image red",
+      "params": {
+        "hue": 0,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "orange": {
+      "description": "Tint the whole image orange",
+      "params": {
+        "hue": 30,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "yellow": {
+      "description": "Tint the whole image yellow",
+      "params": {
+        "hue": 60,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "green": {
+      "description": "Tint the whole image green",
+      "params": {
+        "hue": 120,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "cyan": {
+      "description": "Tint the whole image cyan",
+      "params": {
+        "hue": 180,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "blue": {
+      "description": "Tint the whole image blue",
+      "params": {
+        "hue": 220,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "purple": {
+      "description": "Tint the whole image purple",
+      "params": {
+        "hue": 280,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "pink": {
+      "description": "Tint the whole image pink",
+      "params": {
+        "hue": 320,
+        "saturation": 0.8
+      },
+      "mix": 1
+    },
+    "monochrome": {
+      "description": "True grayscale, zero saturation.",
+      "params": {
+        "saturation": 0
+      },
+      "mix": 1
+    }
+  },
+  "strobe": {
+    "black_slow": {
+      "description": "slow black strobe at 2 Hz, short hard flashes.",
+      "params": {
+        "frequency": 2,
+        "duty": 0.25
+      },
+      "mix": 1
+    },
+    "black_medium": {
+      "description": "medium black strobe at 8 Hz, short hard flashes.",
+      "params": {
+        "duty": 0.25
+      },
+      "mix": 1
+    },
+    "black_fast": {
+      "description": "fast black strobe at 16 Hz, short hard flashes.",
+      "params": {
+        "frequency": 16,
+        "duty": 0.25
+      },
+      "mix": 1
+    },
+    "white_slow": {
+      "description": "slow white strobe at 2 Hz, short hard flashes.",
+      "params": {
+        "frequency": 2,
+        "duty": 0.25,
+        "white": 1
+      },
+      "mix": 1
+    },
+    "white_medium": {
+      "description": "medium white strobe at 8 Hz, short hard flashes.",
+      "params": {
+        "duty": 0.25,
+        "white": 1
+      },
+      "mix": 1
+    },
+    "white_fast": {
+      "description": "fast white strobe at 16 Hz, short hard flashes.",
+      "params": {
+        "frequency": 16,
+        "duty": 0.25,
+        "white": 1
+      },
+      "mix": 1
+    }
+  }
+}

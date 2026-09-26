@@ -105,3 +105,9 @@ main{max-width:1060px;padding:24px 32px}.deck{margin-top:24px}.deck>.section-lab
 .master-controls #master-kill[aria-pressed="true"]{background:#dc4545;border-color:#dc4545;color:#fff}
 
 .library-link{color:var(--muted);text-decoration:none;font-size:11px}.library-link:hover{color:var(--ink)}
+
+.stage.popup-active>iframe,.stage.popup-active>#program-output{visibility:hidden}
+.stage.popup-active::after{content:'Output in popup';position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12px;pointer-events:none}
+
+.candidate-preview canvas{width:100%;height:100%;display:block;object-fit:contain}
+.stage>iframe.prepared-renderer{visibility:hidden}
