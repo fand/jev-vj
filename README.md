@@ -1,8 +1,10 @@
 # Jev VJ
 
-A local VJ player controlled with natural language. Describe a look—“calm ambient”, “colorful techno”, “more minimal”—and Jev suggests up to four clips. Each **clip** combines your footage with browser effects powered by VFX-JS. Click one to play it; typing never switches the output.
+<img width="2378" height="1884" alt="image" src="https://github.com/user-attachments/assets/5547e1d2-9dd8-467b-92bc-4f6de4a24012" />
 
-Jev uses footage descriptions and playback history. Relative prompts compare against the current clip. New themes choose effects from scratch; requests such as “add trails” adjust the current look.
+A VJ app with Jev's **Choice** feature.
+
+blog: https://in.amagi.dev/posts/jev-vj/
 
 ## Setup
 
